@@ -1,6 +1,6 @@
 # `Package`
-    + How to install the package: right-click in project -> manage nuget package
-    + 'Packages: [10/10/2024]'
+## `How to install the package: right-click in project -> manage nuget package`
+## `Packages: [10/10/2024]`
 ```bash
     Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
 ```

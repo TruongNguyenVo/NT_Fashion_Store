@@ -1,12 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using doan1_v1.Helpers;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace doan1_v1.Models
 {
     public class Category
     {
         public int Id { get; set; }
+
+
+        [StringLength(100, ErrorMessage = "Tên danh mục không được vượt quá 100 ký tự.")]
+        [Required(ErrorMessage = "Tên danh mục là bắt buộc.")]
         public string Name { get; set; }
-        public int? ParentId{  get; set;}
+
+        [ForeignKey(nameof(Category.Id))]
+        public int? ParentId{get; set;}
+
         public string? Description { get; set; }
 
         [ForeignKey(nameof(UserId))] // khoa ngoai lien ket voi id cua bang User

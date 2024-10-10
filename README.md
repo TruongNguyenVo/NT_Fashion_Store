@@ -25,3 +25,13 @@
 ```bash
     Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
+# `DataBase`
+#### `Run PM: Tools -> Nuget Package Manager -> Package Manager Control`
+```bash
+    Add-Migration NameYourMigration
+```
+```bash
+    Update-Database
+```
+
+```

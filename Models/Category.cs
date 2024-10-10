@@ -11,9 +11,9 @@ namespace doan1_v1.Models
 
         [ForeignKey(nameof(UserId))] // khoa ngoai lien ket voi id cua bang User
         public int? UserId{ get; set; }
-        public User? User { get; set; }
+        public User? User { get; set; } // 1 category quan ly boi 1 user
 
-        public List<Product>? Product { get; set; }
+        public List<Product>? Product { get; set; } // mot category co nhieu product
 
         
     }

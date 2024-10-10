@@ -1,5 +1,5 @@
 # Package 
-    + `How to install package:` right-click in project -> manage nuget package
+    + 'How to install package:' right-click in project -> manage nuget package
     + 'Packages: [10/10/2024]'
         Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
         Microsoft.AspNetCore.Identity.EntityFrameworkCore

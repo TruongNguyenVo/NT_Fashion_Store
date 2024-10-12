@@ -1,19 +1,35 @@
-# Package 
-    + 'How to install package:' right-click in project -> manage nuget package
-    + 'Packages: [10/10/2024]'
-        Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
-        Microsoft.AspNetCore.Identity.EntityFrameworkCore
-        Microsoft.AspNetCore.Identity.UI
-        Microsoft.EntityFrameworkCore.Sqlite
-        Microsoft.EntityFrameworkCore.SqlServer
-        Microsoft.EntityFrameworkCore.Tools
-        Microsoft.VisualStudio.Web.CodeGeneration.Design
-### `Create dummy data`
+# `Package`
+#### `How to install the package: right-click in project -> manage nuget package`
+#### `Packages: [update: 10/10/2024]`
 ```bash
-
-php artisan db:seed
-
-php artisan make:seeder *(name of seed)Seeder
-
-php artisan db:seed --class=*(name of seed)Seeder
+    Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+```
+```bash
+    Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+```
+```bash
+    Microsoft.AspNetCore.Identity.EntityFrameworkCore
+```
+```bash
+    Microsoft.AspNetCore.Identity.UI
+```
+```bash
+    Microsoft.EntityFrameworkCore.Sqlite
+```
+```bash
+    Microsoft.EntityFrameworkCore.SqlServer
+```
+```bash
+    Microsoft.EntityFrameworkCore.Tools
+```
+```bash
+    Microsoft.VisualStudio.Web.CodeGeneration.Design
+```
+# `DataBase`
+#### `Run PM: Tools -> Nuget Package Manager -> Package Manager Control`
+```bash
+    Add-Migration NameYourMigration
+```
+```bash
+    Update-Database
 ```

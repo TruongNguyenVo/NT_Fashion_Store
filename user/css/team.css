@@ -1,0 +1,56 @@
+/*
+Template Name: Fashist
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************team****************/
+.team_1im2 ul li a {
+background:#cf802e;
+width:35px;
+height:35px;
+font-size:14px;
+border-radius:0;
+ }
+.team_1im2 ul li a i{
+line-height:35px;
+ }
+.team_1im2  {
+display:none;
+ }
+.team_1im:hover .team_1im2{
+display:block; 
+ }
+/*********************team_end****************/
+
+
+@media screen and (max-width : 767px){
+.team_1i_last{
+text-align:center;
+margin-bottom:15px; 
+ }
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.team_1im2 ul li a {
+width:30px;
+height:30px;
+font-size:12px;
+ }
+.team_1im2 ul li a i{
+line-height:30px;
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1215px) {
+ }
+
+

@@ -1,0 +1,73 @@
+/*
+Template Name: Fashist
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************about****************/
+.safe_1r .progress-bar {
+background:#cf802e0f;
+border-radius: 0;
+}
+.safe_1r .progress {
+background-color: #cf802e;
+height: 2px;
+overflow: hidden;
+border-radius: 0;
+}
+/*********************about_end****************/
+
+
+@media screen and (max-width : 767px){
+.safe_1l{
+text-align:center;
+margin-bottom:15px; 
+ }
+.safe_1l p{
+text-align:left; 
+ }
+.spec_1i {
+text-align:center;
+margin-top:8px; 
+margin-bottom:8px; 
+ }
+.spec_1i p{
+text-align:left;
+ }
+.about_pg_1r{
+margin-top:15px;
+text-align:center; 
+ }
+.about_pg_1r p{
+text-align:left; 
+ }
+.about_pg_1ri1 span{
+float:none!important;
+margin-right:0!important; 
+ }
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.about_pg_1l img{
+height:550px; 
+ }
+.about_pg_1ri1 span{
+float:none!important; 
+margin-right:0!important;
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.about_pg_1l img{
+height:550px; 
+ }
+ }
+@media (min-width:1201px) and (max-width:1215px) {
+ }
+
+

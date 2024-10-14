@@ -11,7 +11,7 @@ using doan1_v1.Models;
 
 namespace doan1_v1.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(NTFashionDbContext))]
     [Migration("20241010135740_migrate9")]
     partial class migrate9
     {

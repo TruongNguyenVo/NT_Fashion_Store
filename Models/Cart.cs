@@ -12,4 +12,5 @@ namespace doan1_v1.Models
         public List<CartDetail>? CartDetails { get; set; } // cart chua nhieu detail
 
     }
+
 }

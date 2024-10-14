@@ -40,6 +40,6 @@ namespace doan1_v1.Models
         public List<OrderProductDetail>? orderProductDetails { get; set; } //1 product nam trong nhieu orderproductdetail
         public List<PurchaseReportProductDetail>? PurchaseReportProducts { get; set; } //1 product nam trong nhieu detail
 
-
     }
+
 }

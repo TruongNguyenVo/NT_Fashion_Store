@@ -2,9 +2,9 @@
 
 namespace doan1_v1.Models
 {
-    public class ApplicationDbContext : DbContext
+    public class NTFashionDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public NTFashionDbContext(DbContextOptions<NTFashionDbContext> options)
       : base(options)
         {
         }
@@ -19,6 +19,8 @@ namespace doan1_v1.Models
         public DbSet<PurchaseReportProductDetail> PurchaseReportProductDetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
     }
 

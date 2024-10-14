@@ -23,28 +23,6 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Mật khẩu không được để trống.")]
         public string Password { get; set; }
-        
-
-        [Required(ErrorMessage = "Số điện thoại không được để trống.")]
-        [Phone]
-        public string Phone { get; set; }
-
-
-        [Required(ErrorMessage = "Ngày tháng năm sinh không được để trống.")]
-        [DataType(DataType.Date)]
-        public DateTime DateOfBrith { get; set; }
-
-        [Required(ErrorMessage = "Giới tính không được để trống.")]
-        [DefaultValue("Không xác định")]
-        [RegularExpression(@"^(Nam|Nữ|Không xác định)$", ErrorMessage = "Chỉ nhận các giá trị Nam, Nữ, Hoặc Không xác định.")]
-        public string Gender { get; set; }
-
-        [Required(ErrorMessage = "Chức vụ không được để trống.")]
-        [DefaultValue("Customer")]
-        [RegularExpression(@"^(Customer|Manager)$", ErrorMessage = "Chỉ nhận các giá trị Customer|Manager.")]
-        public string Role { get; set; }
-
-
         public Cart Cart { get; set; } // mot user chi co 1 cart
         public List<Category>? Categories { get; set; } // 1 user quan ly nhieu category
         public List<Order> Orders { get; set; } // 1 khach hang co nhieu order

@@ -12,8 +12,8 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    [Migration("20241012131728_migrate12")]
-    partial class migrate12
+    [Migration("20241014133008_migrate19")]
+    partial class migrate19
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -348,8 +348,10 @@ namespace doan1_v1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBrith")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -360,11 +362,27 @@ namespace doan1_v1.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasDiscriminator().HasValue("User");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("doan1_v1.Models.Customer", b =>
+                {
+                    b.HasBaseType("doan1_v1.Models.User");
+
+                    b.Property<DateTime>("DateOfBrith")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -372,13 +390,14 @@ namespace doan1_v1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasDiscriminator().HasValue("Customer");
+                });
 
-                    b.HasKey("Id");
+            modelBuilder.Entity("doan1_v1.Models.Manager", b =>
+                {
+                    b.HasBaseType("doan1_v1.Models.User");
 
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("Manager");
                 });
 
             modelBuilder.Entity("doan1_v1.Models.Cart", b =>

@@ -20,6 +20,7 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Mật khẩu không được để trống.")]
         public string Password { get; set; }
+        public Boolean IsDel { get; set; } = false;
         public Cart? Cart { get; set; } // mot user chi co 1 cart
         public List<Category>? Categories { get; set; } // 1 user quan ly nhieu category
         public List<Order>? Orders { get; set; } // 1 khach hang co nhieu order

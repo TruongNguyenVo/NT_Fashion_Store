@@ -31,6 +31,7 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Nhà sản xuất là bắt buộc.")]
         public string Productor { get; set; }
+        public Boolean IsDel { get; set; } = false;
 
         [ForeignKey(nameof(Category.Id))] // khoa ngoai voi category
         public int CategoryId { get; set; }

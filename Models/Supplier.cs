@@ -16,6 +16,7 @@ namespace doan1_v1.Models
         [Required(ErrorMessage = "Số điện thoại nhà cung cấp là bắt buộc.")]
         [Phone]
         public string Phone { get; set; }
+        public Boolean IsDel { get; set; } = false;
 
         public List<PurchaseReport>? PurchaseReports { get; set; } // 1 supplier co nhieu purchase report
     }

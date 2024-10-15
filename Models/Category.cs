@@ -17,6 +17,7 @@ namespace doan1_v1.Models
         public int? ParentId{get; set;}
 
         public string? Description { get; set; }
+        public Boolean IsDel { get; set; } = false;
 
         [ForeignKey(nameof(UserId))] // khoa ngoai lien ket voi id cua bang User
         public int? UserId{ get; set; }

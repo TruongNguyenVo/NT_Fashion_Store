@@ -31,5 +31,5 @@
     Add-Migration NameYourMigration
 ```
 ```bash
-    Update-Database -Migration InitialCreate
+    Update-Database -Migration NameYourMigration
 ```

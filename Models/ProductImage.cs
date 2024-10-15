@@ -9,6 +9,6 @@ namespace doan1_v1.Models
         public int ProductId {  get; set; }
         public string ImgURL { get; set; }
 
-        public Product Product { get; set; } // mot product image thuoc 1 product
+        public Product? Product { get; set; } // mot product image thuoc 1 product
     }
 }

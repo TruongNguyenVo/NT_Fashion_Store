@@ -22,12 +22,12 @@ namespace doan1_v1.Models
         public string Status { get; set; }
         [ForeignKey(nameof(Supplier.Id))] // lien ket voi bang Supplier
         public int SupplierId  { get; set; }
-        public Supplier Supplier { get; set; } //mot purchase report chi thuoc 1 supplier
+        public Supplier? Supplier { get; set; } //mot purchase report chi thuoc 1 supplier
 
         [ForeignKey(nameof(User.Id))] // lien ket voi bang User
         public int UserId { get; set; }
-        public User User { get; set; } // mot purchase report chi thuoc 1 quan ly
+        public User? User { get; set; } // mot purchase report chi thuoc 1 quan ly
 
-        public List<PurchaseReportProductDetail> PurchaseReportProductDetails { get; set; } // 1 purchase report chua nhieu detail
+        public List<PurchaseReportProductDetail>? PurchaseReportProductDetails { get; set; } // 1 purchase report chua nhieu detail
     }
 }

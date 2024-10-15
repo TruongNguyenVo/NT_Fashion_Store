@@ -19,6 +19,5 @@ namespace doan1_v1.Models
         [DefaultValue("Không xác định")]
         [RegularExpression(@"^(Nam|Nữ|Không xác định)$", ErrorMessage = "Chỉ nhận các giá trị Nam, Nữ, Hoặc Không xác định.")]
         public string Gender { get; set; }
-
     }
 }

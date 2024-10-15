@@ -12,8 +12,8 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    [Migration("20241014125255_migrate13")]
-    partial class migrate13
+    [Migration("20241015012843_migrate1")]
+    partial class migrate1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,7 @@ namespace doan1_v1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -97,30 +96,6 @@ namespace doan1_v1.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("doan1_v1.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateOfBrith")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("doan1_v1.Models.Order", b =>
@@ -368,10 +343,6 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(8)
@@ -381,16 +352,11 @@ namespace doan1_v1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Password")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -403,9 +369,24 @@ namespace doan1_v1.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("doan1_v1.Models.Customer", b =>
+                {
+                    b.HasBaseType("doan1_v1.Models.User");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Customer");
+                });
+
             modelBuilder.Entity("doan1_v1.Models.Manager", b =>
                 {
                     b.HasBaseType("doan1_v1.Models.User");
+
+                    b.Property<string>("CCCD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Manager");
                 });
@@ -413,8 +394,8 @@ namespace doan1_v1.Migrations
             modelBuilder.Entity("doan1_v1.Models.Cart", b =>
                 {
                     b.HasOne("doan1_v1.Models.User", "User")
-                        .WithOne("Cart")
-                        .HasForeignKey("doan1_v1.Models.Cart", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -443,7 +424,7 @@ namespace doan1_v1.Migrations
             modelBuilder.Entity("doan1_v1.Models.Category", b =>
                 {
                     b.HasOne("doan1_v1.Models.User", "User")
-                        .WithMany("Categories")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -452,7 +433,7 @@ namespace doan1_v1.Migrations
             modelBuilder.Entity("doan1_v1.Models.Order", b =>
                 {
                     b.HasOne("doan1_v1.Models.User", "User")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -508,7 +489,7 @@ namespace doan1_v1.Migrations
                         .IsRequired();
 
                     b.HasOne("doan1_v1.Models.User", "User")
-                        .WithMany("PurchaseReports")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -565,18 +546,6 @@ namespace doan1_v1.Migrations
 
             modelBuilder.Entity("doan1_v1.Models.Supplier", b =>
                 {
-                    b.Navigation("PurchaseReports");
-                });
-
-            modelBuilder.Entity("doan1_v1.Models.User", b =>
-                {
-                    b.Navigation("Cart")
-                        .IsRequired();
-
-                    b.Navigation("Categories");
-
-                    b.Navigation("Orders");
-
                     b.Navigation("PurchaseReports");
                 });
 #pragma warning restore 612, 618

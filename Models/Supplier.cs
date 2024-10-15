@@ -17,6 +17,6 @@ namespace doan1_v1.Models
         [Phone]
         public string Phone { get; set; }
 
-        public List<PurchaseReport> PurchaseReports { get; set; } // 1 supplier co nhieu purchase report
+        public List<PurchaseReport>? PurchaseReports { get; set; } // 1 supplier co nhieu purchase report
     }
 }

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace doan1_v1.Models
 {
@@ -23,9 +20,9 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Mật khẩu không được để trống.")]
         public string Password { get; set; }
-        public Cart Cart { get; set; } // mot user chi co 1 cart
+        public Cart? Cart { get; set; } // mot user chi co 1 cart
         public List<Category>? Categories { get; set; } // 1 user quan ly nhieu category
-        public List<Order> Orders { get; set; } // 1 khach hang co nhieu order
-        public List<PurchaseReport> PurchaseReports { get; set; } //1 quan ly quan ly nhieu purchase report
+        public List<Order>? Orders { get; set; } // 1 khach hang co nhieu order
+        public List<PurchaseReport>? PurchaseReports { get; set; } //1 quan ly quan ly nhieu purchase report
     }
 }

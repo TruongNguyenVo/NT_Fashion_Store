@@ -15,7 +15,7 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
-# `DataBase`
+# `Migration to Database`
 #### `Run PM: Tools -> Nuget Package Manager -> Package Manager Control`
 ```bash
     Add-Migration NameYourMigration

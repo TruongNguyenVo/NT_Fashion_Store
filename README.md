@@ -1,34 +1,19 @@
-# `Run Project`
+####  [update: 23/10/2024]`
+`Run Project`
 #### `how to run project asp core in powershell`: open powershell
 ```bash
 dotnet run --urls "http://0.0.0.0:5000"
 ```
 # `Package`
-#### `How to install the package: right-click in project -> manage nuget package`
-#### `Packages: [update: 10/10/2024]`
+#### `how to install package asp core in powershell`: open powershell
 ```bash
-    Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
-```
-```bash
-    Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
-```
-```bash
-    Microsoft.AspNetCore.Identity.EntityFrameworkCore
-```
-```bash
-    Microsoft.AspNetCore.Identity.UI
-```
-```bash
-    Microsoft.EntityFrameworkCore.Sqlite
-```
-```bash
-    Microsoft.EntityFrameworkCore.SqlServer
-```
-```bash
-    Microsoft.EntityFrameworkCore.Tools
-```
-```bash
-    Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+dotnet add package Microsoft.AspNetCore.Identity.UI
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
 # `DataBase`
 #### `Run PM: Tools -> Nuget Package Manager -> Package Manager Control`

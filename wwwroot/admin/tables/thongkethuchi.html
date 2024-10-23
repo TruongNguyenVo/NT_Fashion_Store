@@ -1,20 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Khách hàng</title>
+    <title>Thống kê thu chi</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
     <link
       rel="icon"
-      href="/admin/assets/img/kaiadmin/favicon.ico"
+      href="../assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="/admin/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +25,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["/admin/assets/css/fonts.min.css"],
+          urls: ["../assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -34,9 +34,9 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="/admin/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/admin/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="/admin/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
 
   </head>
   <body>
@@ -46,9 +46,9 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="/admin/index.html" class="logo">
+            <a href="../index.html" class="logo">
               <img
-                src="/admin/assets/img/kaiadmin/logo_light.svg"
+                src="../assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -67,81 +67,81 @@
               <i class="gg-more-vertical-alt"></i>
             </button>
           </div>
-          <!-- End Logo Header -->
-        </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-
-              <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                <h4 class="text-section">Quản lý</h4>
-              </li>
-              <ul class="nav-item submenu">
-                <a  href="/admin/tables/datatables.html">
-                  <i class="fas fa-table"></i>
-                  <p>Danh mục sản phẩm</p>            
-                </a>                
-            </ul>
-              <ul class="nav-item submenu">
-                <a  href="/admin/tables/quanlysanpham.html">
-                  <i class="fas fa-table"></i>
-                  <p>Sản phẩm</p>            
-                </a>                
+           <!-- End Logo Header -->
+          </div>
+          <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+              <ul class="nav nav-secondary">
+  
+                <li class="nav-section">
+                  <span class="sidebar-mini-icon">
+                    <i class="fa fa-ellipsis-h"></i>
+                  </span>
+                  <h4 class="text-section">Quản lý</h4>
+                </li>
+                <ul class="nav-item submenu">
+                  <a  href="../tables/datatables.html">
+                    <i class="fas fa-table"></i>
+                    <p>Danh mục sản phẩm</p>            
+                  </a>                
+              </ul>
+                <ul class="nav-item submenu">
+                  <a  href="../tables/quanlysanpham.html">
+                    <i class="fas fa-table"></i>
+                    <p>Sản phẩm</p>            
+                  </a>                
+                </ul>
+                <ul class="nav-item submenu">
+                  <a  href="../tables/datatables.html">
+                    <i class="fas fa-table"></i>
+                    <p>Kho</p>            
+                  </a>                
               </ul>
               <ul class="nav-item submenu">
-                <a  href="/admin/tables/datatables.html">
+                <a  href="../tables/datatables.html">
                   <i class="fas fa-table"></i>
-                  <p>Kho</p>            
+                  <p>Nhà cung cấp</p>            
                 </a>                
             </ul>
             <ul class="nav-item submenu">
-              <a  href="/admin/tables/datatables.html">
+              <a  href="../tables/datatables.html">
                 <i class="fas fa-table"></i>
-                <p>Nhà cung cấp</p>            
+                <p>Khách hàng</p>            
               </a>                
           </ul>
           <ul class="nav-item submenu">
-            <a  href="/admin/tables/datatables.html">
+            <a  href="../tables/datatables.html">
               <i class="fas fa-table"></i>
-              <p>Khách hàng</p>            
+              <p>Đơn hàng</p>            
             </a>                
         </ul>
         <ul class="nav-item submenu">
-          <a  href="/admin/tables/datatables.html">
+          <a  href="../tables/datatables.html">
             <i class="fas fa-table"></i>
-            <p>Đơn hàng</p>            
+            <p>Hóa đơn</p>            
           </a>                
       </ul>
-      <ul class="nav-item active submenu">
-        <a  href="/admin/tables/datatables.html">
-          <i class="fas fa-table"></i>
-          <p>Hóa đơn</p>            
-        </a>                
-    </ul>
-      <ul class="nav-item submenu">
-        <a  href="/admin/tables/datatables.html">
-          <i class="fas fa-table"></i>
-          <p>Thống kê thu chi</p>            
-        </a>                
-    </ul>
-
-            </ul>
+        <ul class="nav-item active submenu">
+          <a  href="../tables/datatables.html">
+            <i class="fas fa-table"></i>
+            <p>Thống kê thu chi</p>            
+          </a>                
+      </ul>
+  
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- End Sidebar -->
+        <!-- End Sidebar -->
 
       <div class="main-panel">
         <div class="main-header">
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="/admin/index.html" class="logo">
+              <a href="../index.html" class="logo">
                 <img
-                  src="/admin/assets/img/kaiadmin/logo_light.svg"
+                  src="../assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -209,7 +209,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="/admin/assets/img/profile.jpg"
+                        src="../assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -225,7 +225,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="/admin/assets/img/profile.jpg"
+                              src="../assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -253,23 +253,140 @@
         </div>
 
         <div class="container">
-            @RenderBody()
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý sản phẩm</a>
+                </li>
+              </ul>
+            </div>
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center">
+                      <h4 class="card-title">Thông tin thu chi</h4>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="addRowModal"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-hidden="true"
+                    >
+                    </div>
+                    <!-- table -->
+                    <div class="table-responsive">
+                      <table
+                        id="add-row"
+                        class="display table table-striped table-hover"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Tháng</th>
+                            <th>Năm</th>
+                            <th>Tổng thu</th>
+                            <th>Tổng chi</th>
+                            <th>Còn lại</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>Tháng</th>
+                            <th>Năm</th>
+                            <th>Tổng thu</th>
+                            <th>Tổng chi</th>
+                            <th>Còn lại</th>
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          
+                          <tr>
+                            <td>9</td>
+                            <td>2024</td>
+                            <td>9.000.000</td>
+                            <td>10.000.000</td>
+                            <td>-1.000.000</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>2024</td>
+                            <td>12.000.000</td>
+                            <td>11.000.000</td>
+                            <td>1.000.000</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://www.themekita.com">
+                    ThemeKita
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Help </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Licenses </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              2024, made with <i class="fa fa-heart heart text-danger"></i> by
+              <a href="http://www.themekita.com">ThemeKita</a>
+            </div>
+            <div>
+              Distributed by
+              <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
+            </div>
+          </div>
+        </footer>
+      </div>
 
     </div>
     <!--   Core JS Files   -->
-    <script src="/admin/assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="/admin/assets/js/core/popper.min.js"></script>
-    <script src="/admin/assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="/admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Datatables -->
-    <script src="/admin/assets/js/plugin/datatables/datatables.min.js"></script>
+    <script src="../assets/js/plugin/datatables/datatables.min.js"></script>
     <!-- Kaiadmin JS -->
-    <script src="/admin/assets/js/kaiadmin.min.js"></script>
+    <script src="../assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="/admin/assets/js/setting-demo2.js"></script>
+    <script src="../assets/js/setting-demo2.js"></script>
     <script>
 
       $(document).ready(function () {
@@ -330,7 +447,6 @@
 
 
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
   </body>
 </html>
 

@@ -13,8 +13,7 @@ namespace doan1_v1.Models
         [Required(ErrorMessage = "Tên danh mục là bắt buộc.")]
         public string Name { get; set; }
 
-        [ForeignKey(nameof(Category.Id))]
-        public int? ParentId{get; set;}
+        public int? ParentId { get; set; }
 
         public string? Description { get; set; }
         public Boolean IsDel { get; set; } = false;

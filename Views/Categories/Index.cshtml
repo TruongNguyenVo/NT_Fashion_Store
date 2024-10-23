@@ -1,0 +1,118 @@
+﻿@model IEnumerable<doan1_v1.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Thông tin sản phẩm</h4>
+                        <a type="submit"
+                           asp-action="Create"
+                           class="btn btn-primary btn-round ms-auto">
+                            <i class="fa fa-plus"></i>
+                            Thêm danh mục sản phẩm
+                        </a>
+                        <!-- form them -->
+                        <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="newRowModalLabel">Thêm danh mục sản phẩm</h5>
+                                        <button asp-action="Create" type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Modal -->
+                        <div class="modal fade"
+                             id="addRowModal"
+                             tabindex="-1"
+                             role="dialog"
+                             aria-hidden="true">
+                        </div>
+                        <!-- table -->
+                        <div class="table-responsive">
+                            <table id="add-row"
+                                   class="display table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tên danh mục</th>
+                                        <th>Tên danh mục cha</th>
+                                        <th style="width: 10%">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Tên danh mục cha</th>
+                                        <th style="width: 10%">Thao tác</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <tr>
+                                            <td>@category.Name</td>
+                                            
+                                            <td>@category.ParentId</td>
+
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <!-- update -->
+                                                    <a href="update_category.html"
+                                                       title="Chỉnh sửa sản phẩm"
+                                                       class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <!-- delete -->
+                                                    <a asp-action="Delete" asp-route-id="@category.Id"
+                                                       type="button"
+                                                       title=""
+                                                       class="btn btn-link btn-danger btn-lg">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

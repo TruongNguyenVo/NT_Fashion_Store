@@ -1,0 +1,50 @@
+﻿@model doan1_v1.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <form class="row" asp-action="Create" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" placeholder="Nhập tên sản phẩm">
+        </div>
+        <div class="mb-3">
+            <label asp-for="ParentId" class="form-label">Danh mục cha</label>
+            <select class="form-select" asp-for="ParentId" asp-items="ViewBag.Categories">
+                <option value="">--Chọn danh mục--</option>
+            </select>
+            <span asp-validation-for="ParentId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea class="form-control" rows="5" asp-for="Description" id=""></textarea>
+        </div>
+        <div class="mb-3-md">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" value="Create" class="btn btn-primary">Lưu</button>
+        </div>
+    </form>

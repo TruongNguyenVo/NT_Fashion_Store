@@ -1,4 +1,4 @@
-# `Run Project"
+# `Run Project`
 #### `how to run project asp core in powershell`: open powershell
 ```bash
 dotnet run --urls "http://localhost:5001"

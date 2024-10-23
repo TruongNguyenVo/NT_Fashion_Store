@@ -1,3 +1,8 @@
+# `Run Project"
+#### `how to run project asp core in powershell`: open powershell
+```bash
+dotnet run --urls "http://localhost:5001"
+```
 # `Package`
 #### `How to install the package: right-click in project -> manage nuget package`
 #### `Packages: [update: 10/10/2024]`

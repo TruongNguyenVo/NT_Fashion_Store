@@ -1,4 +1,4 @@
-####  [update: 23/10/2024]`
+#  [update: 23/10/2024]`
 `Run Project`
 #### `how to run project asp core in powershell`: open powershell
 ```bash

@@ -4,7 +4,62 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý sản phẩm</a>
+                </li>
+              </ul>
+            </div>
+              <form class ="row" action="" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+                  <input type="text" class="form-control" id="name" asp-for="Name" placeholder="Nhập tên sản phẩm">
+                </div>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Danh mục</label>
+                  <select class="form-select" name="category" id="">
+                    <option value="">--Chọn danh mục--</option>
+                    <option value="">Áo thun</option>
+                    <option value="">Quần dài</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Description" class="form-label">Mô tả</label>
+                  <textarea class="form-control" rows="5" asp-for="Description" id=""></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsDel" /> @Html.DisplayNameFor(model => model.IsDel)
+                    </label>
+                </div>
+                <div class="mb-3-md">
+                    <a class="btn btn-secondary" asp-action="Index">Đóng</a>
+                    <button type="submit" value="Save" class="btn btn-primary">Lưu</button>
+                </div>
+
+            </form>
+            </div>
+
+
+
+@* <h1>Edit</h1>
 
 <h4>Category</h4>
 <hr />
@@ -51,4 +106,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} *@

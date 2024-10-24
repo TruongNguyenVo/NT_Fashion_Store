@@ -162,7 +162,8 @@ namespace doan1_v1.Controllers
             var category = await _context.Categories.FindAsync(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                /*_context.Categories.Remove(category);*/
+                category.IsDel = true;
             }
 
             await _context.SaveChangesAsync();

@@ -4,7 +4,27 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<form class="row" asp-action="Delete" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+        <input disabled type="text" class="form-control" id="name" asp-for="Name">
+    </div>
+    <div class="mb-3">
+        <label asp-for="ParentId" class="form-label">Danh mục</label>
+        <input disabled type="text" class="form-control" id="name" asp-for="ParentId">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea disabled class="form-control" rows="5" name="description" id="">@Html.DisplayNameFor(model => model.Description)</textarea>
+    </div>
+    <div class="mb-3-md">
+        <input type="hidden" asp-for="Id" />
+        <a class="btn btn-secondary" asp-action="Index">Đóng</a>
+        <button type="submit" value="Delete" class="btn btn-danger">Xóa</button>
+    </div>
+</form>
+
+@* <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -49,3 +69,4 @@
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+ *@

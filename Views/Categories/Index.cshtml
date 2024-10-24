@@ -83,15 +83,35 @@
 
                                     @foreach (var category in ViewBag.Categories)
                                     {
+                                        @if(category.IsDel == true)
+                                        {
+                                            continue;
+                                        }
                                         <tr>
                                             <td>@category.Name</td>
-                                            
-                                            <td>@category.ParentId</td>
+                                            <td>
+                                                @{
+                                                    bool foundParent = false;
+                                                    foreach (var name_parent in ViewBag.Categories)
+                                                    {
+                                                        if (category.ParentId == name_parent.Id)
+                                                        {
+                                                            @name_parent.Name
+                                                            foundParent = true;
+                                                            break;
+                                                        }
+                                                    }
 
+                                                    if (!foundParent)
+                                                    {
+                                                        <span>Không có danh mục cha</span>
+                                                    }
+                                                }
+                                            </td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <!-- update -->
-                                                    <a href="update_category.html"
+                                                    <a asp-action="Edit" asp-route-id="@category.Id"
                                                        title="Chỉnh sửa sản phẩm"
                                                        class="btn btn-link btn-primary btn-lg">
                                                         <i class="fa fa-edit"></i>

@@ -1,0 +1,149 @@
+﻿@model doan1_v1.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+        <input type="text" class="form-control" id="name" asp-for="Name" placeholder="Nhập tên sản phẩm">
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Danh mục</label>
+            <select class="form-select" asp-for="CategoryId" asp-items="ViewBag.Categories">
+                <option value="">--Chọn danh mục--</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for= "Color" class="form-label">Màu sắc</label>
+        <input type="text" class="form-control" asp-for="Color" placeholder="Nhập màu sắc">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Dimension" class="form-label">Kích thước</label>
+        <input type="text" class="form-control" asp-for="Dimension" placeholder="Nhập kích thước">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Material" class="form-label">Chất liệu</label>
+            <input type="text" class="form-control" asp-for="Material" placeholder="Nhập chất liệu">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label">Số lượng</label>
+        <input type="number" min=0 class="form-control" asp-for="Quantity" placeholder="Nhập số lượng">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Giá</label>
+        <input type="number" min=0 class="form-control" asp-for="Price" placeholder="Nhập giá">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Productor" class="form-label">Nhà sản xuất</label>
+        <input type="number" class="form-control" asp-for="Productor" placeholder="Nhập nhà sản xuất">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea class="form-control" rows="3" asp-for="Description" id="">
+                                </textarea>
+    </div>
+    <div class="mb-3">
+        <input type="file" name="files" class="form-control" multiple />
+    </div>
+    <div class="modal-footer">
+            <a type="button" class="btn btn-secondary" asp-action="Index">Đóng</a>
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </div>
+</form>
+
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Color" class="control-label"></label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dimension" class="control-label"></label>
+                <input asp-for="Dimension" class="form-control" />
+                <span asp-validation-for="Dimension" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Material" class="control-label"></label>
+                <input asp-for="Material" class="form-control" />
+                <span asp-validation-for="Material" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Productor" class="control-label"></label>
+                <input asp-for="Productor" class="form-control" />
+                <span asp-validation-for="Productor" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDel" /> @Html.DisplayNameFor(model => model.IsDel)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -34,7 +34,7 @@ namespace doan1_v1.Models
         public Boolean IsDel { get; set; } = false;
 
         [ForeignKey(nameof(Category.Id))] // khoa ngoai voi category
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category? Category { get; set; } // mot product chi co 1 category
         public List<CartDetail>? CartDetails { get; set; } // mot product co the nam trong nhieu cartdetail
         public List<ProductImage>? ProductImages { get; set; } // 1 product chua nhieu image

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Khách hàng</title>
+    <title>@ViewData["Title"]</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -80,13 +80,13 @@
                 <h4 class="text-section">Quản lý</h4>
               </li>
               <ul class="nav-item submenu">
-                <a  href="/admin/tables/datatables.html">
+                <a asp-action="Index" asp-controller="Categories">
                   <i class="fas fa-table"></i>
                   <p>Danh mục sản phẩm</p>            
                 </a>                
             </ul>
               <ul class="nav-item submenu">
-                <a  href="/admin/tables/quanlysanpham.html">
+                <a asp-action="Index" asp-controller="Products">
                   <i class="fas fa-table"></i>
                   <p>Sản phẩm</p>            
                 </a>                
@@ -115,7 +115,7 @@
             <p>Đơn hàng</p>            
           </a>                
       </ul>
-      <ul class="nav-item active submenu">
+      <ul class="nav-item submenu">
         <a  href="/admin/tables/datatables.html">
           <i class="fas fa-table"></i>
           <p>Hóa đơn</p>            

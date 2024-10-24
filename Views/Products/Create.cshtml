@@ -27,7 +27,7 @@
         </ul>
     </div>
 
-<form asp-action="Create">
+    <form asp-action="Create" enctype="multipart/form-data">
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Tên sản phẩm</label>
         <input type="text" class="form-control" id="name" asp-for="Name" placeholder="Nhập tên sản phẩm">
@@ -73,7 +73,7 @@
     </div>
     <div class="modal-footer">
             <a type="button" class="btn btn-secondary" asp-action="Index">Đóng</a>
-        <button type="submit" class="btn btn-primary">Thêm</button>
+            <button type="submit" value="Create" class="btn btn-primary">Thêm</button>
     </div>
 </form>
 

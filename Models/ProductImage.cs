@@ -8,7 +8,8 @@ namespace doan1_v1.Models
         [ForeignKey(nameof(Product.Id))] // khoa ngoai lien ket voi product
         public int? ProductId {  get; set; }
         public string ImgURL { get; set; }
-
+        [NotMapped]
+        public IFormFile? File { get; set; }
         public Product? Product { get; set; } // mot product image thuoc 1 product
     }
 }

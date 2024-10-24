@@ -1,7 +1,7 @@
 ﻿@model doan1_v1.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Quản lý sản phẩm";
 }
 <div class="page-inner">
     <div class="page-header">
@@ -61,7 +61,7 @@
     </div>
     <div class="mb-3">
         <label asp-for="Productor" class="form-label">Nhà sản xuất</label>
-        <input type="number" class="form-control" asp-for="Productor" placeholder="Nhập nhà sản xuất">
+        <input type="text" class="form-control" asp-for="Productor" placeholder="Nhập nhà sản xuất">
     </div>
     <div class="mb-3">
         <label asp-for="Description" class="form-label">Mô tả</label>
@@ -70,6 +70,7 @@
     </div>
     <div class="mb-3">
         <input type="file" name="files" class="form-control" multiple />
+             <div id="imagePreview"></div> @* the dung de luu cac cac image tai len *@
     </div>
     <div class="modal-footer">
             <a type="button" class="btn btn-secondary" asp-action="Index">Đóng</a>
@@ -78,72 +79,66 @@
 </form>
 
 
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+
+        <!-- Script xử lý hình ảnh xem trước và xóa ảnh -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const fileInput = document.querySelector('input[type="file"][name="files"]');
+                const imagePreview = document.getElementById('imagePreview');
+
+                if (fileInput) {
+                    fileInput.addEventListener('change', function (event) {
+                        const files = event.target.files;
+                        imagePreview.innerHTML = ''; // Xóa hình ảnh cũ
+
+                        for (const file of files) {
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    const imgContainer = document.createElement('div'); // Container cho ảnh và nút xóa
+                                    imgContainer.style.position = 'relative';
+                                    imgContainer.style.display = 'inline-block';
+                                    imgContainer.style.margin = '10px';
+
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.style.maxWidth = '150px';
+                                    imgContainer.appendChild(img);
+
+                                    // Tạo nút xóa
+                                    const removeBtn = document.createElement('button');
+                                    removeBtn.innerText = 'Xóa';
+                                    removeBtn.style.position = 'absolute';
+                                    removeBtn.style.top = '5px';
+                                    removeBtn.style.right = '5px';
+                                    removeBtn.style.backgroundColor = '#ff0000';
+                                    removeBtn.style.color = '#fff';
+                                    removeBtn.style.border = 'none';
+                                    removeBtn.style.padding = '5px';
+                                    removeBtn.style.cursor = 'pointer';
+
+                                    // Xử lý khi nhấn nút xóa
+                                    removeBtn.addEventListener('click', function () {
+                                        imgContainer.remove(); // Xóa ảnh khỏi div preview
+                                    });
+
+                                    imgContainer.appendChild(removeBtn);
+                                    imagePreview.appendChild(imgContainer);
+                                }
+                                reader.readAsDataURL(file);
+                            } else {
+                                alert('Chỉ có thể tải lên file ảnh!');
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+    }
 
 
-@* <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dimension" class="control-label"></label>
-                <input asp-for="Dimension" class="form-control" />
-                <span asp-validation-for="Dimension" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Material" class="control-label"></label>
-                <input asp-for="Material" class="form-control" />
-                <span asp-validation-for="Material" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Productor" class="control-label"></label>
-                <input asp-for="Productor" class="form-control" />
-                <span asp-validation-for="Productor" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDel" /> @Html.DisplayNameFor(model => model.IsDel)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div> *@
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+   

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<doan1_v1.Models.Product>
 
 @{
-    ViewData["Title"] = "Quản lý sản phẩm";`
+    ViewData["Title"] = "Quản lý sản phẩm";
 }
 
 <div class="page-inner">
@@ -115,6 +115,7 @@
                             <th>Giá</th>
                             <th>Số lượng</th>
                             <th>Màu sắc</th>
+                            <th>Kích cỡ</th>
                             <th style="width: 10%">Thao tác</th>
                           </tr>
                         </thead>
@@ -125,52 +126,51 @@
                             <th>Giá</th>
                             <th>Số lượng</th>
                             <th>Màu sắc</th>
+                            <th>Kích cỡ</th>
                             <th style="width: 10%">Thao tác</th> 
                           </tr>
                         </tfoot>
                         <tbody>
                           
+                                    @foreach(var product in ViewBag.Products)
+                                    {
+                                        @if (product.IsDel == true)
+                                        {
+                                            continue;
+                                        }
+                                        <tr>
+                                            <td>@product.Name</td>
+                                            <td>@product.Category.Name</td>
+                                            <td>@product.Price</td>
+                                            <td>@product.Quantity</td>
+                                            <td>@product.Color</td>
+                                            <td>@product.Dimension</td>
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <!-- view -->
+                                                    <a asp-action="Details" asp-route-id="@product.Id"
+                                                       target="_blank"
+                                                       title="Xem thông tin chi tiết sản phẩm"
+                                                       class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
 
-                          <tr>
-                            <td>Airi Satou</td>
-                            <td>Accountant</td>
-                            <td>Tokyo</td>
-                            <td>Tokyo</td>
-                            <td>Tokyo</td>
-                            <td>
-                              <div class="form-button-action">
-                                <!-- view -->
-                                <a
-                                href="view_product.html"
-                                target="_blank"
-                                title="Xem thông tin chi tiết sản phẩm"
-                                class="btn btn-link btn-primary btn-lg"
-                              >
-                                <i class="fa fa-eye"></i>
-                                </a>
-
-                            
-                                <!-- update -->
-                                <a
-                                  href="update_product.html"
-                                  title="Chỉnh sửa sản phẩm"
-                                  class="btn btn-link btn-primary btn-lg"
-                                >
-                                  <i class="fa fa-edit"></i>
-                                </a>
-                                <!-- delete -->
-                                <button
-                                  type="button"
-                                  data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-danger"
-                                  data-original-title="Remove"
-                                >
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                                                    <!-- update -->
+                                                    <a asp-action="Edit" asp-route-id="@product.Id"
+                                                       class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <!-- delete -->
+                                                    <a asp-action="Delete" asp-route-id="@product.Id"
+                                                            title=""
+                                                       class="btn btn-link btn-danger btn-lg">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    
                          
                         </tbody>
                       </table>

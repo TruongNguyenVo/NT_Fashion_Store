@@ -1,78 +1,86 @@
 ﻿@model doan1_v1.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Xem chi tiết sản phẩm";
 }
 
-<h1>Details</h1>
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <form class="row" asp-action="Details" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+            <input disabled type="text" class="form-control" id="name" asp-for="Name">
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Danh mục</label>
+            <select disabled class="form-select" asp-for="CategoryId" id="" asp-items="ViewBag.CategoryId">
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Color" class="form-label">Màu sắc</label>
+            <input disabled type="text" class="form-control" asp-for="Color">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Dimension" class="form-label">Kích thước</label>
+            <input disabled type="text" class="form-control" asp-for="Dimension">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Material" class="form-label">Chất liệu</label>
+            <input disabled type="text" class="form-control" asp-for="Material">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Quantity" class="form-label">Số lượng</label>
+            <input disabled type="number" min=0 class="form-control" asp-for="Quantity">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">Giá</label>
+            <input disabled type="number" min=0 class="form-control" asp-for="Price">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Productor" class="form-label">Nhà sản xuất</label>
+            <input disabled type="text" class="form-control" asp-for="Productor">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea disabled class="form-control" rows="5" asp-for="Description" id=""></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ảnh hiện có</label><br>
+            @foreach (var imagePath in ViewBag.ProductImage)
+            {
+                <img src="@imagePath.Name" alt="" height="150" width="150">
+            }
+        </div>
+        <div class="mb-3-md">
+            <button id="btnClose" class="btn btn-secondary">Quay lại</button>
+        </div>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dimension)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dimension)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Material)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Material)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Productor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Productor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDel)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-    </dl>
+    </form>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    const btnDong = document.getElementById('btnClose');
+    btnDong.addEventListener('click', () => {
+      window.close();
+    });
+</script>

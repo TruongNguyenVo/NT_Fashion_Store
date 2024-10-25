@@ -1,10 +1,95 @@
 ﻿@model doan1_v1.Models.Product
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
-<h1>Edit</h1>
+
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý sản phẩm</a>
+                </li>
+              </ul>
+            </div>
+    <form class="row" asp-action="Edit" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+                  <input type="text" class="form-control" id="name" asp-for="Name">
+                </div>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Danh mục</label>
+                    <select class="form-select" asp-for="CategoryId" id="" asp-items="ViewBag.CategoryId">
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Color" class="form-label">Màu sắc</label>
+                  <input type="text" class="form-control" asp-for="Color">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Dimension" class="form-label">Kích thước</label>
+                  <input type="text" class="form-control" asp-for="Dimension">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Material" class="form-label">Chất liệu</label>
+                  <input type="text" class="form-control" asp-for="Material">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Quantity" class="form-label">Số lượng</label>
+                  <input type="number" min=0 class="form-control" asp-for="Quantity">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Price" class="form-label">Giá</label>
+                  <input type="number" min=0 class="form-control" asp-for="Price">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Productor" class="form-label">Nhà sản xuất</label>
+                  <input type="text" class="form-control" asp-for="Productor">
+                </div>
+                <div class="mb-3">
+                  <label asp-for="Description" class="form-label">Mô tả</label>
+                  <textarea class="form-control" rows="5" asp-for="Description" id=""></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Ảnh hiện có</label><br>
+                    @foreach (var imagePath in ViewBag.ProductImage)
+                    {
+                        <img src="@imagePath.Name" alt="" height="150" width="150">
+                    }                    
+                </div>
+@*                 chua xong
+                <div class="mb-3">
+                  <label for="files" class="form-label">Thêm ảnh mới</label>
+                  <input type="file" name="files" class="form-control"  multiple/>
+                </div> *@
+                <div class="mb-3-md">
+                  <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+            <button type="submit" value="Save" class="btn btn-primary">Cập nhật</button>
+                </div>
+            
+          </form>
+          </div>
+
+
+@* <h1>Edit</h1>
 
 <h4>Product</h4>
 <hr />
@@ -72,7 +157,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

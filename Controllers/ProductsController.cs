@@ -22,10 +22,17 @@ namespace doan1_v1.Controllers
         }
 
         // GET: Products
+        //public async Task<IActionResult> Index()
+        //{
+        //    var nTFashionDbContext = _context.Products.Include(p => p.Category);
+        //    return View(await nTFashionDbContext.ToListAsync());
+        //}
         public async Task<IActionResult> Index()
         {
-            var nTFashionDbContext = _context.Products.Include(p => p.Category);
-            return View(await nTFashionDbContext.ToListAsync());
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            ViewBag.Products = products;
+
+            return View(products);
         }
 
         // GET: Products/Details/5
@@ -39,6 +46,13 @@ namespace doan1_v1.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            //tim hinh anh theo id
+            var pathProductImages = await _context.ProductImages.Where(
+                prId => prId.ProductId == id).
+                Select(prId => new { Id = prId.Id, Name = prId.ImgURL }).ToListAsync();
+
+            ViewBag.ProductImage = pathProductImages;
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             if (product == null)
             {
                 return NotFound();
@@ -144,6 +158,12 @@ namespace doan1_v1.Controllers
             {
                 return NotFound();
             }
+            //tim hinh anh theo id
+            var pathProductImages = await _context.ProductImages.Where(
+                prId => prId.ProductId == product.Id).
+                Select(prId => new { Id = prId.Id, Name = prId.ImgURL }).ToListAsync();
+
+            ViewBag.ProductImage = pathProductImages;
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
@@ -209,9 +229,11 @@ namespace doan1_v1.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
+            
             if (product != null)
             {
-                _context.Products.Remove(product);
+                //_context.Products.Remove(product);
+                product.IsDel = true;
             }
 
             await _context.SaveChangesAsync();

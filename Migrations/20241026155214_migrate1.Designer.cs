@@ -12,8 +12,8 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    [Migration("20241023144120_migrate8")]
-    partial class migrate8
+    [Migration("20241026155214_migrate1")]
+    partial class migrate1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,9 +78,6 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -115,10 +112,10 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Customer")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOrder")
@@ -161,13 +158,13 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("PriceSale")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -190,7 +187,7 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Color")
@@ -245,7 +242,7 @@ namespace doan1_v1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -270,20 +267,19 @@ namespace doan1_v1.Migrations
                     b.Property<DateTime>("DatePurchase")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsUpdate")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SupplierId")
+                    b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -306,10 +302,10 @@ namespace doan1_v1.Migrations
                     b.Property<double>("PricePurchase")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PurchaseReportId")
+                    b.Property<int?>("PurchaseReportId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -456,15 +452,16 @@ namespace doan1_v1.Migrations
 
             modelBuilder.Entity("doan1_v1.Models.Category", b =>
                 {
-                    b.HasOne("doan1_v1.Models.Category", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
+                    b.HasOne("doan1_v1.Models.Category", "ParentCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("doan1_v1.Models.User", "User")
                         .WithMany("Categories")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Parent");
+                    b.Navigation("ParentCategory");
 
                     b.Navigation("User");
                 });
@@ -482,15 +479,11 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("doan1_v1.Models.Product", "Product")
                         .WithMany("orderProductDetails")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Order");
 
@@ -501,9 +494,7 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Category", "Category")
                         .WithMany("Product")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
@@ -512,9 +503,7 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Product", "Product")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
@@ -523,15 +512,11 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Supplier", "Supplier")
                         .WithMany("PurchaseReports")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupplierId");
 
                     b.HasOne("doan1_v1.Models.User", "User")
                         .WithMany("PurchaseReports")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Supplier");
 
@@ -542,15 +527,11 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Product", "Product")
                         .WithMany("PurchaseReportProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("doan1_v1.Models.PurchaseReport", "PurchaseReport")
                         .WithMany("PurchaseReportProductDetails")
-                        .HasForeignKey("PurchaseReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PurchaseReportId");
 
                     b.Navigation("Product");
 
@@ -565,6 +546,8 @@ namespace doan1_v1.Migrations
             modelBuilder.Entity("doan1_v1.Models.Category", b =>
                 {
                     b.Navigation("Product");
+
+                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("doan1_v1.Models.Product", b =>

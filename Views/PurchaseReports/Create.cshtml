@@ -1,0 +1,203 @@
+﻿@model doan1_v1.Models.PurchaseReport
+
+@{
+    ViewData["Title"] = "Tạo phiếu nhập kho";
+    var categories = ViewBag.Categories as SelectList;
+}
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="/">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý sản phẩm</a>
+                </li>
+              </ul>
+            </div>
+              <form class ="row" asp-action="Create">
+                <!-- mã hóa đơn -->
+                <div class="mb-3">
+                  <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
+                  <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport" >
+                  <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
+                </div>
+                <!-- nhà cung cấp -->
+                <div class="mb-3">
+                  <label asp-for="SupplierId" class="form-label">Tên nhà cung cấp</label>
+                    <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+            <span asp-validation-for="SupplierId" class="text-danger"></span>
+                </div>
+                <!-- ngày nhập kho -->
+                <div class="mb-3">
+                  <label asp-for="DatePurchase">Ngày nhập kho:</label>
+                  <input type="date" class="form-control" id="datepurchase" asp-for="DatePurchase">
+            <span asp-validation-for="DatePurchase" class="text-danger"></span>
+              </div>
+              <!-- bảng hàng hóa -->
+              <div class="mb-3">
+                <table class="table" id="tableProduct">
+                  <thead>
+                      <tr>
+                          <th>Tên sản phẩm</th>
+                          <th>Danh mục</th>
+                          <th>Màu sắc</th>
+                          <th>Kích thước</th>
+                          <th>Chất liệu</th>
+                          <th>Nhà sản xuất</th>
+                          <th>Số lượng</th>
+                          <th>Đơn giá</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td><input name="name_products" type="text" class="form-control"></td>
+                          <td>
+                            @* Tạo div ẩn chứa các option *@
+
+                            <label name="categoryId" class="form-label">Danh mục</label>
+                            <select id="categoryOptionsTemplate" name="cateogryIds" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                          </td>
+                          <td><input name="colors" type="text" class="form-control"></td>
+                          <td><input name="dimensions" type="text" class="form-control"></td>
+                          <td><input name="materials" type="text" class="form-control"></td>
+                          <td><input name="productors" type="text" class="form-control"></td>
+                          <td><input name="quantitys" type="number" class="form-control"></td>
+                          <td><input name="prices" type="number" class="form-control"></td>
+                        </tr>
+                  </tbody>
+                </table>
+                <button class="btn btn-secondary" type="button" onclick="addRow()">Thêm hàng</button>
+              </div>
+
+              <div class="mb-3">
+                <label asp-for="OtherCost">Phí khác:</label>
+            <input type="number" class="form-control" id="tongTien" asp-for="OtherCost">
+            <span asp-validation-for="OtherCost" class="text-danger"></span>
+              </div>
+              @* ghi chu *@
+                <div class="mb-3">
+                  <label asp-for="Note" class="form-label">Ghi chú (nếu có)</label>
+                  <textarea class="form-control" rows="5" asp-for="Note" id=""></textarea>
+            <span asp-validation-for="Note" class="text-danger"></span>
+                </div>
+                <div class="mb-3-md">
+                  <a asp-action="Index" class="btn btn-danger">Hủy</a>
+                  <button type="submit" value="Create" class="btn btn-primary">Tạo</button>
+                </div>
+           
+          </form>
+          </div>
+
+
+@* <h1>Create</h1>
+
+<h4>PurchaseReport</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CodePurchaseReport" class="control-label"></label>
+                <input asp-for="CodePurchaseReport" class="form-control" />
+                <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DatePurchase" class="control-label"></label>
+                <input asp-for="DatePurchase" class="form-control" />
+                <span asp-validation-for="DatePurchase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalPrice" class="control-label"></label>
+                <input asp-for="TotalPrice" class="form-control" />
+                <span asp-validation-for="TotalPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierId" class="control-label"></label>
+                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- nguyen's script -->
+    <script>
+        function addRow() {
+            var table = document.getElementById("tableProduct");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            // Tạo một hàng mới
+            var newRow = tbody.insertRow();
+
+            // Tạo các ô dữ liệu cho hàng mới
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+            var cell7 = newRow.insertCell(6);
+            var cell8 = newRow.insertCell(7);
+
+            // Thêm nội dung vào các ô (bạn có thể thay đổi nội dung này)
+            cell1.innerHTML = "<input name='name_products' type='text' class='form-control'>";
+
+            // Tạo thẻ select mới
+            var select = document.createElement("select");
+            select.name = "categoryIds";
+            select.classList.add("form-control");
+
+            // Lấy HTML của các option từ select mẫu
+            select.innerHTML = document.getElementById("categoryOptionsTemplate").innerHTML;
+
+            // Thêm thẻ select vào ô mới
+            cell2.appendChild(select);
+
+            cell3.innerHTML = "<input name='colors' type='text' class='form-control'>";
+            cell4.innerHTML = "<input name='dimensions' type='text' class='form-control'>";
+            cell5.innerHTML = "<input name='materials' type='text' class='form-control'>";
+            cell6.innerHTML = "<input name='productors' type='text' class='form-control'>";
+            cell7.innerHTML = "<input name='quantitys' type='number' class='form-control'>";
+            cell8.innerHTML = "<input name='prices' type='number' class='form-control'>";
+
+
+
+        }
+    </script>
+}

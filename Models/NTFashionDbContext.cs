@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using doan1_v1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace doan1_v1.Models
 {
@@ -22,6 +23,20 @@ namespace doan1_v1.Models
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
+        //ham de tranh loi xoa long trong category cha - con
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+           .HasOne(c => c.ParentCategory)
+           .WithMany(c => c.SubCategories)
+           .HasForeignKey(c => c.ParentId)
+           .OnDelete(DeleteBehavior.Restrict); // Hoặc DeleteBehavior.SetNull
+        }
+
+
     }
 
+
 }
+
+

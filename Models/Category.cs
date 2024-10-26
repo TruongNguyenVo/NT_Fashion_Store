@@ -14,7 +14,9 @@ namespace doan1_v1.Models
         public string Name { get; set; }
 
         public int? ParentId { get; set; }
-
+        // Navigation property để trỏ đến danh mục cha
+        [ForeignKey("ParentId")]
+        public Category? ParentCategory { get; set; }
         public string? Description { get; set; }
         public Boolean IsDel { get; set; } = false;
 
@@ -24,6 +26,8 @@ namespace doan1_v1.Models
 
         public List<Product>? Product { get; set; } // mot category co nhieu product
 
-        
+        // Navigation property để trỏ đến các danh mục con
+        public ICollection<Category>? SubCategories { get; set; }
+
     }
 }

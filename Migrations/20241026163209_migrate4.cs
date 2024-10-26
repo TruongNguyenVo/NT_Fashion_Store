@@ -5,7 +5,7 @@
 namespace doan1_v1.Migrations
 {
     /// <inheritdoc />
-    public partial class migrate3 : Migration
+    public partial class migrate4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

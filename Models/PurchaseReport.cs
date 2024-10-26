@@ -13,13 +13,13 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Ngày nhập kho là bắt buộc.")]
         [DataType(DataType.Date, ErrorMessage ="Vui lòng nhập đúng chuẩn.")]
-        public DateTime DatePurchase { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateOnly DatePurchase { get; set; }
 
-        [Required(ErrorMessage = "Tổng tiền là bắt buộc.")]
-        public double TotalPrice { get; set; }
+        public double? OtherCost { get; set; } = 0;
 
         public string? Note { get; set; }
-        public string Status { get; set; }
+        public Boolean IsUpdate { get; set; } = false;
         [ForeignKey(nameof(Supplier.Id))] // lien ket voi bang Supplier
         public int? SupplierId  { get; set; }
         public Supplier? Supplier { get; set; } //mot purchase report chi thuoc 1 supplier

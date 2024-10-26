@@ -1,0 +1,262 @@
+﻿@model IEnumerable<doan1_v1.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Quản lý nhà cung cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý sản phẩm</a>
+                </li>
+              </ul>
+            </div>
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center">
+                      <h4 class="card-title">Thông tin sản phẩm</h4>
+                    <a
+                        asp-action="Create"
+                    class="btn btn-primary btn-round ms-auto"
+                  >
+                    <i class="fa fa-plus"></i>
+                    Thêm nhà cung cấp
+                  </a>
+                    <!-- form them -->
+                    <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="newRowModalLabel">Thêm nhà cung cấp</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="addRowModal"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-hidden="true"
+                    >
+                    <!-- add  -->
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header border-0">
+                            <h5 class="modal-title">
+                              <span class="fw-mediumbold"> New</span>
+                              <span class="fw-light"> Row </span>
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p class="small">
+                              Create a new row using this form, make sure you
+                              fill them all
+                            </p>
+                            <form>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <div class="form-group form-group-default">
+                                    <label>Name</label>
+                                    <input
+                                      id="addName"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill name"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6 pe-0">
+                                  <div class="form-group form-group-default">
+                                    <label>Position</label>
+                                    <input
+                                      id="addPosition"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill position"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group form-group-default">
+                                    <label>Office</label>
+                                    <input
+                                      id="addOffice"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill office"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer border-0">
+                            <button
+                              type="button"
+                              id="addRowButton"
+                              class="btn btn-primary"
+                            >
+                              Add
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              data-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- table -->
+                    <div class="table-responsive">
+                      <table
+                        id="add-row"
+                        class="display table table-striped table-hover"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Tên nhà cung cấp</th>
+                            <th>Địa chỉ</th>
+                            <th>Số điện thoại</th>
+                            <th style="width: 10%">Thao tác</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>Tên nhà cung cấp</th>
+                            <th>Địa chỉ</th>
+                            <th>Số điện thoại</th>
+                            <th style="width: 10%">Thao tác</th> 
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          
+                        @foreach(var supplier in ViewBag.Suppliers){
+                                        @if(supplier.IsDel == true)
+                                        {
+                                            continue;
+                                        }
+                                        <tr>
+                            <td>@supplier.Name</td>
+                            <td>@supplier.Address</td>
+                            <td>@supplier.Phone</td>
+                            <td>
+                              <div class="form-button-action">                            
+                                <!-- update -->
+                                <a
+                                  asp-action="Edit" asp-route-id="@supplier.Id"
+                                  title="Chỉnh sửa thông tin nhà cung cấp"
+                                  class="btn btn-link btn-primary btn-lg"
+                                >
+                                  <i class="fa fa-edit"></i>
+                                </a>
+                                <!-- delete -->
+                                  <a asp-action="Delete" asp-route-id="@supplier.Id"
+                                  type="button"                                 
+                                  title="Xóa nhà cung cấp"
+                                  class="btn btn-link btn-danger btn-lg">
+                                  <i class="fa fa-times"></i>
+                                </a>
+                              </div>
+                            </td>
+                          </tr>
+                                    }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+@* <h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@

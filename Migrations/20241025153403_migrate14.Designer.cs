@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using doan1_v1.Models;
 
@@ -11,9 +12,11 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    partial class NTFashionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025153403_migrate14")]
+    partial class migrate14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,13 +156,13 @@ namespace doan1_v1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("PriceSale")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -468,11 +471,15 @@ namespace doan1_v1.Migrations
                 {
                     b.HasOne("doan1_v1.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("doan1_v1.Models.Product", "Product")
                         .WithMany("orderProductDetails")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 

@@ -1,0 +1,92 @@
+﻿@model doan1_v1.Models.Supplier
+
+@{
+    ViewData["Title"] = "Quản lý nhà cung cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="/">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý danh mục</a>
+            </li>
+        </ul>
+    </div>
+
+    <form asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên nhà cung cấp</label>
+        <input type="text" class="form-control" id="name" asp-for="Name">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Address" class="form-label">Địa chỉ</label>
+        <input type="text" class="form-control" id="name" asp-for="Address">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label">Số điện thoại</label>
+        <input type="text" class="form-control" id="name" asp-for="Phone">
+    </div>
+    <div class="modal-footer">
+        <a asp-action="Index" class="btn btn-secondary" >Đóng</a>
+        <button type="submit" class="btn btn-primary" value="Create">Thêm</button>
+    </div>
+</form>
+
+@* <h1>Create</h1>
+
+<h4>Supplier</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDel" /> @Html.DisplayNameFor(model => model.IsDel)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -35,10 +35,10 @@ namespace doan1_v1.Models
         public Boolean IsDel { get; set; } = false;
 
         [ForeignKey(nameof(User.Id))] // khoa ngoai lien ket voi bang User
-        public int AdminId { get; set; }
+        public int? AdminId { get; set; }
 
         [ForeignKey(nameof(User.Id))] // khoa ngoai lien ket voi bang User
-        public int Customer { get; set; }
+        public int? CustomerId { get; set; }
         public User? User { get; set; } // order chi co 1 khach hang
 
 

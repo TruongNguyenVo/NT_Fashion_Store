@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace doan1_v1.Controllers
 {
@@ -40,9 +41,16 @@ namespace doan1_v1.Controllers
             }
 
             var purchaseReport = await _context.PurchaseReports
-                .Include(p => p.Supplier)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                .Include(pchase => pchase.PurchaseReportProductDetails) // them chi tiet phieu nhap
+                                .ThenInclude(prchDetail => prchDetail.Product) // them product
+                                .ThenInclude(cate => cate.Category)
+                                 .FirstOrDefaultAsync(pchase => pchase.Id == id);
+            // Lấy danh sách Category
+            var categories = await _context.Categories.ToListAsync();
+            ViewBag.Categories = categories;
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
+
             if (purchaseReport == null)
             {
                 return NotFound();
@@ -159,7 +167,16 @@ namespace doan1_v1.Controllers
                 return NotFound();
             }
 
-            var purchaseReport = await _context.PurchaseReports.FindAsync(id);
+            var purchaseReport = await _context.PurchaseReports
+                                .Include(pchase =>pchase.PurchaseReportProductDetails) // them chi tiet phieu nhap
+                                .ThenInclude(prchDetail => prchDetail.Product) // them product
+                                .ThenInclude(cate =>cate.Category)
+                                 .FirstOrDefaultAsync(pchase =>pchase.Id == id);
+            // Lấy danh sách Category
+            var categories = await _context.Categories.ToListAsync();
+            ViewBag.Categories = categories;
+
+
             if (purchaseReport == null)
             {
                 return NotFound();
@@ -168,12 +185,10 @@ namespace doan1_v1.Controllers
             //lấy tất cả các productid trong chi tiết phiếu nhập dựa vào id phiếu nhập
             // dựa vào id đó 
 
-            var products = 0;
 
 
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
-            ViewData["Products"] = products;
             return View(purchaseReport);
         }
 
@@ -182,19 +197,27 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CodePurchaseReport,DatePurchase,TotalPrice,Note,Status,SupplierId,UserId")] PurchaseReport purchaseReport)
+        public async Task<IActionResult> Edit([Bind("Id,CodePurchaseReport,DatePurchase,TotalPrice,Note,Status,SupplierId,UserId")] PurchaseReport purchaseReport, List<string> name_products, List<int> categoryIds, List<string> colors, List<string> dimensions, List<string> materials, List<string> productors, List<int> quantitys, List<double> prices)
         {
-            if (id != purchaseReport.Id)
-            {
-                return NotFound();
-            }
+            //cập nhật thông tin của phiếu nhập (code, date, otherprice, note, isupdate, supplier)
+            //xóa tất cả các chi tiết của chi tiết phiếu nhập
+            //kiểm tra tất cả các product có productId trong chi tiết phiếu nhập => nếu thiếu cột price và quantity thì xóa
+            //tạo chi tiết mới như tạo mới giống hàm create
 
+
+            //cập nhật thông tin của phiếu nhập (code, date, otherprice, note, isupdate, supplier)
+            int purchaseReportId = 0;
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(purchaseReport);
-                    await _context.SaveChangesAsync();
+                    int affect = await _context.SaveChangesAsync();
+                    //done - có id của purchaseReport
+                    if (affect > 0)
+                    {
+                        purchaseReportId = purchaseReport.Id;
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -207,8 +230,92 @@ namespace doan1_v1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                //return RedirectToAction(nameof(Index));
             }
+            //xóa tất cả các chi tiết của chi tiết phiếu nhập
+            var purchaseReportDetails = await _context.PurchaseReportProductDetails
+                            .Where(detail => detail.PurchaseReportId == purchaseReportId)
+                            .ToListAsync(); // nguyên cái danh sách chi tiết ứng với id
+
+            _context.PurchaseReportProductDetails.RemoveRange(purchaseReportDetails);
+            await _context.SaveChangesAsync();
+
+
+            //kiểm tra tất cả các product có productId trong chi tiết phiếu nhập => nếu thiếu cột price và quantity thì xóa
+
+            var productIds = purchaseReportDetails.Select(d => d.ProductId).ToList(); // danh sách các id của product
+            var removeProduct = await _context.Products
+                                .Where(p => productIds.Contains(p.Id) && (p.Price == null))
+                                .ToListAsync(); // tìm id để xóa mấy cái product bị thiếu cột
+
+            // Xóa các sản phẩm không hợp lệ
+            if (removeProduct.Any())
+            {
+                _context.Products.RemoveRange(removeProduct);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+
+            for (int i = 0; i < name_products.Count; i++)
+            {
+                if (name_products[i].IsNullOrEmpty())
+                {
+                    continue;
+                }
+                //tìm nếu các thông tin sản phẩm trùng
+                var product = await _context.Products.FirstOrDefaultAsync(
+                    pr => pr.Name == name_products[i]
+                    && pr.CategoryId == categoryIds[i]
+                    && pr.Color == colors[i]
+                    && pr.Dimension == dimensions[i]
+                    && pr.Material == materials[i]
+                    && pr.Productor == productors[i]
+                    //&& pr.Quantity == quantitys[i]
+                    && pr.Price == prices[i]);
+                int productId = 0; // bien luu id cua product
+                // done - có id của product
+                if (product != null)
+                {
+                    productId = product.Id; // có id của product
+
+                }
+                // done - có id của prouduct
+                else
+                {
+                    // khong thi tao san pham moi trong bang san pham va bo cot price
+                    Product new_product = new Product();
+                    new_product.Name = name_products[i];
+                    new_product.CategoryId = categoryIds[i];
+                    new_product.Color = colors[i];
+                    new_product.Dimension = dimensions[i];
+                    new_product.Material = materials[i];
+                    new_product.Productor = productors[i];
+
+                    _context.Add(new_product);
+                    //neu co thay doi
+                    int affect = await _context.SaveChangesAsync();
+                    if (affect != 0)
+                    {
+                        productId = new_product.Id; // có id của product
+                    }
+                }
+
+                //thêm thông tin vào bảng chi tiết sản phẩm
+
+                PurchaseReportProductDetail purchaseReportProductDetail = new PurchaseReportProductDetail();
+                purchaseReportProductDetail.ProductId = productId;
+                purchaseReportProductDetail.PurchaseReportId = purchaseReportId;
+                purchaseReportProductDetail.Quantity = quantitys[i];
+                purchaseReportProductDetail.PricePurchase = prices[i];
+
+                _context.Add(purchaseReportProductDetail);
+                await _context.SaveChangesAsync();
+
+
+
+            }
+
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
             return View(purchaseReport);

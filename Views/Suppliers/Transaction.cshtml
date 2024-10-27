@@ -1,4 +1,4 @@
-﻿@model doan1_v1.Models.Supplier
+﻿@model IEnumerable<doan1_v1.Models.PurchaseReport>
 
 @{
     ViewData["Title"] = "Lịch sử giao dịch";
@@ -32,31 +32,37 @@
                 <table class="table">
                   <thead>
                       <tr>
-                          <th>Mã GD</th>
-                          <th>Ngày</th>
-                          <th>Nhà cung cấp</th>
-                          <th>Tổng tiền</th>
-                          <th>Tình trạng</th>
+                        <th>Mã hóa đơn phiếu nhập</th>
+                        <th>Ngày nhập</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
                           <th>Chi tiết</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                        <td>HD001</td>
-                        <td>10/10/2024</td>
-                        <td>Nguyên Trường Shop</td>
-                        <td>12.000.000</td>
-                        <td>Đã cập nhật vào kho</td>
-                        <td><a href="">Xem chi tiết phiếu nhập</a></td>
+                    @foreach (var purchaseReport in ViewBag.PurchaseReports)
+                    {
+                    <tr>
+                        <td>@purchaseReport.CodePurchaseReport</td>
+                        <td>@purchaseReport.DatePurchase</td>
+                        <td>@purchaseReport.Supplier.Name</td>
+                        <td>Chua tinh duoc</td>
+                        @if (purchaseReport.IsUpdate)
+                        {
+                            <td>Đã cập nhật vào kho</td>
+                        }
+                        else
+                        {
+                            <td>Chưa cập nhật vào kho</td>
+                        }
+                        <td>
+                            <a asp-action="Details" asp-route-id="@purchaseReport.Id"
+                               target="_blank"
+                               asp-controller="PurchaseReports">Xem chi tiết phiếu nhập</a>
+                        </td>
                       </tr>
-                      <tr>
-                        <td>HD001</td>
-                        <td>10/10/2024</td>
-                        <td>Nguyên Trường Shop</td>
-                        <td>12.000.000</td>
-                        <td>Đã cập nhật vào kho</td>
-                        <td><a href="">Xem chi tiết phiếu nhập</a></td>
-                      </tr>
+                    }
                   </tbody>
               </table>
             </div>

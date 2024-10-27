@@ -13,7 +13,7 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Ngày nhập kho là bắt buộc.")]
         [DataType(DataType.Date, ErrorMessage ="Vui lòng nhập đúng chuẩn.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateOnly DatePurchase { get; set; }
 
         public double? OtherCost { get; set; } = 0;

@@ -95,14 +95,9 @@ namespace doan1_v1.Controllers
         //ham de xem lich su giao dich
         public async Task<IActionResult> Transaction(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            //lay tat ca cai phieu nhap kho co id trung voi id cua nha cung cap
-
-            return View();
+            var purchaseReports = await _context.PurchaseReports.Include(p => p.Supplier).Include(p => p.User).ToListAsync();
+            ViewBag.PurchaseReports = purchaseReports;
+            return View(purchaseReports);
         }
 
         // POST: Suppliers/Edit/5

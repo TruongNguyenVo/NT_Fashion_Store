@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Chỉnh sửa phiếu nhập kho";
-    var products = ViewData["Products"] as List<doan1_v1.Models.Product>; // Chuyển đổi ViewData thành danh sách sản phẩm
+    var purchaseReportDetail = ViewData["Detail"] as doan1_v1.Models.PurchaseReport;
 }
 }
 
@@ -29,18 +29,19 @@
                 </li>
               </ul>
             </div>
-              <form class ="row" action="">
+
+              <form class ="row" asp-action="Edit">
                 <!-- mã hóa đơn -->
                 <div class="mb-3">
-                <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
-                <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport">
-                <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
+                    <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
+                    <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport">
+                    <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
                 </div>
                 <!-- nhà cung cấp -->
                 <div class="mb-3">
-            <label asp-for="SupplierId" class="form-label">Tên nhà cung cấp</label>
-            <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
-            <span asp-validation-for="SupplierId" class="text-danger"></span>
+                    <label asp-for="SupplierId" class="form-label">Tên nhà cung cấp</label>
+                    <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                    <span asp-validation-for="SupplierId" class="text-danger"></span>
                 </div>
                 <!-- ngày nhập kho -->
                 <div class="mb-3">
@@ -64,22 +65,47 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach (var product in products){
-                      <tr>
-
-                          <td><input name="name_products" type="text" class="form-control">@product.Name</td>
-                          <td>
-                                <select id="categoryOptionsTemplate" name="categoryIds" class="form-        control" asp-items="ViewBag.CategoryId">
-                                    <option selected value="@product.Category.Id">@product.Category.Name</option>
-                                </select>
-                          </td>
-                            <td><input name="colors" type="text" class="form-control" value="@product.Color"></td>
-                            <td><input name="dimensions" type="text" class="form-control" value="@product.Dimension"></td>
-                            <td><input name="materials" type="text" class="form-control" value="@product.Material"></td>
-                            <td><input name="productors" type="text" class="form-control" value="@product.Productor"></td>
-                          <td><input name="quantitys" type="number" class="form-control" value="@product.Quantity"></td>
-                          <td><input name="prices" type="number" class="form-control" value="@product.Price"></td> 
-                        </tr>
+                    <tr style="display: none;">
+                        <td><input name="name_products" type="text" class="form-control" ></td>
+                        <td>
+                            <select id="categoryOptionsTemplate" name="categoryIds" class="form-control"></select>
+                        </td>
+                        <td><input name="colors" type="text" class="form-control"></td>
+                        <td><input name="dimensions" type="text" class="form-control"></td>
+                        <td><input name="materials" type="text" class="form-control"></td>
+                        <td><input name="productors" type="text" class="form-control"></td>
+                        <td><input name="quantitys" type="number" class="form-control"></td>
+                        <td><input name="prices" type="number" class="form-control"></td>
+                    </tr>
+                    @if (Model.PurchaseReportProductDetails != null)
+                    {
+                        @foreach (var detail in Model.PurchaseReportProductDetails)
+                        {
+                            <tr>
+                                <td><input name="name_products" type="text" class="form-control" value="@detail.Product.Name"></td>
+                                <td>
+                                    <select id="categoryOptionsTemplate" name="categoryIds" class="form-control">
+                                        
+                                        @foreach (var category in (List<Category>)ViewBag.Categories)
+                                        {
+                                            if(detail.Product.CategoryId == category.Id){
+                                                <option selected value="@category.Id">@category.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@category.Id">@category.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                 <td><input name="colors" type="text" class="form-control" value="@detail.Product.Color"></td>
+                                <td><input name="dimensions" type="text" class="form-control" value="@detail.Product.Dimension"></td>
+                                <td><input name="materials" type="text" class="form-control" value="@detail.Product.Material"></td>
+                                <td><input name="productors" type="text" class="form-control" value="@detail.Product.Productor"></td>
+                                <td><input name="quantitys" type="number" class="form-control" value="@detail.Quantity"></td>
+                                <td><input name="prices" type="number" class="form-control" value="@detail.PricePurchase"></td>
+                            </tr>
+                        }
                     }
                   </tbody>
                 </table>
@@ -88,13 +114,13 @@
 
               <div class="mb-3">
                 <label asp-for="OtherCost">Phí khác:</label>
-                <input type="number" class="form-control" id="tongTien" asp-for="OtherCost">
+                <input type="number" class="form-control" id="otherCost" asp-for="OtherCost" value="@Model.OtherCost">
                 <span asp-validation-for="OtherCost" class="text-danger"></span>
               </div>
 
                 <div class="mb-3">
                     <label asp-for="Note" class="form-label">Ghi chú (nếu có)</label>
-                    <textarea class="form-control" rows="5" asp-for="Note" id=""></textarea>
+                    <textarea class="form-control" rows="5" asp-for="Note" id="" value="@Model.Note"></textarea>
                     <span asp-validation-for="Note" class="text-danger"></span>
                 </div>
                 <div class="mb-3-md">
@@ -161,4 +187,46 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- nguyen's script -->
+    <script>
+        function addRow() {
+            var table = document.getElementById("tableProduct");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            // Tạo một hàng mới
+            var newRow = tbody.insertRow();
+
+            // Tạo các ô dữ liệu cho hàng mới
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+            var cell7 = newRow.insertCell(6);
+            var cell8 = newRow.insertCell(7);
+
+            // Thêm nội dung vào các ô (bạn có thể thay đổi nội dung này)
+            cell1.innerHTML = "<input name='name_products' type='text' class='form-control'>";
+
+            // Tạo thẻ select mới
+            var select = document.createElement("select");
+            select.name = "categoryIds";
+            select.classList.add("form-control");
+            // Lấy HTML của các option từ select mẫu
+            select.innerHTML = document.getElementById("categoryOptionsTemplate").innerHTML;
+            // Thêm thẻ select vào ô mới
+            cell2.appendChild(select);
+
+            cell3.innerHTML = "<input name='colors' type='text' class='form-control'>";
+            cell4.innerHTML = "<input name='dimensions' type='text' class='form-control'>";
+            cell5.innerHTML = "<input name='materials' type='text' class='form-control'>";
+            cell6.innerHTML = "<input name='productors' type='text' class='form-control'>";
+            cell7.innerHTML = "<input name='quantitys' type='number' class='form-control'>";
+            cell8.innerHTML = "<input name='prices' type='number' class='form-control'>";
+
+
+
+        }
+    </script>
 }

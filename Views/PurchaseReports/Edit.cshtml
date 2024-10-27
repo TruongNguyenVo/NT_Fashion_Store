@@ -1,10 +1,110 @@
 ﻿@model doan1_v1.Models.PurchaseReport
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa phiếu nhập kho";
+    var products = ViewData["Products"] as List<doan1_v1.Models.Product>; // Chuyển đổi ViewData thành danh sách sản phẩm
+}
 }
 
-<h1>Edit</h1>
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="/">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý kho</a>
+                </li>
+              </ul>
+            </div>
+              <form class ="row" action="">
+                <!-- mã hóa đơn -->
+                <div class="mb-3">
+                <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
+                <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport">
+                <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
+                </div>
+                <!-- nhà cung cấp -->
+                <div class="mb-3">
+            <label asp-for="SupplierId" class="form-label">Tên nhà cung cấp</label>
+            <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+            <span asp-validation-for="SupplierId" class="text-danger"></span>
+                </div>
+                <!-- ngày nhập kho -->
+                <div class="mb-3">
+            <label asp-for="DatePurchase">Ngày nhập kho:</label>
+            <input asp-for="DatePurchase" class="form-control" />
+            <span asp-validation-for="DatePurchase" class="text-danger"></span>
+              </div>
+              <!-- bảng hàng hóa -->
+              <div class="mb-3">
+                <table class="table" id="tableProduct">
+                  <thead>
+                      <tr>
+                          <th>Tên sản phẩm</th>
+                          <th>Danh mục</th>
+                          <th>Màu sắc</th>
+                          <th>Kích thước</th>
+                          <th>Chất liệu</th>
+                          <th>Nhà sản xuất</th>
+                          <th>Số lượng</th>
+                          <th>Đơn giá</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    @foreach (var product in products){
+                      <tr>
+
+                          <td><input name="name_products" type="text" class="form-control">@product.Name</td>
+                          <td>
+                                <select id="categoryOptionsTemplate" name="categoryIds" class="form-        control" asp-items="ViewBag.CategoryId">
+                                    <option selected value="@product.Category.Id">@product.Category.Name</option>
+                                </select>
+                          </td>
+                            <td><input name="colors" type="text" class="form-control" value="@product.Color"></td>
+                            <td><input name="dimensions" type="text" class="form-control" value="@product.Dimension"></td>
+                            <td><input name="materials" type="text" class="form-control" value="@product.Material"></td>
+                            <td><input name="productors" type="text" class="form-control" value="@product.Productor"></td>
+                          <td><input name="quantitys" type="number" class="form-control" value="@product.Quantity"></td>
+                          <td><input name="prices" type="number" class="form-control" value="@product.Price"></td> 
+                        </tr>
+                    }
+                  </tbody>
+                </table>
+                <button class="btn btn-secondary" type="button" onclick="addRow()">Thêm hàng</button>
+              </div>
+
+              <div class="mb-3">
+                <label asp-for="OtherCost">Phí khác:</label>
+                <input type="number" class="form-control" id="tongTien" asp-for="OtherCost">
+                <span asp-validation-for="OtherCost" class="text-danger"></span>
+              </div>
+
+                <div class="mb-3">
+                    <label asp-for="Note" class="form-label">Ghi chú (nếu có)</label>
+                    <textarea class="form-control" rows="5" asp-for="Note" id=""></textarea>
+                    <span asp-validation-for="Note" class="text-danger"></span>
+                </div>
+                <div class="mb-3-md">
+                    <a asp-action="Index" class="btn btn-danger">Hủy</a>
+                    <button type="submit" value="Save" class="btn btn-primary">Tạo</button>
+                </div>
+          </form>
+          </div>
+
+@* <h1>Edit</h1>
 
 <h4>PurchaseReport</h4>
 <hr />
@@ -57,7 +157,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

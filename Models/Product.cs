@@ -25,9 +25,9 @@ namespace doan1_v1.Models
         [Range(0,Int64.MaxValue, ErrorMessage ="Số lượng sản phẩm không được nhỏ hơn 0.")]
         public int Quantity { get; set; }
 
-        [Required(ErrorMessage = "Gía sản phẩm là bắt buộc.")]
+        
         [Range(0, double.MaxValue, ErrorMessage = "Giá sản phẩm không được nhỏ hơn 0.")]
-        public double Price {  get; set; }
+        public double? Price {get; set; }
 
         [Required(ErrorMessage = "Nhà sản xuất là bắt buộc.")]
         public string Productor { get; set; }

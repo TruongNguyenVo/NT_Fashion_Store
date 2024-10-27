@@ -91,6 +91,20 @@ namespace doan1_v1.Controllers
             return View(supplier);
         }
 
+        // GET: Suppliers/Transaction/5
+        //ham de xem lich su giao dich
+        public async Task<IActionResult> Transaction(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //lay tat ca cai phieu nhap kho co id trung voi id cua nha cung cap
+
+            return View();
+        }
+
         // POST: Suppliers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

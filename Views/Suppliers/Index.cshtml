@@ -18,13 +18,13 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Quản lý</a>
+                  <a href="/">Quản lý</a>
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Quản lý sản phẩm</a>
+                  <a href="#">Quản lý nhà cung cấp</a>
                 </li>
               </ul>
             </div>
@@ -180,7 +180,15 @@
                             <td>@supplier.Address</td>
                             <td>@supplier.Phone</td>
                             <td>
-                              <div class="form-button-action">                            
+
+                              <div class="form-button-action">
+                                                    <!-- view transaction -->
+                                <a asp-action="Transaction" asp-route-id="@supplier.Id"
+                                target="_blank"
+                                                       title="Xem lịch sử giao dịch"
+                                                       class="btn btn-link btn-primary btn-lg">
+                                                        <i class="fa fa-eye"></i>
+                               </a>
                                 <!-- update -->
                                 <a
                                   asp-action="Edit" asp-route-id="@supplier.Id"

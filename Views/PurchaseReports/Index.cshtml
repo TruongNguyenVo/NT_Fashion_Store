@@ -139,7 +139,7 @@
                               <div class="form-button-action">
                                 <!-- view -->
                                 <a
-                                href="update_purchasereport.html"
+                                    asp-action="Details" asp-route-id="@purchaseReport.Id"
                                 type="button"
                                 title="Xem chi tiết phiếu nhập"
                                 class="btn btn-link btn-primary btn-lg"
@@ -150,7 +150,7 @@
                             
                                 <!-- update -->
                                 <a
-                                href="update_purchasereport.html"
+                                    asp-action="Edit" asp-route-id="@purchaseReport.Id"
                                   title="Chỉnh sửa phiếu nhập kho"
                                   class="btn btn-link btn-primary btn-lg"
                                 >

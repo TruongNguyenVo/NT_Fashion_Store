@@ -67,20 +67,85 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CodePurchaseReport,DatePurchase,TotalPrice,Note,Status,SupplierId,UserId")] PurchaseReport purchaseReport)
+        public async Task<IActionResult> Create([Bind("Id,CodePurchaseReport,DatePurchase,TotalPrice,Note,Status,SupplierId,UserId")] PurchaseReport purchaseReport, List<string> name_products, List<int> categoryIds, List<string> colors, List<string> dimensions, List<string> materials, List<string> productors, List<int> quantitys, List<double> prices)
         {
-
-            //thêm sản phẩm vào bảng sản phẩm
-                //tìm nếu các thông tin sản phẩm trùng thì lấy cái id, không thì thêm cái mới
             //thêm thông tin của phiếu nhập
+            //thêm sản phẩm vào bảng sản phẩm
+            //tìm nếu các thông tin sản phẩm trùng thì lấy cái id thêm vào chi tiết phiếu nhập, không thì thêm cái mới
             //thêm thông tin vào bảng chi tiết phiếu nhập
-          
+
+            int purchaseReportId = 0;
             if (ModelState.IsValid)
             {
+                
                 _context.Add(purchaseReport);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                int affect = await _context.SaveChangesAsync();
+                //done - có id của purchaseReport
+                if (affect > 0)
+                {
+                    purchaseReportId = purchaseReport.Id;
+                }
+                //return RedirectToAction(nameof(Index));
             }
+
+
+                for (int i = 0;
+                i < name_products.Count;
+                i++)
+            {
+                //tìm nếu các thông tin sản phẩm trùng
+                var product = await _context.Products.FirstOrDefaultAsync(
+                    pr => pr.Name == name_products[i]
+                    && pr.CategoryId == categoryIds[i]
+                    && pr.Color == colors[i]
+                    && pr.Dimension == dimensions[i]
+                    && pr.Material == materials[i]
+                    && pr.Productor == productors[i]
+                    //&& pr.Quantity == quantitys[i]
+                    && pr.Price == prices[i]);
+                int productId = 0; // bien luu id cua product
+                // done - có id của product
+                if (product != null)
+                {
+                    productId = product.Id; // có id của product
+
+                }
+                // done - có id của prouduct
+                else
+                {
+                    // khong thi tao san pham moi trong bang san pham va bo cot price
+                    Product new_product = new Product();
+                    new_product.Name = name_products[i];
+                    new_product.CategoryId = categoryIds[i];
+                    new_product.Color = colors[i];
+                    new_product.Dimension = dimensions[i];
+                    new_product.Material = materials[i];
+                    new_product.Productor = productors[i];
+
+                    _context.Add(new_product);
+                    //neu co thay doi
+                    int affect = await _context.SaveChangesAsync();
+                    if(affect != 0)
+                    {
+                        productId = new_product.Id; // có id của product
+                    }
+                }
+                
+                //thêm thông tin vào bảng chi tiết sản phẩm
+                 
+                    PurchaseReportProductDetail purchaseReportProductDetail = new PurchaseReportProductDetail();
+                    purchaseReportProductDetail.ProductId = productId;
+                    purchaseReportProductDetail.PurchaseReportId = purchaseReportId;
+                    purchaseReportProductDetail.Quantity = quantitys[i];
+                    purchaseReportProductDetail.PricePurchase = prices[i];
+
+                    _context.Add(purchaseReportProductDetail);
+                    await _context.SaveChangesAsync();
+
+                
+
+            }
+
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
             return View(purchaseReport);
@@ -99,8 +164,16 @@ namespace doan1_v1.Controllers
             {
                 return NotFound();
             }
+
+            //lấy tất cả các productid trong chi tiết phiếu nhập dựa vào id phiếu nhập
+            // dựa vào id đó 
+
+            var products = 0;
+
+
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
+            ViewData["Products"] = products;
             return View(purchaseReport);
         }
 

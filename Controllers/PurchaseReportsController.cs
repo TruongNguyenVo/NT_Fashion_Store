@@ -280,7 +280,7 @@ namespace doan1_v1.Controllers
 
 
             //return RedirectToAction(nameof(Index));
-            //--------------------------Xoa bang chi tiet san pham, xoa cac san pham ko dung yeu cau ----------------
+            //----------Xoa bang chi tiet san pham, xoa cac san pham ko dung yeu cau ----------------
             for (int i = 0; i < name_products.Count; i++)
             {
                
@@ -386,6 +386,50 @@ namespace doan1_v1.Controllers
         private bool PurchaseReportExists(int id)
         {
             return _context.PurchaseReports.Any(e => e.Id == id);
+        }
+        // ham cap nhat so luong dua vao phieu nhap kho
+        public async Task<IActionResult> UpdateQuantity(int id)
+        {
+           
+            //tim tat ca product trong bang chi tiet
+                //tìm danh sách tất cả các productId của phiếu nhập trong chi tiết phiếu nhập
+            var productInDetails = await _context.PurchaseReportProductDetails.
+                            Where(detail => detail.PurchaseReportId == id).
+                            Select(detail => new
+                            {
+                                ProductId = detail.ProductId,
+                                Quantity = detail.Quantity,
+                                PricePurchase = detail.PricePurchase 
+                            }).
+                            ToListAsync();
+
+            //lap qua cac product
+            foreach (var productInDetail in productInDetails) { 
+                var product = await _context.Products.FindAsync(productInDetail.ProductId);
+                if (product != null)
+                {
+                    // co product, co product
+                    //cap nhat so luong trong bang chi tiet vao bang product
+                    product.Quantity = product.Quantity + productInDetail.Quantity;
+                    //cap nhat gia trong bang chi tiet vao bang product
+                    product.Price = productInDetail.PricePurchase;
+                    _context.Products.Update(product);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                { 
+                    Console.WriteLine("Khong co san pham. Sai roi do"); 
+                }
+            }
+
+            //cap nhat lại IsUpdate
+            var puchaseReport = await _context.PurchaseReports.FindAsync(id);
+            if (puchaseReport != null) {
+                puchaseReport.IsUpdate = true;
+                await _context.SaveChangesAsync();
+            }
+            //het chuyện
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -154,6 +154,7 @@
 
                             
                                 <!-- update -->
+                                @if(!purchaseReport.IsUpdate){
                                 <a
                                     asp-action="Edit" asp-route-id="@purchaseReport.Id"
                                   title="Chỉnh sửa phiếu nhập kho"
@@ -161,16 +162,17 @@
                                 >
                                   <i class="fa fa-edit"></i>
                                 </a>
-
+                                                    }
                                 <!-- update quantity -->
-                                <a
-                                href="/tables/quanlykho.html"
-                                type="button"
-                                title="Cập nhật sản phẩm của phiếu vào kho"
-                                class="btn btn-link btn-primary btn-lg"
-                              >
-                                <i class="fa fa-plus"></i>
-                              </a>
+                                @if(!purchaseReport.IsUpdate){
+                                    <a asp-action="UpdateQuantity" asp-route-id="@purchaseReport.Id"
+                                    type="button"
+                                    title="Cập nhật sản phẩm của phiếu vào kho"
+                                    class="btn btn-link btn-primary btn-lg"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </a>
+                                                    }
                                 <!-- delete -->
                                 <a
                                     asp-action="Delete" asp-route-id="@purchaseReport.Id"

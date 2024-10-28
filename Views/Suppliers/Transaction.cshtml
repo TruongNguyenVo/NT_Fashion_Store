@@ -43,6 +43,10 @@
                   <tbody>
                     @foreach (var purchaseReport in ViewBag.PurchaseReports)
                     {
+                    @if (purchaseReport.IsDel)
+                    {
+                        continue;
+                    }
                     <tr>
                         <td>@purchaseReport.CodePurchaseReport</td>
                         <td>@purchaseReport.DatePurchase</td>

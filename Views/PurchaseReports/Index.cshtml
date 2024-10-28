@@ -124,7 +124,11 @@
 
                                     @foreach (var purchaseReport in ViewBag.PurchaseReports)
                                     {
-                          <tr>
+                                        @if(purchaseReport.IsDel == true)
+                                        {
+                                            continue;
+                                        }
+                                        <tr>
                                             <td>@purchaseReport.CodePurchaseReport</td>
                                             <td>@purchaseReport.DatePurchase</td>
                                             <td>@purchaseReport.Supplier.Name</td>
@@ -168,14 +172,15 @@
                                 <i class="fa fa-plus"></i>
                               </a>
                                 <!-- delete -->
-                                <button
+                                <a
+                                    asp-action="Delete" asp-route-id="@purchaseReport.Id"
                                   type="button"
                                   title="Xóa phiếu nhập kho"
-                                  class="btn btn-link btn-danger"
+                                  class="btn btn-link btn-danger btn-lg"
                                   data-original-title="Remove"
                                 >
                                   <i class="fa fa-times"></i>
-                                </button>
+                                </a>
                               </div>
                             </td>
                           </tr>

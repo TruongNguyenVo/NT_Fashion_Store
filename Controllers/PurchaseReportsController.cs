@@ -93,7 +93,7 @@ namespace doan1_v1.Controllers
                 {
                     purchaseReportId = purchaseReport.Id;
                 }
-                //return RedirectToAction(nameof(Index));
+                
             }
 
 
@@ -153,6 +153,7 @@ namespace doan1_v1.Controllers
                 
 
             }
+            return RedirectToAction(nameof(Index));
 
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
@@ -197,16 +198,18 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,CodePurchaseReport,DatePurchase,TotalPrice,Note,Status,SupplierId,UserId")] PurchaseReport purchaseReport, List<string> name_products, List<int> categoryIds, List<string> colors, List<string> dimensions, List<string> materials, List<string> productors, List<int> quantitys, List<double> prices)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CodePurchaseReport,DatePurchase,OtherCost,Note,IsUpdate,SupplierId,UserId")] PurchaseReport purchaseReport, List<string> name_products, List<int> categoryIds, List<string> colors, List<string> dimensions, List<string> materials, List<string> productors, List<int>? quantitys, List<double>? prices)
         {
+            if (id != purchaseReport.Id)
+            {
+                return NotFound();
+            }
             //cập nhật thông tin của phiếu nhập (code, date, otherprice, note, isupdate, supplier)
             //xóa tất cả các chi tiết của chi tiết phiếu nhập
             //kiểm tra tất cả các product có productId trong chi tiết phiếu nhập => nếu thiếu cột price và quantity thì xóa
             //tạo chi tiết mới như tạo mới giống hàm create
 
-
             //cập nhật thông tin của phiếu nhập (code, date, otherprice, note, isupdate, supplier)
-            int purchaseReportId = 0;
             if (ModelState.IsValid)
             {
                 try
@@ -214,10 +217,6 @@ namespace doan1_v1.Controllers
                     _context.Update(purchaseReport);
                     int affect = await _context.SaveChangesAsync();
                     //done - có id của purchaseReport
-                    if (affect > 0)
-                    {
-                        purchaseReportId = purchaseReport.Id;
-                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -233,21 +232,43 @@ namespace doan1_v1.Controllers
 
                 //return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                // Duyệt qua các lỗi trong ModelState
+                foreach (var entry in ModelState)
+                {
+                    var key = entry.Key; // Tên trường
+                    var errors = entry.Value.Errors; // Danh sách lỗi cho trường đó
+
+                    foreach (var error in errors)
+                    {
+                        // Xử lý hoặc ghi log lỗi ở đây
+                        Console.WriteLine($"Field: {key}, Error: {error.ErrorMessage}");
+                    }
+                }
+
+                // Trả lại view cùng với lỗi hiển thị nếu dữ liệu không hợp lệ
+                return View(purchaseReport);
+            }
+            //tìm danh sách tất cả các productId của phiếu nhập trong chi tiết phiếu nhập
+            var productIds = await _context.PurchaseReportProductDetails.
+                            Where(detail => detail.PurchaseReportId == purchaseReport.Id).
+                            Select(detail => detail.ProductId).ToListAsync();
+
             //xóa tất cả các chi tiết của chi tiết phiếu nhập
             var purchaseReportDetails = await _context.PurchaseReportProductDetails
-                            .Where(detail => detail.PurchaseReportId == purchaseReportId)
+                            .Where(detail => detail.PurchaseReportId == purchaseReport.Id)
                             .ToListAsync(); // nguyên cái danh sách chi tiết ứng với id
 
             _context.PurchaseReportProductDetails.RemoveRange(purchaseReportDetails);
             await _context.SaveChangesAsync();
 
+            // ----------------------------done-----------------------------------
 
             //kiểm tra tất cả các product có productId trong chi tiết phiếu nhập => nếu thiếu cột price và quantity thì xóa
-
-            var productIds = purchaseReportDetails.Select(d => d.ProductId).ToList(); // danh sách các id của product
             var removeProduct = await _context.Products
-                                .Where(p => productIds.Contains(p.Id) && (p.Price == null))
-                                .ToListAsync(); // tìm id để xóa mấy cái product bị thiếu cột
+                               .Where(p => productIds.Contains(p.Id) && (p.Price == null))
+                               .ToListAsync(); // tìm id để xóa mấy cái product bị thiếu cột
 
             // Xóa các sản phẩm không hợp lệ
             if (removeProduct.Any())
@@ -255,15 +276,19 @@ namespace doan1_v1.Controllers
                 _context.Products.RemoveRange(removeProduct);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index));
 
+
+
+            //return RedirectToAction(nameof(Index));
+            //--------------------------Xoa bang chi tiet san pham, xoa cac san pham ko dung yeu cau ----------------
             for (int i = 0; i < name_products.Count; i++)
             {
+               
                 if (name_products[i].IsNullOrEmpty())
                 {
                     continue;
                 }
-                //tìm nếu các thông tin sản phẩm trùng
+                //tim san pham trung
                 var product = await _context.Products.FirstOrDefaultAsync(
                     pr => pr.Name == name_products[i]
                     && pr.CategoryId == categoryIds[i]
@@ -271,14 +296,14 @@ namespace doan1_v1.Controllers
                     && pr.Dimension == dimensions[i]
                     && pr.Material == materials[i]
                     && pr.Productor == productors[i]
-                    //&& pr.Quantity == quantitys[i]
                     && pr.Price == prices[i]);
+
                 int productId = 0; // bien luu id cua product
                 // done - có id của product
                 if (product != null)
                 {
                     productId = product.Id; // có id của product
-
+                    Console.WriteLine("Co san pham");
                 }
                 // done - có id của prouduct
                 else
@@ -305,7 +330,7 @@ namespace doan1_v1.Controllers
 
                 PurchaseReportProductDetail purchaseReportProductDetail = new PurchaseReportProductDetail();
                 purchaseReportProductDetail.ProductId = productId;
-                purchaseReportProductDetail.PurchaseReportId = purchaseReportId;
+                purchaseReportProductDetail.PurchaseReportId = purchaseReport.Id;
                 purchaseReportProductDetail.Quantity = quantitys[i];
                 purchaseReportProductDetail.PricePurchase = prices[i];
 
@@ -316,6 +341,7 @@ namespace doan1_v1.Controllers
 
             }
 
+            return RedirectToAction(nameof(Index));
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
             return View(purchaseReport);
@@ -349,7 +375,8 @@ namespace doan1_v1.Controllers
             var purchaseReport = await _context.PurchaseReports.FindAsync(id);
             if (purchaseReport != null)
             {
-                _context.PurchaseReports.Remove(purchaseReport);
+                //_context.PurchaseReports.Remove(purchaseReport);
+                purchaseReport.IsDel = true;
             }
 
             await _context.SaveChangesAsync();

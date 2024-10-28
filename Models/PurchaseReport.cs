@@ -20,6 +20,8 @@ namespace doan1_v1.Models
 
         public string? Note { get; set; }
         public Boolean IsUpdate { get; set; } = false;
+        public Boolean IsDel { get; set; } = false;
+
         [ForeignKey(nameof(Supplier.Id))] // lien ket voi bang Supplier
         public int? SupplierId  { get; set; }
         public Supplier? Supplier { get; set; } //mot purchase report chi thuoc 1 supplier

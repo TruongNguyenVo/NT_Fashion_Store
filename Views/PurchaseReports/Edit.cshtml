@@ -4,7 +4,7 @@
     ViewData["Title"] = "Chỉnh sửa phiếu nhập kho";
     var purchaseReportDetail = ViewData["Detail"] as doan1_v1.Models.PurchaseReport;
 }
-}
+
 
           <div class="page-inner">
             <div class="page-header">
@@ -31,11 +31,13 @@
             </div>
 
               <form class ="row" asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
                 <!-- mã hóa đơn -->
                 <div class="mb-3">
                     <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
                     <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport">
                     <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
+
                 </div>
                 <!-- nhà cung cấp -->
                 <div class="mb-3">
@@ -45,9 +47,9 @@
                 </div>
                 <!-- ngày nhập kho -->
                 <div class="mb-3">
-            <label asp-for="DatePurchase">Ngày nhập kho:</label>
-            <input asp-for="DatePurchase" class="form-control" />
-            <span asp-validation-for="DatePurchase" class="text-danger"></span>
+                    <label asp-for="DatePurchase">Ngày nhập kho:</label>
+                    <input asp-for="DatePurchase" class="form-control" />
+                    <span asp-validation-for="DatePurchase" class="text-danger"></span>
               </div>
               <!-- bảng hàng hóa -->
               <div class="mb-3">
@@ -65,7 +67,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                    <tr style="display: none;">
+                   @*  <tr style="display: none;">
                         <td><input name="name_products" type="text" class="form-control" ></td>
                         <td>
                             <select id="categoryOptionsTemplate" name="categoryIds" class="form-control"></select>
@@ -74,9 +76,9 @@
                         <td><input name="dimensions" type="text" class="form-control"></td>
                         <td><input name="materials" type="text" class="form-control"></td>
                         <td><input name="productors" type="text" class="form-control"></td>
-                        <td><input name="quantitys" type="number" class="form-control"></td>
-                        <td><input name="prices" type="number" class="form-control"></td>
-                    </tr>
+                        <td><input name="quantitys" type="number" class="form-control" value= 0></td>
+                        <td><input name="prices" type="number" class="form-control" value= 0></td>
+                    </tr> *@
                     @if (Model.PurchaseReportProductDetails != null)
                     {
                         @foreach (var detail in Model.PurchaseReportProductDetails)
@@ -107,6 +109,7 @@
                             </tr>
                         }
                     }
+
                   </tbody>
                 </table>
                 <button class="btn btn-secondary" type="button" onclick="addRow()">Thêm hàng</button>
@@ -222,8 +225,8 @@
             cell4.innerHTML = "<input name='dimensions' type='text' class='form-control'>";
             cell5.innerHTML = "<input name='materials' type='text' class='form-control'>";
             cell6.innerHTML = "<input name='productors' type='text' class='form-control'>";
-            cell7.innerHTML = "<input name='quantitys' type='number' class='form-control'>";
-            cell8.innerHTML = "<input name='prices' type='number' class='form-control'>";
+            cell7.innerHTML = "<input name='quantitys' type='number' class='form-control' value = 0>";
+            cell8.innerHTML = "<input name='prices' type='number' class='form-control' value =0>";
 
 
 

@@ -1,0 +1,165 @@
+/*
+Template Name: Fashist
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************shop****************/
+.list_1r1 .input-group{
+border-bottom:1px solid #cf802e24;  
+ }
+.shop_dt1l .carousel-indicators {
+bottom: -50px;
+}
+
+.shop_dt2 .nav-tabs {
+border-bottom: 2px solid #cf802e24; 
+}
+.shop_dt2 .nav-tabs .nav-link {
+border-radius: 0;
+border: none;
+padding: 0;
+padding-bottom: 15px;
+color: #000;
+border-bottom: 2px solid transparent;
+font-size: 16px;
+font-weight:bold;
+}
+.shop_dt2 .nav-tabs .nav-link:hover {
+border-bottom: 2px solid  #cf802e;
+color:  #cf802e;
+}
+.shop_dt2 .nav-tabs .nav-link.active {
+border: none;
+border-bottom: 2px solid #cf802e;
+color: #cf802e;
+background: none;
+}
+.profile1_i1 .form-control{
+height:50px; 
+ }
+.profile1_i1 .form_text{
+height:150px; 
+ }
+.shop_dt2 {
+margin-top:60px; 
+ }
+
+/*********************shop_end****************/
+
+
+@media screen and (max-width : 767px){
+.shop_dt1r{
+margin-top:60px; 
+text-align:center; 
+ }
+.shop_dt1r p{
+text-align:left;
+ }
+.shop_dt1r  .form-control{
+width:100%!important;
+margin-bottom:15px;
+ }
+.shop_dt2 .nav-tabs li{
+margin-left:5px!important;
+margin-right:5px!important;
+margin-bottom:5px;
+margin-top:5px; 
+ }
+.home_i{
+text-align:center;  
+ }
+.home_i p{
+text-align:left;  
+ }
+.home_i ul{
+text-align:left;  
+ }
+.profile1_ir{
+margin-top:15px;
+text-align:center;
+ }
+.profile1_ir p{
+text-align:left;
+ }
+.profile1_i1 {
+text-align:center; 
+ }
+.profile1_i1 p{
+text-align:left; 
+ }
+.profile1_i1 .form-control{
+margin-top:10px;
+ }
+.form-check{
+text-align:left;  
+ }
+.shop_dt4  h3{
+text-align:center;  
+ }
+.list_1l1il {
+text-align:center; 
+margin-bottom:15px;
+ }
+.list_1l1il p{
+text-align:center!important; 
+ }
+.list_1r{
+margin-top:15px; 
+ }
+.list_1r1{
+text-align:center; 
+ }
+.list_1r1i .pe-0{
+padding-right:12px!important; 
+ }
+.list_1r1ir{
+margin-top:15px; 
+ }
+.list_2 {
+margin-left:0!important;
+margin-right:0!important;  
+ }
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+.shop_pg1l1ir{
+ text-align:left;
+ }
+.list_1l1il p{
+text-align:left!important; 
+ }
+.list_1r1ir{
+ text-align:left; 
+ }
+.profile1_ir{
+margin-top:0;
+text-align:left;  
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+.shop_dt1l img{
+min-height:410px; 
+ }
+.list_1r1  h6{
+font-size:12px; 
+ }
+.list_1r1 {
+padding:10px!important;
+ }
+.shop_dt1r .form-control{
+width:50px!important;
+margin-right:5px!important;
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.shop_dt1l img{
+min-height:410px; 
+ }
+ }
+@media (min-width:1201px) and (max-width:1215px) {
+ }
+
+

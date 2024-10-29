@@ -1,0 +1,96 @@
+/*
+Template Name: Fashist
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************blog****************/
+.list_1r .input-group{
+border-bottom:1px solid #cf802e24; 
+ }
+.blog_dt3 .form-control{
+height:50px; 
+ }
+.blog_dt3 .form_text{
+height:150px; 
+ }
+/*********************blog_end****************/
+
+
+@media screen and (max-width : 767px){
+.list_1r1{
+text-align:center; 
+ }
+.blog_1l1 {
+text-align:center;  
+ }
+.blog_1l1 p{
+text-align:left;  
+ }
+.list_1r1i .pe-0{
+padding-right:12px!important; 
+ }
+.list_1r1ir{
+margin-top:15px; 
+ }
+.blog_1r{
+margin-top:15px;  
+ }
+.blog_1r1 img{
+height:auto;
+ }
+.blog_1r1 { 
+text-align:center; 
+ }
+.blog_1r1 p{ 
+text-align:left; 
+ }
+.blog_1r1r  {
+margin-top:15px;
+text-align:center!important; 
+ }
+.blog_dt3  h3{
+text-align:center; 
+ }
+.profile1_ir{
+margin-top:15px; 
+ }
+.blog_dt3 .form-control{
+ margin-bottom:10px;
+ }
+.blog_dt3 .button{
+width:50%;
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+display:block;
+ }
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+.list_1r1ir{
+text-align:left;
+margin-top:0; 
+ }
+.blog_1r1r  {
+margin-top:0;
+text-align:right!important; 
+ }
+.blog_1r1l  {
+text-align:left!important; 
+ }
+.profile1_ir{
+margin-top:0; 
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1215px) {
+ }
+
+

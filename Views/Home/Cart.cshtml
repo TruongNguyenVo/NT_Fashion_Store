@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<section id="center" class="p_3 bg_light">
+	<div class="container-xl">
+		<div class="row center_1">
+			<div class="col-md-12">
+				<h6 class="font_14"><a asp-action="Index" asp-controller="Home">Trang chủ</a>  <span class="mx-2">/</span>  <span class="col_red">Giỏ hàng</span></h6>
+				<h2 class="mb-0 mt-3 lh-1">Giỏ hàng</h2>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section id="cart_page" class="cart p_3">
+	<div class="container-xl">
+		<div class="cart_2 row">
+			<div class="col-md-6">
+				<h5>GIỎ HÀNG CỦA TÔI</h5>
+			</div>
+			<div class="col-md-6">
+				<h5 class="text-end text-uppercase"><a asp-action="Shop" asp-controller="Home">Tiếp tục mua sắm</a></h5>
+			</div>
+		</div>
+		<div class="cart_3 row mt-3">
+			<div class="col-md-8">
+				<div class="cart_3l">
+					<h6>SẢN PHẨM</h6>
+				</div>
+				<div class="cart_3l1 mt-3 row ms-0 me-0">
+					<div class="col-md-3 ps-0 col-3">
+						<div class="cart_3l1i">
+							<a href="#"><img src="img/26.jpg" alt="abc" class="w-100"></a>
+						</div>
+					</div>
+					<div class="col-md-9 col-9">
+						<div class="cart_3l1i1">
+							<h6 class="fw-bold"><a href="#">Áo Khoác Nam UV Pro Windbreaker MOK 1058</a></h6>
+							<h6 class="fw-normal font_12 mt-3">RED</h6>
+							<h5 class="col_red mt-3">$175.00</h5>
+							<h6 class="font_12 mt-3 mb-3">Quantity</h6>
+						</div>
+						<div class="cart_3l1i2">
+							<input type="number" min="1" value="1" class="form-control" placeholder="Qty">
+							<h6><a class="button_1" href="#">Xóa</a></h6>
+							<h6><a class="button" href="#">Cập Nhật</a></h6>
+						</div>
+					</div>
+				</div>
+				<div class="cart_3l1 mt-3 row ms-0 me-0 pb-0 border-0">
+					<div class="col-md-3 ps-0 col-3">
+						<div class="cart_3l1i">
+							<a href="#"><img src="img/28.jpg" alt="abc" class="w-100"></a>
+						</div>
+					</div>
+					<div class="col-md-9 col-9">
+						<div class="cart_3l1i1">
+							<h6 class="fw-bold"><a href="#">Naminos elementum disus tincidunts cosmo de cosmopolis</a></h6>
+							<h6 class="fw-normal font_12 mt-3">RED / XS</h6>
+							<h6 class="font_12 mt-3">Vendor</h6>
+							<h5 class="col_red mt-3">$175.00</h5>
+							<h6 class="font_12 mt-3 mb-3">Quantity</h6>
+						</div>
+						<div class="cart_3l1i2">
+							<input type="number" min="1" value="1" class="form-control" placeholder="Qty">
+							<h6><a class="button_1" href="#">Xóa</a></h6>
+							<h6><a class="button" href="#">Cập Nhật</a></h6>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="cart_3r">
+					<h6 class="head_1">TỔNG TIỀN</h6>
+					<h5 class="text-center col_red mt-3">1,347.00 VND</h5>
+					<hr>
+					<h6 class="font_13">Thêm ghi chú</h6>
+					<textarea class="form-control"></textarea>
+					<h6 class="text-center mt-3"><a class="button" asp-action="Checkout" asp-controller="Home">THANH TOÁN</a></h6><br>
+					<h5></h5>
+					<hr>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>

@@ -17,6 +17,34 @@ namespace doan1_v1.Controllers
         {
             return View();
         }
+		public IActionResult Shop()
+		{
+			return View();
+		}
+		public IActionResult Profile()
+		{
+			return View();
+		}
+        public IActionResult Order()
+        {
+            return View();
+        }
+		public IActionResult Detail(int? id)
+		{
+			return View();
+		}
+		public IActionResult Contact()
+		{
+			return View();
+		}
+		public IActionResult Checkout()
+		{
+			return View();
+		}
+        public IActionResult Cart()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

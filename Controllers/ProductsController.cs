@@ -173,8 +173,9 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Color,Dimension,Material,Quantity,Price,Productor,IsDel,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Color,Dimension,Material,Quantity,Price,Productor,IsDel,CategoryId")] Product product, List<IFormFile> files)
         {
+            int effectRow; // cột thay đổi
             if (id != product.Id)
             {
                 return NotFound();
@@ -185,7 +186,8 @@ namespace doan1_v1.Controllers
                 try
                 {
                     _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    effectRow = await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -198,7 +200,44 @@ namespace doan1_v1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if (effectRow > 0)
+                {
+                    // Lưu thành công
+                    //lưu thông tin hình ảnh sau
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "admin", "assets", "uploads"); // them duong dan upload trong wwwroot/assets/uploads
+
+                    //tao duong dan chua anh neu duong dan khong co
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    foreach (var file in files)
+                    {
+                        ProductImage image = new ProductImage();
+
+                        string fileName = Path.GetFileName(file.FileName); // lay ten cua file
+                        string fileSavePath = Path.Combine(uploadsFolder, fileName); //lay duong dan cua file
+                                                                                     // Sử dụng Replace để có đường dẫn tương đối
+                        string relativePath = fileSavePath.Replace(_webHostEnvironment.WebRootPath, "");
+
+                        //su dung fileStream de luu file
+                        using (FileStream stream = new FileStream(fileSavePath, FileMode.Create))
+                        {
+
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Xử lý đối tượng ProductImage
+                        image.ProductId = product.Id; // Gán ID của sản phẩm cho ProductImage
+                        image.ImgURL = relativePath; // Đặt đường dẫn ảnh cho ProductImage
+                        _context.Add(image);
+                        await _context.SaveChangesAsync();
+
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);

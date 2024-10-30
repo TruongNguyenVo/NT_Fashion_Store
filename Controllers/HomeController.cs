@@ -12,48 +12,59 @@ namespace doan1_v1.Controllers
         {
             _logger = logger;
         }
-
+        [Route("")]
         public IActionResult Index()
         {
             return View();
         }
-		public IActionResult Shop()
+        [Route("Shop")]
+        public IActionResult Shop()
 		{
 			return View();
 		}
-		public IActionResult Profile()
+        [Route("Profile")]
+        public IActionResult Profile()
 		{
 			return View();
 		}
+        [Route("Order")]
         public IActionResult Order()
         {
             return View();
         }
-		public IActionResult Detail(int? id)
+        [Route("detail={id:int}")]
+        public IActionResult Detail(int? id)
+		{
+            Console.WriteLine($"product id is: {id}");
+			return View();
+		}
+
+        [Route("Contact")]
+        public IActionResult Contact()
 		{
 			return View();
 		}
-		public IActionResult Contact()
+        [Route("Checkout")]
+        public IActionResult Checkout()
 		{
 			return View();
 		}
-		public IActionResult Checkout()
-		{
-			return View();
-		}
+        [Route("Cart")]
         public IActionResult Cart()
         {
             return View();
         }
-		public IActionResult SignIn()
+        [Route("SignIn")]
+        public IActionResult SignIn()
 		{
 			return View();
 		}
+        [Route("SignUp")]
         public IActionResult SignUp()
         {
             return View();
         }
-
+        [Route("Privacy")]
         public IActionResult Privacy()
         {
             return View();

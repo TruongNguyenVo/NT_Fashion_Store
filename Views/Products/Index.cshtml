@@ -131,45 +131,48 @@
                           </tr>
                         </tfoot>
                         <tbody>
-                          
-                                    @foreach(var product in ViewBag.Products)
+                                    @if (ViewBag.Products != null)
                                     {
-                                        @if (product.IsDel == true)
+                                        @foreach (var product in ViewBag.Products)
                                         {
-                                            continue;
-                                        }
-                                        <tr>
-                                            <td>@product.Name</td>
-                                            <td>@product.Category.Name</td>
-                                            <td>@product.Price</td>
-                                            <td>@product.Quantity</td>
-                                            <td>@product.Color</td>
-                                            <td>@product.Dimension</td>
-                                            <td>
-                                                <div class="form-button-action">
-                                                    <!-- view -->
-                                                    <a asp-action="Details" asp-route-id="@product.Id"
-                                                       target="_blank"
-                                                       title="Xem thông tin chi tiết sản phẩm"
-                                                       class="btn btn-link btn-primary btn-lg">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
+                                            @if (product.IsDel == true)
+                                            {
+                                                continue;
+                                            }
+                                            <tr>
+                                                <td>@product.Name</td>
+                                                <td>@product.Category.Name</td>
+                                                <td>@product.Price</td>
+                                                <td>@product.Quantity</td>
+                                                <td>@product.Color</td>
+                                                <td>@product.Dimension</td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <!-- view -->
+                                                        <a asp-action="Details" asp-route-id="@product.Id"
+                                                           target="_blank"
+                                                           title="Xem thông tin chi tiết sản phẩm"
+                                                           class="btn btn-link btn-primary btn-lg">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
 
-                                                    <!-- update -->
-                                                    <a asp-action="Edit" asp-route-id="@product.Id"
-                                                       class="btn btn-link btn-primary btn-lg">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <!-- delete -->
-                                                    <a asp-action="Delete" asp-route-id="@product.Id"
-                                                            title=""
-                                                       class="btn btn-link btn-danger btn-lg">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        <!-- update -->
+                                                        <a asp-action="Edit" asp-route-id="@product.Id"
+                                                           class="btn btn-link btn-primary btn-lg">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <!-- delete -->
+                                                        <a asp-action="Delete" asp-route-id="@product.Id"
+                                                           title=""
+                                                           class="btn btn-link btn-danger btn-lg">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
+                                    
                                     
                          
                         </tbody>

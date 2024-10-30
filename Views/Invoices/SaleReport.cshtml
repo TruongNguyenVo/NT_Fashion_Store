@@ -1,0 +1,91 @@
+﻿@model doan1_v1.Models.Order
+
+@{
+    ViewData["Title"] = "Thống kê thu chi";
+}
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Thông tin thu chi</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Modal -->
+                    <div class="modal fade"
+                         id="addRowModal"
+                         tabindex="-1"
+                         role="dialog"
+                         aria-hidden="true">
+                    </div>
+                    <!-- table -->
+                    <div class="table-responsive">
+                        <table id="add-row"
+                               class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tháng</th>
+                                    <th>Năm</th>
+                                    <th>Tổng thu</th>
+                                    <th>Tổng chi</th>
+                                    <th>Còn lại</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Tháng</th>
+                                    <th>Năm</th>
+                                    <th>Tổng thu</th>
+                                    <th>Tổng chi</th>
+                                    <th>Còn lại</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+
+                                <tr>
+                                    <td>9</td>
+                                    <td>2024</td>
+                                    <td>9.000.000</td>
+                                    <td>10.000.000</td>
+                                    <td>-1.000.000</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>2024</td>
+                                    <td>12.000.000</td>
+                                    <td>11.000.000</td>
+                                    <td>1.000.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

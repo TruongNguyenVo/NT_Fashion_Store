@@ -1,0 +1,223 @@
+﻿@model IEnumerable<doan1_v1.Models.Customer>
+
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+<div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý khách hàng</a>
+                </li>
+              </ul>
+            </div>
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center">
+                      <h4 class="card-title">Thông tin sản phẩm</h4>
+                    <a
+                    class="btn btn-primary btn-round ms-auto"
+                    asp-action="Create"
+                  >
+                    <i class="fa fa-plus"></i>
+                    Thêm khách hàng
+                  </a>
+                    <!-- form them -->
+                    <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="newRowModalLabel">Thêm thông tin khách hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="addRowModal"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-hidden="true"
+                    >
+
+
+                    </div>
+                    <!-- table -->
+                    <div class="table-responsive">
+                      <table
+                        id="add-row"
+                        class="display table table-striped table-hover"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                            <th>Ngày tháng năm sinh</th>
+                            <th>Giới tính</th>
+                            <th style="width: 10%">Thao tác</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                            <th>Ngày tháng năm sinh</th>
+                            <th>Giới tính</th>
+                            <th style="width: 10%">Thao tác</th> 
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          
+                            
+                          <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>Số điện thoại</td>
+                            <td>nguyenvana@gmail.com</td>
+                            <td>Bình Tân, Vĩnh Long</td>
+                            <td>04/07/2004</td>
+                            <td>Nam</td>
+                            <td>
+                              <div class="form-button-action">
+                                                <!-- view  -->
+                                <a
+                                asp-action="Details"
+                                target="_blank"
+                                title="Xem thông tin chi tiết khách hàng"
+                                class="btn btn-link btn-primary btn-lg"
+                              >
+                                <i class="fa fa-eye"></i>
+                                </a>
+
+                            
+                                <!-- update -->
+                                <a
+                                  asp-action="Edit"                                 
+                                  title="Chỉnh sửa thông tin khách hàng"
+                                  class="btn btn-link btn-primary btn-lg"
+                                >
+                                  <i class="fa fa-edit"></i>
+                                </a>
+                                <!-- delete -->
+                                <a
+                                  asp-action="Delete" 
+                                  title="Xóa khách hàng"
+                                  class="btn btn-link btn-danger"
+                                >
+                                  <i class="fa fa-times"></i>
+                                </a>
+                              </div>
+                            </td>
+                          </tr>
+                         
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+@* <h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBrith)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBrith)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@

@@ -1,0 +1,177 @@
+﻿@model doan1_v1.Models.Order
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+}
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <form class="row" action="">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên khách hàng</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+
+        <div class="mb-3">
+            <label for="datepurchase" class="form-label">Ngày đặt: 10/10/2024</label><br>
+        </div>
+        <div class="mb-3">
+            <label for="datepurchase" class="form-label">Ngày dự kiến giao hàng:</label>
+            <input type="date" class="form-control" id="datepurchase" name="datepurchase">
+        </div>
+        <!-- bảng hàng hóa -->
+        <div class="mb-3">
+            <table class="table" id="tableProduct">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Màu sắc</th>
+                        <th>Kích thước</th>
+                        <th>Chất liệu</th>
+                        <th>Nhà sản xuất</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Áo thun abc</td>
+                        <td>Áo thun</td>
+                        <td>Màu đỏ</td>
+                        <td>SM</td>
+                        <td>Cotton</td>
+                        <td>Việt Nam</td>
+                        <td>10</td>
+                        <td>120.000</td>
+                        <td>1.200.000</td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-secondary" type="button" onclick="addRow()">Thêm sản phẩm</button>
+        </div>
+        <div class="mb-3">
+            <label for="tongTien">Phí vận chuyển:</label>
+            <input type="number" class="form-control" id="tongTien" name="">
+        </div>
+        <div class="mb-3">
+            <label for="tongTien">Phí khác:</label>
+            <input type="number" class="form-control" id="tongTien" name="">
+        </div>
+
+        <div class="mb-3">
+            <label for="tongTien">Tổng tiền:</label>
+            <input type="number" class="form-control" id="tongTien" name="" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label for="office" class="form-label">Ghi chú (nếu có)</label>
+            <textarea class="form-control" rows="5" name="note" id=""></textarea>
+        </div>
+        <div class="mb-3-md">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Tạo</button>
+        </div>
+
+    </form>
+</div>
+@* <h1>Details</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOrder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOrder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateReceive)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateReceive)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryCost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryCost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OtherCost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OtherCost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsDel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AdminId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AdminId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@

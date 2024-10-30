@@ -32,7 +32,7 @@ namespace doan1_v1.Controllers
         {
             return View();
         }
-        [Route("detail={id:int}")]
+        [Route("product/detail/{id:int}")]
         public IActionResult Detail(int? id)
 		{
             Console.WriteLine($"product id is: {id}");

@@ -14,11 +14,12 @@ namespace doan1_v1.Controllers
     {
         private readonly NTFashionDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
         public ProductsController(NTFashionDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+
+
         }
 
         // GET: Products
@@ -29,6 +30,7 @@ namespace doan1_v1.Controllers
         //}
         public async Task<IActionResult> Index()
         {
+            CategoriesController categories;
             var products = await _context.Products.Include(p => p.Category).ToListAsync();
             ViewBag.Products = products;
 

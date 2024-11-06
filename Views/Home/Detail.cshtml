@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Chi tiết sản phẩm";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	ViewData["Title"] = "Chi tiết sản phẩm";
+	var product = ViewBag.product as doan1_v1.Models.Product;
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <section id="center" class="p_3 bg_light">
 	<div class="container-xl">
@@ -29,18 +30,22 @@
 									</div>
 
 									<div class="carousel-inner">
-										<div class="carousel-item active">
-											<img src="img/men_xam__1__81d7b0f0f71e46f68da5a6e78ce4c6c6_master.jpg" class="d-block w-100" alt="abc" height="470px" width="410px">
+										@for(int i = 0; i < @product.ProductImages.Count; i++)
+										{
+											if(i == 0)
+											{
+												<div class="carousel-item active">
+													<img src="@product.ProductImages[i].ImgURL" class="d-block w-100" alt="abc" height="470px" width="410px">
+												</div>
+											}
+											else
+											{
+												<div class="carousel-item">
+													<img src="@product.ProductImages[i].ImgURL" class="d-block w-100" alt="abc" height="470px" width="410px">
+												</div>
+											}
+										}
 
-										</div>
-										<div class="carousel-item">
-											<img src="img\men_xam__2__c1ac28077a4248c08443ec28018db5e1_master.jpg" class="d-block w-100" alt="abc" height="470" width="410">
-
-										</div>
-										<div class="carousel-item">
-											<img src="img/32.jpg" class="d-block w-100" alt="abc">
-
-										</div>
 									</div>
 									<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
 										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -55,24 +60,20 @@
 						</div>
 						<div class="col-md-6">
 							<div class="shop_dt1r">
-								<h2>Áo Khoác Nam</h2>
-								<h4 class="mt-3">749.000 VND</h4>
-								<h5 class="mt-4 mb-4">Áo Khoác Nam UV Pro Windbreaker MOK 1058</h5>
+								<h2>@product.Category.Name</h2>
+								<h4 class="mt-3">@product.Price VND</h4>
+								<h5 class="mt-4 mb-4">@product.Name</h5>
 								<input type="number" min="1" value="1" class="form-control bg_light float-start me-3 rounded-0" placeholder="Qty" style="width:80px; height:50px;">
 								<select class="form-select bg_light float-start me-3 rounded-0" style="width:80px; height:50px;">
 									<option value="" selected>Size</option>
-									<option value="">S</option>
-									<option value="">M</option>
-									<option value="">L</option>
-									<option value="">XL</option>
-									<option value="">XXL</option>
+									<option>@product.Dimension</option>
 								</select>
 								<h6 class="text-uppercase fw-bold d-inline-block"><a class="button" href="#">Thêm vào giỏ hàng</a></h6>
-								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Màu</span>  :  XÁM</h6>
-								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Chất liệu</span>  : 100% Recycle Poly.</h6>
-								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Sản xuất</span>  : Việt Nam.</h6>
+								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Màu</span>  :  </h6>
+								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Chất liệu</span>  : @product.Material.</h6>
+								<h6 class="mt-3 font_14 text-uppercase"><span class="fw-bold">Sản xuất</span>  : @product.Productor.</h6>
 								<br>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus vero officia fugit consectetur nesciunt neque, minus, harum, eum reiciendis rem expedita voluptate deserunt maiores perspiciatis omnis minima natus? Est, neque!</p>
+								<p>@product.Description</p>
 							</div>
 						</div>
 					</div>
@@ -81,72 +82,35 @@
 					<div class="row shop_dt4 mt-4">
 						<h3 class="mb-0">Sản phẩm tương tự</h3>
 						<div class="row list_2 mt-3">
+							@foreach(var relativeProduct in ViewBag.relativeProducts){
 							<div class="col-md-4 col-sm-6">
 								<div class="list_2i clearfix position-relative">
 									<div class="list_2i1 clearfix">
 										<div class="grid clearfix">
 											<figure class="effect-jazz mb-0">
-												<a href="detail.html"><img src="img/10.jpg" class="w-100" alt="abc"></a>
+												@foreach(var img in relativeProduct.ProductImages){
+												<a asp-action="Detail" asp-route-id="@relativeProduct.Id" asp-controller="Home">
+													<img src="@img.ImgURL" class="w-100" alt="abc">
+														</a>
+														break;
+													}
 											</figure>
 										</div>
 									</div>
 
 									<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
 										<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
+												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@relativeProduct.Id" asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@relativeProduct.Id" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
 										</ul>
 									</div>
 								</div>
 								<div class="list_2i_last mt-3 text-center clearfix">
-									<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-									<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
+										<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@relativeProduct.Id" asp-controller="Home">@relativeProduct.Name</a></h6>
+										<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@relativeProduct.Id" asp-controller="Home">@relativeProduct.Price VND</a></h6>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6">
-								<div class="list_2i clearfix position-relative">
-									<div class="list_2i1 clearfix">
-										<div class="grid clearfix">
-											<figure class="effect-jazz mb-0">
-												<a href="detail.html"><img src="img/10.jpg" class="w-100" alt="abc"></a>
-											</figure>
-										</div>
-									</div>
-
-									<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-										<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="list_2i_last mt-3 text-center clearfix">
-									<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-									<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-6">
-								<div class="list_2i clearfix position-relative">
-									<div class="list_2i1 clearfix">
-										<div class="grid clearfix">
-											<figure class="effect-jazz mb-0">
-												<a href="detail.html"><img src="img/10.jpg" class="w-100" alt="abc"></a>
-											</figure>
-										</div>
-									</div>
-
-									<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-										<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-											<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="list_2i_last mt-3 text-center clearfix">
-									<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-									<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-								</div>
-							</div>
+							}
 						</div>
 					</div>
 				</div>
@@ -155,18 +119,10 @@
 				<div class="list_1r">
 					<div class="list_1r1 shadow_box p-3 mt-4">
 						<h5 class="mb-3">Danh mục sản phẩm</h5>
-						<h6 class="font_14"><a href="detail.html">Accessories (2)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Bags (4)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Casual (6)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Children (5)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Clothes (8)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Cosmetic (7)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Fashion (10)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Jacket (13)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Kids (12)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Summer (14)</a></h6>
-						<h6 class="font_14 mt-3"><a href="detail.html">Showcase (6)</a></h6>
-						<h6 class="font_14 mt-3 mb-0"><a href="detail.html">Watch (5)</a></h6>
+						@foreach (var category in ViewBag.categories){
+
+							<h6 class="font_14"><a asp-action="Shop" asp-route-id="@category.Id" asp-controller="Home">@category.Name</a></h6>
+						}
 					</div>
 					<div class="list_1r1 shadow_box p-3 mt-4">
 						<h5 class="mb-3">Sản phẩm bán chạy</h5>

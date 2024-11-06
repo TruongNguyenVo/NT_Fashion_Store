@@ -32,7 +32,7 @@
 									Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt<br>
 									mollit lorem ipsum anim id est laborum perspiciatis unde.
 								</p>
-								<h6 class="mt-4 text-center"><a class="button" href="#">Mua ngay</a></h6>
+								<h6 class="mt-4 text-center"><a class="button" asp-action="Shop" asp-controller="Home">Mua ngay</a></h6>
 								<ul class="mb-0">
 									<li class="d-inline-block"><a class="text-white" href="#">Facebook</a></li>
 									<li class="d-inline-block mx-4"><a class="text-white" href="#">Instagram</a></li>
@@ -48,7 +48,7 @@
 									Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt<br>
 									mollit lorem ipsum anim id est laborum perspiciatis unde.
 								</p>
-								<h6 class="mt-4 text-center"><a class="button" href="#">Mua ngay</a></h6>
+								<h6 class="mt-4 text-center"><a class="button" asp-action="Shop" asp-controller="Home">Mua ngay</a></h6>
 								<ul class="mb-0">
 									<li class="d-inline-block"><a class="text-white" href="#">Facebook</a></li>
 									<li class="d-inline-block mx-4"><a class="text-white" href="#">Instagram</a></li>
@@ -81,185 +81,73 @@
 			</div>
 		</div>
 		<div class="row list_2">
+			 @* 4 san pham ao *@
+			@foreach(var product in ViewBag.productAos){
 			<div class="col-md-3 col-sm-6">
 				<div class="list_2i clearfix position-relative">
 					<div class="list_2i1 clearfix">
 						<div class="grid clearfix">
 							<figure class="effect-jazz mb-0">
-								<a asp-action="Detail" asp-route-id="123" asp-controller="Home"><img src="\admin\assets\uploads\Acer_Wallpaper_01_3840x2400.jpg" width="270" height="270" class="w-100" alt="abc"></a>
+								<a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">
+									@foreach(var img in product.ProductImages){
+											<img src="@img.ImgURL" width="270" height="270" class="w-100" alt="abc">
+											break;
+										}
+									</a>
 							</figure>
 						</div>
 					</div>
 
 					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
 						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
+								<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+								<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="10" asp-controller="Home">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
+					<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="10" asp-controller="Home">@product.Name</a></h6>
+						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price VND</a></h6>
 				</div>
 			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
+			}
 		</div>
 		<br><br>
 		<div class="row list_2">
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
+			@* 4 san pham quan *@
+			@foreach (var product in ViewBag.ProductQuans)
+			{
+				<div class="col-md-3 col-sm-6">
+					<div class="list_2i clearfix position-relative">
+						<div class="list_2i1 clearfix">
+							<div class="grid clearfix">
+								<figure class="effect-jazz mb-0">
+									<a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">
+										@foreach (var img in product.ProductImages)
+										{
+											<img src="@img.ImgURL" width="270" height="270" class="w-100" alt="abc">
+											break;
+										}
+									</a>
+								</figure>
+							</div>
+						</div>
+
+						<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
+							<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
+								<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+								<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
+							</ul>
 						</div>
 					</div>
+					<div class="list_2i_last mt-3 text-center clearfix">
+						<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="10" asp-controller="Home">@product.Name</a></h6>
+						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price VND</a></h6>
+					</div>
+				</div>
+			}
+		</div>
 
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Quần Jean Nam Taper Fit MJE 1019</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
 		</div>
 	</div>
 </section>
@@ -288,94 +176,35 @@
 			</div>
 		</div>
 		<div class="row list_2">
+			@foreach(var product in ViewBag.productAos){
 			<div class="col-md-3 col-sm-6">
 				<div class="list_2i clearfix position-relative">
 					<div class="list_2i1 clearfix">
 						<div class="grid clearfix">
 							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
+								<a href="detail.html">
+									@foreach(var img in product.ProductImages){
+											<img src="@img.ImgURL" class="w-100" alt="abc">
+											break;
+										}
+								</a>
 							</figure>
 						</div>
 					</div>
 
 					<div class="list_2i3 text-center w-100  clearfix position-absolute top-0">
 						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
+								<li class="d-inline-block mx-1"><a  asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+								<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Áo thun</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
+						<h6 class="fw-bold"><a a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Name</a></h6>
+						<h6 class="font_14 mb-0"><a a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price</a></h6>
 				</div>
 			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-center w-100  clearfix position-absolute top-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Áo thun</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-center w-100  clearfix position-absolute top-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Áo thun</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125 VND</a></h6>
-				</div>
-			</div>
-			<div class="col-md-3 col-sm-6">
-				<div class="list_2i clearfix position-relative">
-					<div class="list_2i1 clearfix">
-						<div class="grid clearfix">
-							<figure class="effect-jazz mb-0">
-								<a href="detail.html"><img src="/user/img/10.jpg" class="w-100" alt="abc"></a>
-							</figure>
-						</div>
-					</div>
-
-					<div class="list_2i3 text-center w-100  clearfix position-absolute top-0">
-						<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-eye text-white"></i></a></li>
-							<li class="d-inline-block mx-1"><a href="detail.html"><i class="fa fa-shopping-bag text-white"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list_2i_last mt-3 text-center clearfix">
-					<h6 class="fw-bold"><a href="detail.html">Áo thun</a></h6>
-					<h6 class="font_14 mb-0"><a href="detail.html">125  VND</a></h6>
-				</div>
-			</div>
+			}
 		</div>
 
 	</div>

@@ -17,42 +17,17 @@
 						</div>
 					</div>
 					<div class="list_1l2 mt-3">
-						@for(int i = 0; i < ViewBag.products.Count; i+=3){
-						<div class="row list_2">
-							
-							<div class="col-md-4 col-sm-6">
-								<div class="list_2i clearfix position-relative">
-									<div class="list_2i1 clearfix">
-										<div class="grid clearfix">
-											<figure class="effect-jazz mb-0">
-												<a asp-action="Detail" asp-controller="Home">
-														<img src="@ViewBag.products[i].ProductImages[0].ImgURL" class="w-100" alt="abc">
-													</a>
-											</figure>
-										</div>
-									</div>
+						@for (int i = 0; i < ViewBag.products.Count; i += 3)
+						{
+							<div class="row list_2">
 
-									<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-										<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i].Name" asp asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
-											<li class="d-inline-block mx-1"><a asp-action="Detail" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="list_2i_last mt-3 text-center clearfix">
-									<h6 class="fw-bold"><a asp-action="Detail" asp-controller="Home">@ViewBag.products[i].Name</a></h6>
-									<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home">125 VND</a></h6>
-								</div>
-							</div>
-							<br><br>
-							@if(i+1 < ViewBag.products.Count){
-							<div class="col-md-4 col-sm-6">
+								<div class="col-md-4 col-sm-6">
 									<div class="list_2i clearfix position-relative">
 										<div class="list_2i1 clearfix">
 											<div class="grid clearfix">
 												<figure class="effect-jazz mb-0">
 													<a asp-action="Detail" asp-controller="Home">
-														<img src="@ViewBag.products[i+1].ProductImages[0].ImgURL" class="w-100" alt="abc">
+														<img src="@ViewBag.products[i].ProductImages[0].ImgURL" class="w-100" alt="abc" width="270px" height="270px">
 													</a>
 												</figure>
 											</div>
@@ -60,47 +35,76 @@
 
 										<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
 											<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+1].Name" asp asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
-												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
+												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i].Name" asp-route-id="@ViewBag.products[i].Id" asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id"><i class="fa fa-shopping-bag text-white"></i></a></li>
 											</ul>
 										</div>
 									</div>
 									<div class="list_2i_last mt-3 text-center clearfix">
-										<h6 class="fw-bold"><a asp-action="Detail" asp-controller="Home">@ViewBag.products[i+1].Name</a></h6>
-										<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home">125 VND</a></h6>
+										<h6 class="fw-bold"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id">@ViewBag.products[i].Name</a></h6>
+										<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id">@ViewBag.products[i].Price VND</a></h6>
 									</div>
 								</div>
-							<br><br>
-								}
-								@if (i+2 < ViewBag.products.Count)
+								<br><br>
+								@if (i + 1 < ViewBag.products.Count)
 								{
-							<div class="col-md-4 col-sm-6">
-									<div class="list_2i clearfix position-relative">
-										<div class="list_2i1 clearfix">
-											<div class="grid clearfix">
-												<figure class="effect-jazz mb-0">
-													<a asp-action="Detail" asp-controller="Home">
-														<img src="@ViewBag.products[i+2].ProductImages[0].ImgURL" class="w-100" alt="abc">
-													</a>
-												</figure>
+									<div class="col-md-4 col-sm-6">
+										<div class="list_2i clearfix position-relative">
+											<div class="list_2i1 clearfix">
+												<div class="grid clearfix">
+													<figure class="effect-jazz mb-0">
+														<a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i+1].Id">
+															<img src="@ViewBag.products[i+1].ProductImages[0].ImgURL" class="w-100" width="270px" height="270px">
+														</a>
+													</figure>
+												</div>
+											</div>
+
+											<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
+												<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
+													<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+1].Id" asp asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+													<li class="d-inline-block mx-1"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i+1].Id"><i class="fa fa-shopping-bag text-white"></i></a></li>
+												</ul>
 											</div>
 										</div>
-
-										<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
-											<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
-												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Name" asp asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
-												<li class="d-inline-block mx-1"><a asp-action="Detail" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
-											</ul>
+										<div class="list_2i_last mt-3 text-center clearfix">
+											<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+1].Id" asp-controller="Home">@ViewBag.products[i + 1].Name</a></h6>
+											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i+1].Id">@ViewBag.products[i+1].Price VND</a></h6>
 										</div>
 									</div>
-									<div class="list_2i_last mt-3 text-center clearfix">
-										<h6 class="fw-bold"><a asp-action="Detail" asp-controller="Home">@ViewBag.products[i+2].Name</a></h6>
-										<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home">125 VND</a></h6>
+									<br>
+
+									<br>
+								}
+								@if (i + 2 < ViewBag.products.Count)
+								{
+									<div class="col-md-4 col-sm-6">
+										<div class="list_2i clearfix position-relative">
+											<div class="list_2i1 clearfix">
+												<div class="grid clearfix">
+													<figure class="effect-jazz mb-0">
+														<a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">
+															<img src="@ViewBag.products[i+2].ProductImages[0].ImgURL" class="w-100" width="270px" height="270px">
+														</a>
+													</figure>
+												</div>
+											</div>
+
+											<div class="list_2i3 text-end w-100  clearfix position-absolute bottom-0">
+												<ul class="mb-0 bg_dark d-inline-block p-2 px-3">
+													<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp asp-controller="Home"><i class="fa fa-eye text-white"></i></a></li>
+													<li class="d-inline-block mx-1"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home"><i class="fa fa-shopping-bag text-white"></i></a></li>
+												</ul>
+											</div>
+										</div>
+										<div class="list_2i_last mt-3 text-center clearfix">
+											<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 2].Name</a></h6>
+											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 3].Price VND</a></h6>
+										</div>
 									</div>
-								</div>
 								}
 							</div>
-								<br>
+							<br>
 						}
 
 						<div class="pages mt-4 row text-center">
@@ -134,7 +138,7 @@
 						<h5 class="mb-3">Danh mục sản phẩm</h5>
 						@foreach (var category in ViewBag.categories){
 						<h6 class="font_14">
-								<a a asp-action="Shop" asp-route-id="@category.Id" asp-controller="Home">@category.Name</a>
+								<a a asp-action="Detail" asp-route-id="@category.Id" asp-controller="Home">@category.Name</a>
 							</h6>
 						}
 					</div>

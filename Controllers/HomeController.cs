@@ -1,5 +1,7 @@
-using doan1_v1.Models;
+﻿using doan1_v1.Models;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 using System.Diagnostics;
@@ -115,11 +117,26 @@ namespace doan1_v1.Controllers
 			return View();
 		}
         [Route("Cart")]
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart(int? userId)
         {
+            //tim cart theo ten nguoi dung - id test nguoi dung la 5
+            var cart = await _context.Carts.FindAsync(5);
+            if (cart != null)
+            {
+
+            }
+            //tra ve chi tiet cart
             return View();
         }
-        [Route("SignIn")]
+		public async Task<IActionResult> addToCart(int quantity, int productId, int userId)
+		{
+			//tạo chi tiết giỏ hàng
+
+			//đã có chi tiết giỏ hàng
+
+			return Redirect(Request.Headers["Referer"].ToString());
+		}
+		[Route("SignIn")]
         public IActionResult SignIn()
 		{
 			return View();
@@ -127,9 +144,21 @@ namespace doan1_v1.Controllers
         [Route("SignUp")]
         public IActionResult SignUp()
         {
-            return View();
+
+			return View();
         }
-        [Route("Privacy")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SignUp(Customer customer)
+		{
+			//khi tạo tài khoản thành công thì tạo một cart luôn
+			Cart cart = new Cart();
+			    cart.UserId = 0; // id cua nguoi dung
+			    _context.Add(cart);
+			    await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+		}
+		[Route("Privacy")]
         public IActionResult Privacy()
         {
             return View();

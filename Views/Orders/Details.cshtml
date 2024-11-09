@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Chi tiết đơn hàng";
+    var order = ViewBag.Order;
+    var totalPriceofProduct = 0.0;
 }
 <div class="page-inner">
     <div class="page-header">
@@ -46,7 +48,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Quản lý sản phẩm</a>
+                    <a href="#">Quản lý đơn hàng</a>
                 </li>
             </ul>
         </div>
@@ -54,24 +56,24 @@
 
             <div class="mb-3">
                 <label for="name" class="form-label">Tên khách hàng</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" disabled class="form-control" id="name" value="@order.Customer.FullName">
             </div>
 
             <div class="mb-3">
                 <label for="name" class="form-label">Địa chỉ</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" disabled class="form-control" id="name" value="@order.Customer.Address">
             </div>
 
             <div class="mb-3">
                 <label for="name" class="form-label">Số điện thoại</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" disabled class="form-control" id="name" value="@order.Customer.Phone">
             </div>
 
             <div class="mb-3">
-                <label for="datepurchase" class="form-label">Ngày đặt: 10/10/2024</label><br>
+                <label for="datepurchase" class="form-label">Ngày đặt: @order.DateOrder</label><br>
             </div>
             <div class="mb-3">
-                <label for="datepurchase" class="form-label">Ngày dự kiến giao hàng:</label>
+                <label for="datepurchase" class="form-label">Ngày dự kiến giao hàng: @order.DateReceive</label>
                 <input type="date" class="form-control" id="datepurchase" name="datepurchase">
             </div>
             <!-- bảng hàng hóa -->
@@ -91,34 +93,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Áo thun abc</td>
-                            <td>Áo thun</td>
-                            <td>Màu đỏ</td>
-                            <td>SM</td>
-                            <td>Cotton</td>
-                            <td>Việt Nam</td>
-                            <td>10</td>
-                            <td>120.000</td>
-                            <td>1.200.000</td>
-
-                        </tr>
+                        @foreach (var detail in order.OrderProductDetails)
+                        {
+                            <tr>
+                                <td>@detail.Product.Name</td>
+                                <td>@detail.Product.Category.Name</td>
+                                <td>@detail.Product.Color</td>
+                                <td>@detail.Product.Dimension</td>
+                                <td>@detail.Product.Material</td>
+                                <td>@detail.Product.Productor</td>
+                                <td>@detail.Quantity</td>
+                                <td>@detail.PriceSale</td>
+                                <td>
+                                    @{
+                                        totalPriceofProduct += detail.Quantity * detail.PriceSale;
+                                    }
+                                    @totalPriceofProduct
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
-                <button class="btn btn-secondary" type="button" onclick="addRow()">Thêm sản phẩm</button>
             </div>
             <div class="mb-3">
                 <label for="tongTien">Phí vận chuyển:</label>
-                <input type="number" class="form-control" id="tongTien" name="">
+                <input type="number" disabled class="form-control" id="tongTien" name="" value="@order.DeliveryCost">
             </div>
             <div class="mb-3">
+                @{
+                    //kiem tra otherCost no co null hay k
+                    var otherCost = order.OtherCost;
+                    if (otherCost == null)
+                    {
+                        otherCost = 0;
+                    }
+
+                }
                 <label for="tongTien">Phí khác:</label>
-                <input type="number" class="form-control" id="tongTien" name="">
+                <input type="number" disabled class="form-control" id="tongTien" name="" value="@otherCost">
             </div>
 
             <div class="mb-3">
+                @{
+                    var totalPrice = totalPriceofProduct + order.DeliveryCost + otherCost;
+                }
                 <label for="tongTien">Tổng tiền:</label>
-                <input type="number" class="form-control" id="tongTien" name="" disabled>
+                <input type="number" class="form-control" id="tongTien" name="" disabled value="@totalPrice">
             </div>
 
             <div class="mb-3">
@@ -132,70 +152,70 @@
 
         </form>
     </div>
-@* <h1>Details</h1>
+    @* <h1>Details</h1>
 
-<div>
+    <div>
     <h4>Order</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOrder)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOrder)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateReceive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateReceive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryCost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryCost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OtherCost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OtherCost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Note)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Note)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDel)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdminId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdminId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CustomerId)
-        </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.DateOrder)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.DateOrder)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.DateReceive)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.DateReceive)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.DeliveryCost)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.DeliveryCost)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.OtherCost)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.OtherCost)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.Status)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.Status)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.Note)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.Note)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.IsDel)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.IsDel)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.AdminId)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.AdminId)
+    </dd>
+    <dt class = "col-sm-2">
+    @Html.DisplayNameFor(model => model.CustomerId)
+    </dt>
+    <dd class = "col-sm-10">
+    @Html.DisplayFor(model => model.CustomerId)
+    </dd>
     </dl>
-</div>
-<div>
+    </div>
+    <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-</div>
- *@
+    </div>
+    *@

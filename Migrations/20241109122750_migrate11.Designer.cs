@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using doan1_v1.Models;
 
@@ -11,9 +12,11 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    partial class NTFashionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241109122750_migrate11")]
+    partial class migrate11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,11 +119,11 @@ namespace doan1_v1.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("DateOrder")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOrder")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly?>("DateReceive")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("DateReceive")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("DeliveryCost")
                         .HasColumnType("float");
@@ -474,7 +477,7 @@ namespace doan1_v1.Migrations
             modelBuilder.Entity("doan1_v1.Models.OrderProductDetail", b =>
                 {
                     b.HasOne("doan1_v1.Models.Order", "Order")
-                        .WithMany("OrderProductDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId");
 
                     b.HasOne("doan1_v1.Models.Product", "Product")
@@ -544,11 +547,6 @@ namespace doan1_v1.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("doan1_v1.Models.Order", b =>
-                {
-                    b.Navigation("OrderProductDetails");
                 });
 
             modelBuilder.Entity("doan1_v1.Models.Product", b =>

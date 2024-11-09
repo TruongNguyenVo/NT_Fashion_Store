@@ -17,6 +17,8 @@
 <section id="checkout" class="p_3">
  <div class="container-xl">
 		<form asp-action="confirmCheckout"  asp-controller="Home">
+			<input type="hidden" name="cartId" value="@cart.Id"/>
+			<input type="hidden" name="customerId" value="@cart.UserId" />
   <div class="checkout_1 row">
     <div class="col-md-8">
 
@@ -71,6 +73,7 @@
 									var deliveryCost = 50000;
 								}
 								@deliveryCost VND
+								<input type="hidden" name="deliveryCost" value="@deliveryCost"/>
 				</span>
 			</h6>
 		<hr>

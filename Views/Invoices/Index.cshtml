@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Quản lý hóa đơn";
+    var invoices = ViewBag.Invoices;
 }
 <div class="page-inner">
             <div class="page-header">
@@ -22,7 +23,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Quản lý sản phẩm</a>
+                  <a href="#">@ViewData["Title"]</a>
                 </li>
               </ul>
             </div>
@@ -32,7 +33,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="d-flex align-items-center">
-                      <h4 class="card-title">Thông tin sản phẩm</h4>
+                      <h4 class="card-title">Thông tin hóa đơn</h4>
                       
                     <!-- form them -->
                     <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
@@ -79,9 +80,9 @@
                         <thead>
                           <tr>
                             <th>Tên khách hàng</th>
+                            <th>Ngày đặt</th>
                             <th>Ngày thanh toán</th>
                             <th>Trạng thái</th>
-                            <th>Ngày giao</th>
                             <th>Tổng tiền</th>
                             <th>Số điện thoại</th>
                             <th style="width: 10%">Thao tác</th>
@@ -90,49 +91,62 @@
                         <tfoot>
                           <tr>
                             <th>Tên khách hàng</th>
+                            <th>Ngày đặt</th>
                             <th>Ngày thanh toán</th>
                             <th>Trạng thái</th>
-                            <th>Ngày giao</th>
                             <th>Tổng tiền</th>
                             <th>Số điện thoại</th>
                             <th style="width: 10%">Thao tác</th> 
                           </tr>
                         </tfoot>
                         <tbody>                         
-
+                            @foreach(var invoice in invoices){
                           <tr>
-                            <td>Nguyễn Văn A</td>
-                            <td>10/10/2024</td>
-                            <td>Đã thanh toán</td>
-                            <td>10/10/2024</td>
-                            <td>12.000.000</td>
-                            <td>0987654321</td>
+                            <td>@invoice.Customer.FullName</td>
+                                            <td>@invoice.DateOrder</td>
+                                            <td>@invoice.DateReceive</td>
+                                            <td>@invoice.Status</td>
+                            <td>
+                                                @{
+                                                    var otherCost = invoice.OtherCost;
+                                                    if (otherCost == null)
+                                                    {
+                                                        otherCost = 0;
+                                                    }
+                                                    var totalPrice = 0.0;
+                                                    // tong phi van chuyen va phi khac
+                                                    totalPrice = invoice.DeliveryCost + otherCost;
+                                                    //tong tat ca cac gia cua cac product
+                                                    foreach (var detailOrder in invoice.OrderProductDetails)
+                                                    {
+                                                        totalPrice = totalPrice + (detailOrder.Quantity * detailOrder.PriceSale);
+                                                    }
+                                                }
+                                                @totalPrice
+                            </td>
+                            <td>@invoice.Customer.Phone</td>
                             <td>
                               <div class="form-button-action">
                                 <!-- view -->
-                                <a
-                                href="update_order.html"
+                                <a asp-action="Details" asp-route-id="@invoice.Id"
                                 type="button"
-                                title="Xem chi tiết phiếu nhập"
+                                title="Xem chi tiết hóa đơn"
                                 class="btn btn-link btn-primary btn-lg"
                               >
                                 <i class="fa fa-eye"></i>
                               </a>
                                 <!-- delete -->
-                                <button
-                                  type="button"
+                                <a
+                                  asp-action="Delete" asp-route-id="@invoice.Id"
                                   title="Hủy hóa đơn"
                                   class="btn btn-link btn-danger"
-                                  data-original-title="Remove"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#addRowModal"
                                 >
                                   <i class="fa fa-times"></i>
-                                </button>
+                                </a>
                               </div>
                             </td>
                           </tr>
-                         
+                                    }
                         </tbody>
                       </table>
                     </div>

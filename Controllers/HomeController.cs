@@ -76,11 +76,37 @@ namespace doan1_v1.Controllers
 			return View();
 		}
         [Route("Order")]
-        public IActionResult Order()
+        public async Task<IActionResult> Order()
         {
-            return View();
+            //lay id user = 5
+            int customerId = 5;
+			var orders = await _context.Orders
+                         .Where(o=> o.CustomerId == 5)
+						.Include(o => o.OrderProductDetails)
+						.ToListAsync();
+			ViewBag.Orders = orders;
+			return View();
         }
-        [Route("product/detail/{id:int}")]
+		[Route("Invoice")]
+		public async Task<IActionResult> Invoice(int orderId, string title)
+		{
+            //Console.WriteLine($"-------------------{orderId}---------------------");
+            var order = await _context.Orders
+                    .Where(o => o.Id == orderId)
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
+                        .ThenInclude(op => op.Product) // lay thong tin cua product trong danh sach chi tiet
+                            .ThenInclude(opc => opc.Category) // lay ten category trong product
+                    .FirstOrDefaultAsync();
+            if (order != null)
+            {
+                ViewBag.Invoice = order;
+                ViewData["title"] = title;
+            }
+            
+			return View();
+		}
+		[Route("product/detail/{id:int}")]
         public async Task<IActionResult> Detail(int id)
 		{
             // san pham chinh
@@ -141,16 +167,57 @@ namespace doan1_v1.Controllers
 
 			return View();
 		}
-        //hàm dùng xác nhận thanh toán
-        public async Task<IActionResult> confirmCheckout()
+        //hàm dùng xác nhận đơn hàng
+        public async Task<IActionResult> confirmCheckout(int cartId, double deliveryCost, int customerId)
         {
             //khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
-            Console.WriteLine($"Vao post roi");
+            //Console.WriteLine($"Vao post roi");
+            //Console.WriteLine($"---------------------{customerId}------------------");
 			//tao order
+            Order order = new Order
+			{
+				Status = "Đã đặt hàng" /* gán giá trị phù hợp cho Status */
+			};
+            order.DateOrder = DateOnly.FromDateTime(DateTime.Now);
+            order.DeliveryCost = deliveryCost;
+            order.CustomerId = customerId;
 
-			//tao chi tiet order
+            _context.Add(order);
+            int rowsEffect = await _context.SaveChangesAsync();
+
+            if(rowsEffect > 0) {
+                //tao chi tiet order
+                int orderId = order.Id;
+                //tim cart de chuyen du lieu
+                ////tim chi tiet cart dua vao cartId
+                var detailCarts = await _context.CartDetails
+                                        .Where(d => d.CartId == cartId)
+                                        .Include(d=>d.Product)
+                                        .ToListAsync();
+
+                ////chuyen tat ca cac chi tiet vao chi tiet order
+                foreach(var detailCart in detailCarts)
+                {
+                    OrderProductDetail detailOder = new OrderProductDetail();
+                    detailOder.Quantity = detailCart.Quantity;
+                    detailOder.PriceSale = (double)detailCart.Product.Price;
+                    detailOder.ProductId = detailCart.ProductId;
+                    detailOder.OrderId = orderId;
+                    _context.Add(detailOder);
+                    await _context.SaveChangesAsync();
+                }
+                ////xoa tat ca cac chi tiet trong chi tiet cart
+                foreach(var detailCart in detailCarts)
+                {
+                    _context.CartDetails.Remove(detailCart);
+                    await _context.SaveChangesAsync();
+                }
+			}
+
+
+
 			// về trang hiện tại (không di chuyển qua trang khác)
-			return Redirect(Request.Headers["Referer"].ToString());
+			return Redirect("Oder");
 		}
 			[Route("Cart")]
         public async Task<IActionResult> Cart(int? userId)

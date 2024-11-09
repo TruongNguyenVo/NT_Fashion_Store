@@ -19,9 +19,19 @@ namespace doan1_v1.Controllers
         }
 
         // GET: Invoices
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Orders.ToListAsync());
+        //}
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            var orders = await _context.Orders
+                        .Where(o=>o.Status == "Đã thanh toán" || o.Status == "Đã hủy")
+                        .Include(o => o.Customer)
+                        .Include(o => o.OrderProductDetails)
+                        .ToListAsync();
+            ViewBag.Invoices = orders;
+            return View();
         }
         [Route("SaleReport")]
         public async Task<IActionResult> SaleReport()
@@ -129,6 +139,7 @@ namespace doan1_v1.Controllers
             }
 
             var order = await _context.Orders
+                .Include(o => o.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -138,18 +149,25 @@ namespace doan1_v1.Controllers
             return View(order);
         }
 
+        //-----------------HỦY ĐƠN HÀNG-------------------
         // POST: Invoices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id , string cancelReason)
         {
             var order = await _context.Orders.FindAsync(id);
             if (order != null)
             {
-                _context.Orders.Remove(order);
+                //Console.WriteLine($"------------------{id} {cancelReason}----------------");
+                //_context.Orders.Remove(order);
+                order.Status = "Đã hủy"; // thay đổi trạng thái của đơn hàng
+                order.Note = cancelReason;
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+
             }
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

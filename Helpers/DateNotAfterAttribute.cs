@@ -26,7 +26,7 @@ namespace doan1_v1.Helpers
                 var thisValue = (DateTime)value;
                 var otherValue = (DateTime)otherPropertyValue;
 
-                if (thisValue < otherValue)
+                if (thisValue <= otherValue)
                 {
                     return new ValidationResult("Ngày nhận không được nhỏ hơn ngày đặt hàng.");
                 }

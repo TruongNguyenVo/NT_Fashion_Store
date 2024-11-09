@@ -19,11 +19,20 @@ namespace doan1_v1.Controllers
         }
 
         // GET: Orders
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Orders.ToListAsync());
+        //}
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            var orders = await _context.Orders
+                                    .Include(o => o.Customer)
+                                    .Include(o=> o.OrderProductDetails)
+                                    .ToListAsync();
+            ViewBag.Orders = orders;
+            return View();
         }
-
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -33,7 +42,12 @@ namespace doan1_v1.Controllers
             }
 
             var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
+                        .ThenInclude(op => op.Product) // lay thong tin cua product trong danh sach chi tiet
+                            .ThenInclude(opc => opc.Category) // lay ten category trong product
+                    .FirstOrDefaultAsync();
+            ViewBag.Order = order;
             if (order == null)
             {
                 return NotFound();
@@ -79,6 +93,7 @@ namespace doan1_v1.Controllers
             }
             return View(order);
         }
+
 
         // POST: Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -141,7 +156,8 @@ namespace doan1_v1.Controllers
             var order = await _context.Orders.FindAsync(id);
             if (order != null)
             {
-                _context.Orders.Remove(order);
+                //_context.Orders.Remove(order);
+                order.IsDel = true;
             }
 
             await _context.SaveChangesAsync();
@@ -152,5 +168,31 @@ namespace doan1_v1.Controllers
         {
             return _context.Orders.Any(e => e.Id == id);
         }
+
+        //xác nhận đơn hàng giao thành công
+        public async Task<IActionResult> confirmOrder(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null) {
+                order.Status = "Đã thanh toán"; // thay đổi trạng thái của đơn hàng
+                order.DateReceive = DateOnly.FromDateTime(DateTime.Now);
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+
+
+            }
+            else
+            {
+                return NotFound();
+            }
+            // về trang hiện tại (không di chuyển qua trang khác)
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
     }
 }

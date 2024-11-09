@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Trang cá nhân";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	ViewData["Title"] = "Đơn hàng";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	var orders = ViewBag.Orders;
 }
 <section id="center" class="p_3 bg_light">
 	<div class="container-xl">
@@ -26,22 +27,50 @@
 							<tr>
 								<th>Mã hóa đơn</th>
 								<th>Ngày đặt</th>
+								<th>Ngày giao</th>
 								<th>Tổng tiền</th>
 								<th>Trạng thái</th>
 								<th>Thao tác</th>
 							</tr>
 						</thead>
 						<tbody>
-
-							<tr>
-								<td>HD001</td>
-								<td>14/10/2024</td>
-								<td>100.000</td>
-								<td>Đã thanh toán</td>
-								<td>
-									<a href="">Xem chi tiết hóa đơn</a>
-								</td>
-							</tr>
+							@foreach (var order in orders)
+							{
+								<tr>
+									<td>@order.Id</td>
+									<td>@order.DateOrder</td>
+									<td>@order.DateReceive</td>
+									<td>
+										@{
+											var otherCost = order.OtherCost;
+											if (otherCost == null)
+											{
+												otherCost = 0;
+											}
+											var totalPrice = 0.0;
+											// tong phi van chuyen va phi khac
+											totalPrice = order.DeliveryCost + otherCost;
+											//tong tat ca cac gia cua cac product
+											foreach (var detailOr in order.OrderProductDetails)
+											{
+												totalPrice = totalPrice + (detailOr.Quantity * detailOr.PriceSale);
+											}
+										}
+										@totalPrice VND
+									</td>
+									<td>@order.Status</td>
+									@{
+										string title = "hóa đơn";
+										if (@order.Status != "Đã thanh toán")
+										{
+											title = "phiếu tạm tính";
+										}
+									}
+									<td>
+										<a target="_blank" asp-action="Invoice" asp-controller="Home" asp-route-orderId="@order.Id" asp-route-title="@title">Xem chi tiết @title</a>
+									</td>
+								</tr>
+							}
 						</tbody>
 					</table>
 				</div>

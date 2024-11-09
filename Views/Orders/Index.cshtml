@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Quản lý đơn hàng";
+    var orders = ViewBag.Orders;
 }
           <div class="page-inner">
             <div class="page-header">
@@ -22,7 +23,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a asp-action="Index">Quản lý đơn hàng</a>
+                  <a asp-action="Index">@ViewData["Title"]</a>
                 </li>
               </ul>
             </div>
@@ -110,58 +111,74 @@
                           </tr>
                         </tfoot>
                         <tbody>                         
-
+                        @foreach(var order in orders){
                           <tr>
-                            <td>Nguyễn Văn A</td>
-                            <td>10/10/2024</td>
-                            <td>Đang vận chuyển</td>
-                            <td>10/10/2024</td>
-                            <td>12.000.000</td>
-                            <td>0987654321</td>
+                            <td>@order.Customer.FullName</td>
+                                            <td>@order.DateOrder</td>
+                                            <td>@order.Status</td>
+                                            <td>@order.DateReceive</td>
+                            <td>
+                                                @{
+                                                    var otherCost = order.OtherCost;
+                                                    if(otherCost == null)
+                                                    {
+                                                        otherCost = 0;
+                                                    }
+                                                    var totalPrice = 0.0;
+                                                    // tong phi van chuyen va phi khac
+                                                    totalPrice = order.DeliveryCost + otherCost;
+                                                    //tong tat ca cac gia cua cac product
+                                                    foreach (var detailOrder in order.OrderProductDetails)
+                                                    {
+                                                        totalPrice = totalPrice + (detailOrder.Quantity * detailOrder.PriceSale);
+                                                    }
+                                                }
+                                                @totalPrice
+                            </td>
+                            <td>@order.Customer.Phone</td>
                             <td>
                               <div class="form-button-action">
                                 <!-- view -->
-                                <a
-                                href="update_order.html"
+                                <a asp-action="Details" asp-route-id="@order.Id"
+                                                       target="_blank"
                                 type="button"
-                                title="Xem chi tiết phiếu nhập"
+                                title="Xem chi tiết đơn hàng"
                                 class="btn btn-link btn-primary btn-lg"
                               >
                                 <i class="fa fa-eye"></i>
                               </a>
 
-                            
+                               @if (order.Status != "Đã thanh toán"){
                                 <!-- update -->
                                 <a
                                 href="update_order.html"
-                                  title="Chỉnh sửa phiếu nhập kho"
-                                  class="btn btn-link btn-primary btn-lg"
-                                >
+                                  title="Chỉnh sửa đơn hàng"
+                                  class="btn btn-link btn-warning btn-lg">
                                   <i class="fa fa-edit"></i>
                                 </a>
 
-                                <!-- update quantity -->
+                                <!-- confirm success order -->
                                 <a
-                                href="/tables/quanlykho.html"
+                                asp-action="confirmOrder" asp-route-id="@order.Id"
                                 type="button"
-                                title="Cập nhật sản phẩm của phiếu vào kho"
-                                class="btn btn-link btn-primary btn-lg"
-                              >
-                                <i class="fa fa-plus"></i>
+                                title="Xác nhận đơn hàng thành công"
+                               class="btn btn-link btn-success btn-lg">
+                                <i class="fa fa-check"></i>
                               </a>
-                                <!-- delete -->
+                                <!-- delete order -->
                                 <button
+                                    asp-action ="Delete" asp-route-id="@order.Id"
                                   type="button"
-                                  title="Xóa phiếu nhập kho"
+                                  title="Hủy đơn hàng"
                                   class="btn btn-link btn-danger"
-                                  data-original-title="Remove"
                                 >
                                   <i class="fa fa-times"></i>
                                 </button>
+                                }
                               </div>
                             </td>
                           </tr>
-                         
+                                    }
                         </tbody>
                       </table>
                     </div>

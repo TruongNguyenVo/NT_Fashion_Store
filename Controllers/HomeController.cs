@@ -113,12 +113,46 @@ namespace doan1_v1.Controllers
 			return View();
 		}
         [Route("Checkout")]
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout(int cartId)
 		{
-            //khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
+
+			//tìm chi tiết sản phẩm
+			var details = await _context.CartDetails
+										.Where(d => d.CartId == cartId)
+										.Include(d => d.Product)
+										.ThenInclude(p => p.ProductImages)
+										.ToListAsync();
+			if (details.Any())
+			{
+
+				//tính tổng tiền của giỏ hàng
+				double totalPrice = 0;
+				foreach (var detail in details)
+				{
+					int quantity = detail.Quantity;
+					double price = (double)detail.Product.Price;
+					totalPrice += quantity * price;
+				}
+				ViewBag.details = details; //chi tiet gio hang
+				ViewBag.totalPrice = totalPrice; // tong tien gio hang
+                var cart = await _context.Carts.Where(c => c.Id == cartId).Include(p=>p.User).FirstOrDefaultAsync();
+                ViewBag.cart = cart;
+			}
+
 			return View();
 		}
-        [Route("Cart")]
+        //hàm dùng xác nhận thanh toán
+        public async Task<IActionResult> confirmCheckout()
+        {
+            //khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
+            Console.WriteLine($"Vao post roi");
+			//tao order
+
+			//tao chi tiet order
+			// về trang hiện tại (không di chuyển qua trang khác)
+			return Redirect(Request.Headers["Referer"].ToString());
+		}
+			[Route("Cart")]
         public async Task<IActionResult> Cart(int? userId)
         {
             //tim cart theo ten nguoi dung - id test nguoi dung la 5
@@ -135,7 +169,17 @@ namespace doan1_v1.Controllers
                                             .ToListAsync();
                 if (details.Any())
                 {
-                    ViewBag.details = details;
+                    
+                    //tính tổng tiền của giỏ hàng
+                    double totalPrice = 0;
+                    foreach(var detail in details)
+                    {
+                        int quantity = detail.Quantity;
+                        double price = (double)detail.Product.Price;
+                        totalPrice += quantity * price;
+                    }
+					ViewBag.details = details; //chi tiet gio hang
+					ViewBag.totalPrice = totalPrice; // tong tien gio hang
                 }
                 else
                 {
@@ -217,8 +261,10 @@ namespace doan1_v1.Controllers
 
             if (detailCart != null)
             {
-
-            }
+                detailCart.Quantity = quantity;
+                _context.Update(detailCart);
+				await _context.SaveChangesAsync();
+			}
 
             // về trang hiện tại (không di chuyển qua trang khác)
             return Redirect(Request.Headers["Referer"].ToString());

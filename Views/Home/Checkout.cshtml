@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Thanh toán";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	ViewData["Title"] = "Thanh toán";
+	var cart = ViewBag.cart;
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <section id="center" class="p_3 bg_light">
  <div class="container-xl">
@@ -15,8 +16,10 @@
 
 <section id="checkout" class="p_3">
  <div class="container-xl">
+		<form asp-action="confirmCheckout"  asp-controller="Home">
   <div class="checkout_1 row">
     <div class="col-md-8">
+
 	  <div class="checkout_1l">
 	   <h5>Thông tin của bạn</h5>
 	   <p>Hãy kiểm tra thật kĩ thông tin trước khi đặt hàng</p>
@@ -24,23 +27,23 @@
 	  <div class="checkout_1l1 row">
 		<div class="col-md-12 ps-0">
 	    <h6>Họ tên của bạn</h6>
-		<input class="form-control" type="text">
+							<input disabled class="form-control" type="text" value="@cart.User.FullName">
 		</div>
 	  </div>
 	  <div class="checkout_1l1 row">	
        <div class="col-md-6 ps-0">
 	    <h6>Email <span></span></h6>
-		<input class="form-control" type="text">
+							<input disabled class="form-control" type="text" value="@cart.User.Email">
 	   </div>
 	   <div class="col-md-6 ps-0">
 	    <h6>Số điện thoại <span></span></h6>
-		<input class="form-control" type="text">
+							<input disabled class="form-control" type="text" value="@cart.User.Phone">
 	   </div>
 	  </div>
 	  <div class="checkout_1l1 row">
        <div class="col-md-12 ps-0">
 	    <h6>Địa chỉ <span></span></h6>
-		<input class="form-control" type="text">
+							<input disabled class="form-control" type="text" value="@cart.User.Address">
 	   </div>
 	  </div>
 
@@ -52,12 +55,31 @@
 	</div>
 	 <div class="col-md-4">
        <div class="checkout_1r">
-	     <h5>Tổng Giỏ Hàng</h5>
+					<h5>
+						Tổng Giỏ Hàng. <a data-bs-toggle="modal"
+						data-bs-target="#addRowModal" type="button">Chi tiết giỏ hàng</a>.
+					</h5>
 	     <hr class="line">
-		<h6>Tổng đơn hàng <span class="pull-right">$230.00</span></h6>
-		<h6>(+) Phí vận chuyển <span class="pull-right">$20.00</span></h6>
+					<h6>Tổng đơn hàng 
+						<span class="pull-right">
+							@ViewBag.totalPrice VND.
+						</span>
+						</h6>
+		<h6>
+			(+) Phí vận chuyển <span class="pull-right">
+								@{
+									var deliveryCost = 50000;
+								}
+								@deliveryCost VND
+				</span>
+			</h6>
 		<hr>
-		<h6 class="fw-bold font_13">Tổng thanh toán <span class="pull-right">$250.00</span></h6><br>
+		<h6 class="fw-bold font_13">Tổng thanh toán <span class="pull-right">
+								@{
+									var total = deliveryCost + (double)ViewBag.totalPrice;
+								}
+								@total VND
+			</span></h6><br>
 		 <h5>Phương thức thanh toán</h5>
 	     <hr class="line">
 
@@ -65,32 +87,57 @@
         <label class="form-check-label" for="customCheck1">Thanh toán khi đã giao hàng</label>
     </div>
 
-		 <h6 class="mt-3"><button data-bs-toggle="modal"
-			data-bs-target="#addRowModal" class="button">Tiến hành thanh toán</button></h6>
-		 <!-- form xac nhan -->
-		 <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
+		 <h6 class="mt-3"><button class="button" type="submit">Tiến hành thanh toán</button></h6>
+
+		 <!-- form chi tiết giỏ hàng -->
+					<div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
-			  <div class="modal-content">
+							<div class="modal-content custom-modal-body">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="newRowModalLabel">Xác nhận thanh toán</h5>
-				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				  <h5 class="modal-title" id="newRowModalLabel">Chi tiết giỏ hàng</h5>
+									<button type="submit" asp-action="Checkout" asp-controller="Home" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
-				  <form action="">
-					<div class="mb-3">
-					  <label for="name" class="form-label">Số điện thoại</label>
-					  <input type="text" class="form-control" id="name" placeholder="Nhập tên" disabled>
-					</div>
-					<div class="mb-3">
-					  <label for="position" class="form-label">Địa chỉ</label>
-					  <input type="text" class="form-control" id="position" placeholder="Nhập vị trí" disabled>
-					</div>
+								<div class="modal-body">
+									<div class="mb-5">
+										<table class="table" id="tableProduct">
+											<thead>
+												<tr>
+													<th>Tên sản phẩm</th>
+													<th>Màu sắc</th>
+													<th>Kích thước</th>
+													<th>Chất liệu</th>
+													<th>Số lượng</th>
+													<th>Đơn giá</th>
+													<th>Thành tiền</th>
+												</tr>
+											</thead>
+											<tbody>
+												@foreach (var detail in ViewBag.details){
+												<tr>
+													<td>@detail.Product.Name</td>
+												
+														<td>@detail.Product.Color</td>
+														<td>@detail.Product.Dimension</td>
+													<td>Cotton</td>
+													
+														<td>@detail.Quantity</td>
+														<td>@detail.Product.Price</td>
+													<td>
+															@{
+																double totalPriceProduct = detail.Quantity * detail.Product.Price;
+															}
+																@totalPriceProduct
+													</td>
+
+													</tr>
+												}
+											</tbody>
+										</table>
+										</div>
 				 
 				<div class="modal-footer">
-				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-				  <button type="submit" class="btn btn-primary">Xác nhận</button>
+				  <button type="button" class="btn btn-secondary">Đóng</button>
 				</div>
-			  </form>
 			  </div>
 			</div>
 		  </div>
@@ -99,5 +146,14 @@
 	   </div>
 	  </div>
    </div>
+	</form>
  </div>
 </section>
+<style>
+	.custom-modal-body {
+		max-height: 600px; /* Tăng chiều cao tối đa */
+		max-width:800px;
+		overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao */
+	}
+
+</style>

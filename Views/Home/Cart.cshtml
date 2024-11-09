@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Giỏ hàng";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	ViewData["Title"] = "Giỏ hàng";
+	var cartId = 1; //id cua cart - test
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <section id="center" class="p_3 bg_light">
 	<div class="container-xl">
@@ -29,47 +30,51 @@
 				<div class="cart_3l">
 					<h6>SẢN PHẨM</h6>
 				</div>
-				<div class="cart_3l1 mt-3 row ms-0 me-0">
-					<div class="col-md-3 ps-0 col-3">
-						<div class="cart_3l1i">
-							<a href="#"><img src="img/26.jpg" alt="abc" class="w-100"></a>
+				@if (ViewBag.details != null)
+				{
+					
+					@foreach (var detail in ViewBag.details)
+					{
+						
+						<div class="cart_3l1 mt-3 row ms-0 me-0">
+							<div class="col-md-3 ps-0 col-3">
+								<div class="cart_3l1i">
+									<a asp-action="Detail" asp-controller="Home" asp-route-id="@detail.Product.Id">
+										<img src="@detail.Product.ProductImages[0].ImgURL" alt="abc" class="w-100">
+									</a>
+								</div>
+							</div>
+							<div class="col-md-9 col-9">
+								<div class="cart_3l1i1">
+									<h6 class="fw-bold">
+										<a asp-action="Detail" asp-controller="Home" asp-route-id="@detail.Product.Id">@detail.Product.Name</a>
+									</h6>
+									<h6 class="fw-normal font_12 mt-3">@detail.Product.Color</h6>
+									<h5 class="col_red mt-3">@detail.Product.Price VND</h5>
+									<h6 class="font_12 mt-3 mb-3">Quantity</h6>
+								</div>
+								<div class="cart_3l1i2">
+									<input type="number" id="detailQuantity" name="detailQuantity" min="1" value="@detail.Quantity" class="form-control" placeholder="Qty" onchange="updateQuantity()">
+									
+									<h6>
+										<a class="button_1" asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id" asp-route-cartId="@cartId">Xóa</a>
+									</h6>
+
+									<h6>
+										<form asp-action="changeQuantity" asp-controller="Home" method="post">
+											<input type="hidden" id="quantity" name="quantity" value="" />
+											<input type="hidden" name="detailId" value="@detail.Id" />
+											<input type="hidden" name="cartId" value="@cartId" />
+											<button id="updateButton" class="button" type="submit">Cập Nhật</button>
+										</form>
+									</h6>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-9 col-9">
-						<div class="cart_3l1i1">
-							<h6 class="fw-bold"><a href="#">Áo Khoác Nam UV Pro Windbreaker MOK 1058</a></h6>
-							<h6 class="fw-normal font_12 mt-3">RED</h6>
-							<h5 class="col_red mt-3">$175.00</h5>
-							<h6 class="font_12 mt-3 mb-3">Quantity</h6>
-						</div>
-						<div class="cart_3l1i2">
-							<input type="number" min="1" value="1" class="form-control" placeholder="Qty">
-							<h6><a class="button_1" href="#">Xóa</a></h6>
-							<h6><a class="button" href="#">Cập Nhật</a></h6>
-						</div>
-					</div>
-				</div>
-				<div class="cart_3l1 mt-3 row ms-0 me-0 pb-0 border-0">
-					<div class="col-md-3 ps-0 col-3">
-						<div class="cart_3l1i">
-							<a href="#"><img src="img/28.jpg" alt="abc" class="w-100"></a>
-						</div>
-					</div>
-					<div class="col-md-9 col-9">
-						<div class="cart_3l1i1">
-							<h6 class="fw-bold"><a href="#">Naminos elementum disus tincidunts cosmo de cosmopolis</a></h6>
-							<h6 class="fw-normal font_12 mt-3">RED / XS</h6>
-							<h6 class="font_12 mt-3">Vendor</h6>
-							<h5 class="col_red mt-3">$175.00</h5>
-							<h6 class="font_12 mt-3 mb-3">Quantity</h6>
-						</div>
-						<div class="cart_3l1i2">
-							<input type="number" min="1" value="1" class="form-control" placeholder="Qty">
-							<h6><a class="button_1" href="#">Xóa</a></h6>
-							<h6><a class="button" href="#">Cập Nhật</a></h6>
-						</div>
-					</div>
-				</div>
+					}
+				}
+
+
 			</div>
 			<div class="col-md-4">
 				<div class="cart_3r">
@@ -87,3 +92,16 @@
 		</div>
 	</div>
 </section>
+<script>
+	function updateQuantity() {
+
+
+		// Lấy giá trị của input detailQuantity
+		var quantityValue = document.getElementById('detailQuantity').value;
+
+		// Cập nhật giá trị vào input ẩn quantity
+		document.getElementById('quantity').value = quantityValue;
+	}
+
+
+</script>

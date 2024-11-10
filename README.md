@@ -24,6 +24,7 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
     Update-Database -Migration NameYourMigration
 ```
 # `Registration, Login, Logout`
+Thay kế thừa DbConext thành IndentityDbContext trong DbConext.cs
 1. chuột phải project -> add new scafford item -> indetity 
 2. lựa chọn layout, chức năng (login, register), dbcontext và model
 3. thêm trong program.cs

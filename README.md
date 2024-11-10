@@ -23,3 +23,12 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```bash
     Update-Database -Migration NameYourMigration
 ```
+# `Registration, Login, Logout`
+1. chuột phải project -> add new scafford item -> indetity 
+2. lựa chọn layout, chức năng (login, register), dbcontext và model
+3. thêm trong program.cs
+	using authorize.Areas.Identity.Data; //thu vien
+	//// Add services to the container.
+	builder.Services.AddControllersWithViews();
+	builder.Services.AddRazorPages(); //////////them
+	app.MapRazorPages(); /////////////them

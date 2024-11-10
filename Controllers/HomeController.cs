@@ -1,4 +1,5 @@
-﻿using doan1_v1.Models;
+﻿using doan1_v1.Helpers;
+using doan1_v1.Models;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,7 +42,7 @@ namespace doan1_v1.Controllers
             return View();
         }
         [Route("Shop/{id?}")]
-        public async Task<IActionResult> Shop(int? id)
+        public async Task<IActionResult> Shop(int? id, int pageNumber=1)
 		{
 			//danh muc san pham
 			var categories = await _context.Categories
@@ -51,21 +52,23 @@ namespace doan1_v1.Controllers
 			// lay tat ca san pham
 			if (id == null)
             {
-				var products = await _context.Products
-					.Where(p => p.IsDel == false)
-                    .Include(p=> p.ProductImages)
-					.ToListAsync();
-				ViewBag.products = products;
-				return View();
+                //var products = await _context.Products
+                //	.Where(p => p.IsDel == false)
+                //                .Include(p=> p.ProductImages)
+                //	.ToListAsync();
+                var products = await PaginatedList<Product>.CreateAsync(_context.Products
+                    .Where(p => p.IsDel == false)
+                                .Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
+                ViewBag.products = products;
+				return View(products);
             }
             //lay san pham theo category
             else
             {
-                var products = await _context.Products
-                                    .Where(p=>p.CategoryId == id && p.IsDel == false)
-                                    .Include(p=> p.ProductImages)
-                                    .ToListAsync();
-                ViewBag.products = products;
+				var products = await PaginatedList<Product>.CreateAsync(_context.Products
+	                                                        .Where(p => p.CategoryId == id && p.IsDel == false)
+				                                            .Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
+				ViewBag.products = products;
                 return View();
             }
 			

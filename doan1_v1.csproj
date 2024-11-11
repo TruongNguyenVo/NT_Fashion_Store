@@ -23,4 +23,11 @@
     <Folder Include="wwwroot\admin\assets\uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Home\Search.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -41,6 +41,30 @@ namespace doan1_v1.Controllers
             ViewBag.ProductQuans = productQuans;
             return View();
         }
+        //hàm dùng để tìm kiếm sản phẩm
+        [Route("Seach/{query?}")]
+        public async Task<IActionResult> Search(string? query, int pageNumber = 1)
+        {
+			//tim tat ca san pham theo query
+			//Console.WriteLine($"--------------{query}----------------");
+			
+            //danh muc san pham
+			var categories = await _context.Categories
+								.Where(c => c.ParentId != null)
+								.ToListAsync();
+			ViewBag.categories = categories;
+
+			var products = await PaginatedList<Product>.CreateAsync(_context.Products
+	            .Where(p => p.IsDel == false && p.Name.Contains(query))
+				.Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
+			ViewBag.products = products;
+            //foreach(var product in products)
+            //{
+            //    Console.WriteLine(product.Name);
+            //}
+
+			return View("Search", products);
+        }
         [Route("Shop/{id?}")]
         public async Task<IActionResult> Shop(int? id, int pageNumber=1)
 		{
@@ -216,11 +240,8 @@ namespace doan1_v1.Controllers
                     await _context.SaveChangesAsync();
                 }
 			}
-
-
-
-			// về trang hiện tại (không di chuyển qua trang khác)
-			return Redirect("Oder");
+			// chuyển đến trang order
+			return RedirectToAction("Order", "Home");
 		}
 			[Route("Cart")]
         public async Task<IActionResult> Cart(int? userId)

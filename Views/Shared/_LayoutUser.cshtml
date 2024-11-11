@@ -45,14 +45,16 @@
 					</div>
 					<div class="modal-body p-0">
 						<div class="search_1">
+							<form asp-action="Search" asp-controller="Home">
 							<div class="input-group">
-								<input type="text" class="form-control bg-transparent border-0" placeholder="Nhập sản phẩm bạn tìm kiếm ở đây..">
+								<input type="text" class="form-control bg-transparent border-0" placeholder="Nhập sản phẩm bạn tìm kiếm ở đây.." name="query">
 								<span class="input-group-btn">
-									<button class="btn btn-primary bg-transparent border-0" type="button">
+									<button class="btn btn-primary bg-transparent border-0" type="submit">
 										<i class="fa fa-search"></i>
 									</button>
 								</span>
 							</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -163,19 +165,13 @@
    <div class="footer_1 row">
      <div class="col-md-2 px-2">
 	  <div class="footer_1i">
-	   <h3><a class="fw-bold text-white" href="index.html"><i class="fa fa-female lh-1 align-middle me-1 col_red"></i> Fashist</a></h3>
-	   <p class="text-muted font_14 mt-3">Lorem ipsum dolor sit amet, doming quaeque an mea gravida.</p>
-	   <ul class="social-network social-circle mb-0 mt-3">
-					<li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li>
-					<li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-pinterest"></i></a></li>
-					<li><a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-					<li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-				</ul>
+	   <h3><a class="fw-bold text-white" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i>NTMFashion</a></h3>
+	   <p class="text-muted font_14 mt-3">Kết hợp hoàn hảo giữa sự đơn giản và tinh tế, tạo nên phong cách thời trang hiện đại và đẳng cấp.</p>
 	  </div>
 	</div>
 	<div class="col-md-2 px-2">
 	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Locate Us</h5>
+       <h5 class="text-white mb-4">Vị trí của chúng tôi</h5>
 	   <p class="text-muted mb-2 font_14">382 Sixth Avenue East Street, Old Venue</p>
 	   <p class="text-muted mb-2 font_14"><span class="text-light">Phone:</span> <br> +(000) 345 67 89</p>
 	   <p class="text-muted font_14  mb-0"><span class="text-light">Email:</span> <br> info@gmail.com</p>	   
@@ -183,41 +179,33 @@
 	</div>
 	<div class="col-md-2 px-2">
 	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Information</h5>
+       <h5 class="text-white mb-4">Thông tin</h5>
 	   <div class="footer_1ism row">
-	     <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">About Us</a></h6>
-	    <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">FAQ Page</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Contact Us</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Our Work</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Offices</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Policy</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Về chúng tôi</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Câu hỏi thường gặp</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Hợp tác</a></h6>
 	   </div>
        
 	</div>
    </div>
    <div class="col-md-2 px-2">
 	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Discover</h5>
+       <h5 class="text-white mb-4">Khám phá</h5>
 	    <div class="footer_1ism row">
-		  <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Men</a></h6>
-	    <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Women</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Home & Living</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Sale</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Privacy</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Shopping</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Áo</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Quần</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Cửa hàng</a></h6>
 		</div>
 	</div>
    </div>
    <div class="col-md-2 px-2">
 	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Connect</h5>
+       <h5 class="text-white mb-4">Mạng xã hội</h5>
 	   <div class="footer_1ism row">
-	     <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Follow  Instagram</a></h6>
-	    <h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Add to Facebook</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Pinterest</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Follow Twitter</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Google</a></h6>
-		<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Linkedin</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Instagram</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Facebook</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Youtube</a></h6>
+							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Zalo</a></h6>
 	   </div>
        
 	</div>

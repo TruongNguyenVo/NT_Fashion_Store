@@ -93,3 +93,12 @@ app.UseAuthorization();
 	}
 
    ```
+9. Kiểm tra người dùng đã đăng nhập hay chưa
+   ```bash
+   @if (User.Identity.IsAuthenticated)
+	{
+	    var user = await UserManager.GetUserAsync(User);
+	    <p>@user?.Id</p>// ID người dùng
+	    <p>@user?.UserName</p>
+   ```
+   

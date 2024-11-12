@@ -14,12 +14,45 @@ namespace doan1_v1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly NTFashionDbContext _context;
+        private string userId = "1237";
 
         public HomeController(ILogger<HomeController> logger, NTFashionDbContext context)
         {
-            _logger = logger;
+			
+			_logger = logger;
             _context = context;
-        }
+			
+
+
+		}
+        //lay cart cua user
+        private async Task<List<CartDetail>> cartOfUser()
+        {
+
+			List<CartDetail> detailCarts = null;
+			if (userId != null)
+			{
+                // tim kiem cart theo ten nguoi dung
+                var cart = await _context.Carts
+                                           .Where(c => c.UserId == userId).FirstAsync();
+                if(cart == null)
+                {
+                    Console.WriteLine("loi roi");
+                }
+				detailCarts = await _context.CartDetails
+						.Where(d => d.CartId == cart.Id)
+						.Include(d => d.Product)
+						.ToListAsync();
+                foreach(var detail in detailCarts)
+                {
+                    Console.WriteLine(detail.Product.Name);
+					Console.WriteLine(detail.Quantity);
+
+				}
+			}
+
+            return detailCarts;
+		}
         [Route("")]
         public async Task<IActionResult> Index()
         {
@@ -39,7 +72,10 @@ namespace doan1_v1.Controllers
                                             .ToListAsync();
             ViewBag.ProductAos = productAos;
             ViewBag.ProductQuans = productQuans;
-            return View();
+
+
+			//ViewBag.cart = cartOfUser(); // lay danh sach cac mon hang cua nguoi dung - undone
+			return View();
         }
         //hàm dùng để tìm kiếm sản phẩm
         [Route("Seach/{query?}")]
@@ -105,10 +141,8 @@ namespace doan1_v1.Controllers
         [Route("Order")]
         public async Task<IActionResult> Order()
         {
-            //lay id user = 5
-            int customerId = 5;
 			var orders = await _context.Orders
-                         .Where(o=> o.CustomerId == 5)
+                         .Where(o=> o.CustomerId == userId)
 						.Include(o => o.OrderProductDetails)
 						.ToListAsync();
 			ViewBag.Orders = orders;
@@ -166,12 +200,13 @@ namespace doan1_v1.Controllers
 			return View();
 		}
         [Route("Checkout")]
-        public async Task<IActionResult> Checkout(int cartId)
+        public async Task<IActionResult> Checkout()
 		{
+            var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
 			//tìm chi tiết sản phẩm
 			var details = await _context.CartDetails
-										.Where(d => d.CartId == cartId)
+										.Where(d => d.CartId == cartofUser.Id)
 										.Include(d => d.Product)
 										.ThenInclude(p => p.ProductImages)
 										.ToListAsync();
@@ -188,26 +223,28 @@ namespace doan1_v1.Controllers
 				}
 				ViewBag.details = details; //chi tiet gio hang
 				ViewBag.totalPrice = totalPrice; // tong tien gio hang
-                var cart = await _context.Carts.Where(c => c.Id == cartId).Include(p=>p.User).FirstOrDefaultAsync();
+                var cart = await _context.Carts.Where(c => c.Id == cartofUser.Id).Include(p=>p.User).FirstOrDefaultAsync();
                 ViewBag.cart = cart;
 			}
 
 			return View();
 		}
         //hàm dùng xác nhận đơn hàng
-        public async Task<IActionResult> confirmCheckout(int cartId, double deliveryCost, int customerId)
+        public async Task<IActionResult> confirmCheckout(double deliveryCost)
         {
-            //khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
-            //Console.WriteLine($"Vao post roi");
-            //Console.WriteLine($"---------------------{customerId}------------------");
+			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+
+			//khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
+			//Console.WriteLine($"Vao post roi");
+			//Console.WriteLine($"---------------------{customerId}------------------");
 			//tao order
-            Order order = new Order
+			Order order = new Order
 			{
 				Status = "Đã đặt hàng" /* gán giá trị phù hợp cho Status */
 			};
             order.DateOrder = DateOnly.FromDateTime(DateTime.Now);
             order.DeliveryCost = deliveryCost;
-            order.CustomerId = customerId;
+            order.CustomerId = userId;
 
             _context.Add(order);
             int rowsEffect = await _context.SaveChangesAsync();
@@ -218,7 +255,7 @@ namespace doan1_v1.Controllers
                 //tim cart de chuyen du lieu
                 ////tim chi tiet cart dua vao cartId
                 var detailCarts = await _context.CartDetails
-                                        .Where(d => d.CartId == cartId)
+                                        .Where(d => d.CartId == cartofUser.Id)
                                         .Include(d=>d.Product)
                                         .ToListAsync();
 
@@ -244,11 +281,10 @@ namespace doan1_v1.Controllers
 			return RedirectToAction("Order", "Home");
 		}
 			[Route("Cart")]
-        public async Task<IActionResult> Cart(int? userId)
+        public async Task<IActionResult> Cart()
         {
-            //tim cart theo ten nguoi dung - id test nguoi dung la 5
             var cart = await _context.Carts
-                                    .Where(c => c.UserId == 5)
+                                    .Where(c => c.UserId == userId)
                                     .FirstOrDefaultAsync();
             if (cart != null)
 			{
@@ -287,14 +323,14 @@ namespace doan1_v1.Controllers
 		}
 
         // hàm thêm vào giỏ hàng cần số lượng sản phẩm, id sản phẩm, id của user đã đăng nhập
-		public async Task<IActionResult> addToCart(int quantity, int productId, int userId)
+		public async Task<IActionResult> addToCart(int quantity, int productId)
 		{
 			//tạo chi tiết giỏ hàng
 
 			//đã có chi tiết giỏ hàng
-            
-            //tìm kiếm cart của một khách hàng dựa vào userId
-            var cart = await _context.Carts
+
+			//tìm kiếm cart của một khách hàng dựa vào userId
+			var cart = await _context.Carts
                             .Where(p => p.UserId == userId)
                             .FirstOrDefaultAsync();
             //tạo một chi tiết giỏ hàng
@@ -340,13 +376,17 @@ namespace doan1_v1.Controllers
 		}
 
         //hàm chỉnh sửa số lượng sản phẩm trong giỏ hàng, nhận vào cartId, id của chi tiết và quantity
-        public async Task<IActionResult> changeQuantity(int detailId, int cartId, int quantity)
+        public async Task<IActionResult> changeQuantity(int detailId, int quantity)
         {
-            //Console.WriteLine($"----------------{detailId} {cartId} {quantity}------------");
-            //đã có các tham số rồi
-            //tìm cartdetail dựa vào cartId và detailId
-            var detailCart = await _context.CartDetails
-                                            .Where(d => d.CartId == cartId && d.Id == detailId)
+			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+
+
+
+			//Console.WriteLine($"----------------{detailId} {cartId} {quantity}------------");
+			//đã có các tham số rồi
+			//tìm cartdetail dựa vào cartId và detailId
+			var detailCart = await _context.CartDetails
+                                            .Where(d => d.CartId == cartofUser.Id && d.Id == detailId)
                                             .FirstOrDefaultAsync();
 
 
@@ -360,28 +400,7 @@ namespace doan1_v1.Controllers
             // về trang hiện tại (không di chuyển qua trang khác)
             return Redirect(Request.Headers["Referer"].ToString());
 		}
-		[Route("SignIn")]
-        public IActionResult SignIn()
-		{
-			return View();
-		}
-        [Route("SignUp")]
-        public IActionResult SignUp()
-        {
 
-			return View();
-        }
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> SignUp(Customer customer)
-		{
-			//khi tạo tài khoản thành công thì tạo một cart luôn
-			Cart cart = new Cart();
-			    cart.UserId = 0; // id cua nguoi dung
-			    _context.Add(cart);
-			    await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-		}
 		[Route("Privacy")]
         public IActionResult Privacy()
         {
@@ -393,5 +412,6 @@ namespace doan1_v1.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
     }
 }

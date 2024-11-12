@@ -27,7 +27,7 @@ namespace doan1_v1.Models
         public Supplier? Supplier { get; set; } //mot purchase report chi thuoc 1 supplier
 
         [ForeignKey(nameof(User.Id))] // lien ket voi bang User
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
         public User? User { get; set; } // mot purchase report chi thuoc 1 quan ly
         public List<PurchaseReportProductDetail>? PurchaseReportProductDetails { get; set; } // 1 purchase report chua nhieu detail
     }

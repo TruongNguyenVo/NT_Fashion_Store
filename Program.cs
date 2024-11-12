@@ -1,4 +1,5 @@
-using doan1_v1.Models;
+﻿using doan1_v1.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,34 @@ builder.Services.AddDbContext<NTFashionDbContext>(options =>
  options.UseSqlServer(connectionString));
 
 /////////////////////////////
+///////////////////////////
+///cau hinh identity
+// Cấu hình Identity
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<NTFashionDbContext>()
+    .AddDefaultTokenProviders();
+//Cấu hình Authorize
+builder.Services.AddAuthorization(options =>
+{
+    // Policy cho Customer
+    options.AddPolicy("CustomerOnly", policy =>
+        policy.RequireRole("Customer"));
 
+    // Policy cho Admin
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+
+    // Policy cho Admin và Customer (nếu cần)
+    options.AddPolicy("AdminOrCustomer", policy =>
+        policy.RequireRole("Admin", "Customer"));
+});
+// Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
+});
+//////////////////////////
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +54,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+// Thêm xác thực và ủy quyền
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

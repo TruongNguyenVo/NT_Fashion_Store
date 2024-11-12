@@ -1,9 +1,10 @@
 ﻿using doan1_v1.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace doan1_v1.Models
 {
-    public class NTFashionDbContext : DbContext
+    public class NTFashionDbContext : IdentityDbContext<User>
     {
         public NTFashionDbContext(DbContextOptions<NTFashionDbContext> options)
       : base(options)
@@ -24,14 +25,14 @@ namespace doan1_v1.Models
         public DbSet<Customer> Customers { get; set; }
 
         //ham de tranh loi xoa long trong category cha - con
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Category>()
-           .HasOne(c => c.ParentCategory)
-           .WithMany(c => c.SubCategories)
-           .HasForeignKey(c => c.ParentId)
-           .OnDelete(DeleteBehavior.Restrict); // Hoặc DeleteBehavior.SetNull
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Category>()
+        //   .HasOne(c => c.ParentCategory)
+        //   .WithMany(c => c.SubCategories)
+        //   .HasForeignKey(c => c.ParentId)
+        //   .OnDelete(DeleteBehavior.Restrict); // Hoặc DeleteBehavior.SetNull
+        //}
 
 
     }

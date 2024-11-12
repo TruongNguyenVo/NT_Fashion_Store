@@ -14,28 +14,26 @@
 
 </head>
 <body>
-	
+
 	<section id="top" class="bg_dark pt-2 pb-2">
 		<div class="container-xl">
 			<div class="row top_1">
 				<div class="col-md-6">
 					<div class="top_1l">
-						<p class="font_14 text-light mb-0">Miễn phí vận chuyển các đơn hàng có giá trị từ 500  VND0 vnđ trở lên</p>
+						<p class="font_14 text-light mb-0">Miễn phí vận chuyển các đơn hàng có giá trị từ 500 vnđ trở lên</p>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="top_1r text-end">
 						<ul class="mb-0">
-							<li class="d-inline-block"><a class="text-light font_12" asp-action="SignUp" asp-controller="Home">ĐĂNG KÝ</a></li>
-							<li class="d-inline-block mx-3"><a class="text-light font_12" asp-action="SignIn" asp-controller="Home">ĐĂNG NHẬP</a></li>
+							<li class="d-inline-block"><a class="text-light font_12" asp-action="SignUp" asp-controller="Account">ĐĂNG KÝ</a></li>
+							<li class="d-inline-block mx-3"><a class="text-light font_12" asp-action="SignIn" asp-controller="Account">ĐĂNG NHẬP</a></li>
 						</ul>
-					</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-
 	<section id="header">
 		<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none; top:0;" aria-hidden="true">
 			<div class="modal-dialog">
@@ -46,14 +44,14 @@
 					<div class="modal-body p-0">
 						<div class="search_1">
 							<form asp-action="Search" asp-controller="Home">
-							<div class="input-group">
-								<input type="text" class="form-control bg-transparent border-0" placeholder="Nhập sản phẩm bạn tìm kiếm ở đây.." name="query">
-								<span class="input-group-btn">
-									<button class="btn btn-primary bg-transparent border-0" type="submit">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div>
+								<div class="input-group">
+									<input type="text" class="form-control bg-transparent border-0" placeholder="Nhập sản phẩm bạn tìm kiếm ở đây.." name="query">
+									<span class="input-group-btn">
+										<button class="btn btn-primary bg-transparent border-0" type="submit">
+											<i class="fa fa-search"></i>
+										</button>
+									</span>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -100,6 +98,12 @@
 							</a>
 							<ul class="dropdown-menu drop_cart" aria-labelledby="navbarDropdown" style="">
 								<li>
+@* 									@{
+										foreach (var cart in ViewBag.cart)
+										{
+											Console.WriteLine($"--------------{cart.Product.Name}---{cart.Quantity}");
+										}
+									} *@
 									<div class="drop_1i row">
 										<div class="col-md-6 col-6">
 											<div class="drop_1il"><h6>2 Sản phẩm</h6></div>
@@ -160,78 +164,82 @@
 
 	@RenderBody()
 
-<section id="footer" class="p_3 bg_dark">
- <div class="container-xl">
-   <div class="footer_1 row">
-     <div class="col-md-2 px-2">
-	  <div class="footer_1i">
-	   <h3><a class="fw-bold text-white" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i>NTMFashion</a></h3>
-	   <p class="text-muted font_14 mt-3">Kết hợp hoàn hảo giữa sự đơn giản và tinh tế, tạo nên phong cách thời trang hiện đại và đẳng cấp.</p>
-	  </div>
-	</div>
-	<div class="col-md-2 px-2">
-	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Vị trí của chúng tôi</h5>
-	   <p class="text-muted mb-2 font_14">382 Sixth Avenue East Street, Old Venue</p>
-	   <p class="text-muted mb-2 font_14"><span class="text-light">Phone:</span> <br> +(000) 345 67 89</p>
-	   <p class="text-muted font_14  mb-0"><span class="text-light">Email:</span> <br> info@gmail.com</p>	   
-	  </div>
-	</div>
-	<div class="col-md-2 px-2">
-	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Thông tin</h5>
-	   <div class="footer_1ism row">
+	<section id="footer" class="p_3 bg_dark">
+		<div class="container-xl">
+			<div class="footer_1 row">
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h3><a class="fw-bold text-white" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i>NTMFashion</a></h3>
+						<p class="text-muted font_14 mt-3">Kết hợp hoàn hảo giữa sự đơn giản và tinh tế, tạo nên phong cách thời trang hiện đại và đẳng cấp.</p>
+					</div>
+				</div>
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h5 class="text-white mb-4">Vị trí của chúng tôi</h5>
+						<p class="text-muted mb-2 font_14">382 Sixth Avenue East Street, Old Venue</p>
+						<p class="text-muted mb-2 font_14"><span class="text-light">Phone:</span> <br> +(000) 345 67 89</p>
+						<p class="text-muted font_14  mb-0"><span class="text-light">Email:</span> <br> info@gmail.com</p>
+					</div>
+				</div>
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h5 class="text-white mb-4">Thông tin</h5>
+						<div class="footer_1ism row">
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Về chúng tôi</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Câu hỏi thường gặp</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Hợp tác</a></h6>
-	   </div>
-       
-	</div>
-   </div>
-   <div class="col-md-2 px-2">
-	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Khám phá</h5>
-	    <div class="footer_1ism row">
+						</div>
+
+					</div>
+				</div>
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h5 class="text-white mb-4">Khám phá</h5>
+						<div class="footer_1ism row">
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Áo</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Quần</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Cửa hàng</a></h6>
-		</div>
-	</div>
-   </div>
-   <div class="col-md-2 px-2">
-	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Mạng xã hội</h5>
-	   <div class="footer_1ism row">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h5 class="text-white mb-4">Mạng xã hội</h5>
+						<div class="footer_1ism row">
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Instagram</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14" href="#">Facebook</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Youtube</a></h6>
 							<h6 class="col-md-12 col-6"><a class="text-muted font_14 mb-0" href="#">Zalo</a></h6>
-	   </div>
-       
-	</div>
-   </div>
-   <div class="col-md-2 px-2">
-	  <div class="footer_1i">
-       <h5 class="text-white mb-4">Download App</h5>
-      <p class="text-muted font_14">Onea App for iOS
-and Android</p>
-      <h5 class="text-white mt-3">Newsletter</h5>
-	  <div class="input-group mt-4">
-				<input type="text" class="form-control border-0 rounded-0 font_12 bg-transparent" placeholder="YOUR EMAIL">
-				<span class="input-group-btn">
-					<button class="btn btn-primary bg-transparent border-0 rounded-0" type="button">
-						<i class="fa fa-envelope col_red"></i> </button>
-				</span>
-		</div>
-	</div>
-   </div>
-  </div>
-   <div class="footer_2 row mt-3 text-center pt-3">
-    <div class="col-md-12">
-	   <p class="text-muted mb-0 font_14">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_red" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
-	</div>
-   </div>
-</section>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-md-2 px-2">
+					<div class="footer_1i">
+						<h5 class="text-white mb-4">Download App</h5>
+						<p class="text-muted font_14">
+							Onea App for iOS
+							and Android
+						</p>
+						<h5 class="text-white mt-3">Newsletter</h5>
+						<div class="input-group mt-4">
+							<input type="text" class="form-control border-0 rounded-0 font_12 bg-transparent" placeholder="YOUR EMAIL">
+							<span class="input-group-btn">
+								<button class="btn btn-primary bg-transparent border-0 rounded-0" type="button">
+									<i class="fa fa-envelope col_red"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer_2 row mt-3 text-center pt-3">
+				<div class="col-md-12">
+					<p class="text-muted mb-0 font_14">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_red" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
+				</div>
+			</div>
+			</div>
+	</section>
 
 	<script>
 		window.onscroll = function () { myFunction() };
@@ -241,7 +249,7 @@ and Android</p>
 		var navbar_height = document.querySelector('.navbar').offsetHeight;
 
 		function myFunction() {
-			if (window.pageYOffset >= sticky + navbar_height) {
+			if (window.scrollY >= sticky + navbar_height) {
 				navbar_sticky.classList.add("sticky")
 				document.body.style.paddingTop = navbar_height + 'px';
 			} else {

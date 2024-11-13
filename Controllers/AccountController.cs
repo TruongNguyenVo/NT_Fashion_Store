@@ -29,8 +29,18 @@ namespace doan1_v1.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LogIn()
+        public async Task<IActionResult> LogIn(string username, string password)
         {
+            //xem thong tin cua tai khoan
+            var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
+            if (result.Succeeded) { 
+                var user = await _userManager.FindByNameAsync(username);
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Customer")) //neu la customer
+                {
+                    return RedirectToAction("Index", "Home"); //thi chay den trang chu
+                }
+            }
             return View();
         }
         [HttpGet]
@@ -88,5 +98,16 @@ namespace doan1_v1.Controllers
         //{
         //    return View();
         //}
+        public IActionResult AccessDenied()
+        {
+            return View(); // Tạo một view AccessDenied.cshtml để hiển thị thông báo
+        }
+        // Đăng xuất
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();  // Xóa cookie đăng nhập
+            return RedirectToAction("Index", "Home");  // Chuyển hướng về trang chủ
+        }
     }
 }

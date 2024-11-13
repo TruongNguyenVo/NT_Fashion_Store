@@ -25,3 +25,4 @@ logs/*.log
 *.userassets
 *.sln.docstates
 temp/
+/wwwroot/admin/assets/uploads

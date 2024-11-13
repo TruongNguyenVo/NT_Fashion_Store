@@ -117,10 +117,12 @@ namespace doan1_v1.Controllers
                     foreach (var file in files)
                     {
                         ProductImage image = new ProductImage();
-                        
-                        string fileName = Path.GetFileName(file.FileName); // lay ten cua file
-                        string fileSavePath = Path.Combine(uploadsFolder, fileName); //lay duong dan cua file
-                                                                                     // Sử dụng Replace để có đường dẫn tương đối
+
+                        // Đặt tên file là "abc" với phần mở rộng gốc
+                        string fileExtension = Path.GetExtension(file.FileName); // lấy phần mở rộng của file gốc
+                        string fileName = randomNameFile() + fileExtension; // Đặt tên file là random với phần mở rộng gốc
+
+                        string fileSavePath = Path.Combine(uploadsFolder, fileName); // lấy đường dẫn của file đường dẫn tương đối
                         string relativePath = fileSavePath.Replace(_webHostEnvironment.WebRootPath, "");
 
                         //su dung fileStream de luu file
@@ -219,9 +221,11 @@ namespace doan1_v1.Controllers
                     {
                         ProductImage image = new ProductImage();
 
-                        string fileName = Path.GetFileName(file.FileName); // lay ten cua file
-                        string fileSavePath = Path.Combine(uploadsFolder, fileName); //lay duong dan cua file
-                                                                                     // Sử dụng Replace để có đường dẫn tương đối
+                        // Đặt tên file là "abc" với phần mở rộng gốc
+                        string fileExtension = Path.GetExtension(file.FileName); // lấy phần mở rộng của file gốc
+                        string fileName = randomNameFile() + fileExtension; // Đặt tên file là random với phần mở rộng gốc
+
+                        string fileSavePath = Path.Combine(uploadsFolder, fileName); // lấy đường dẫn của file đường dẫn tương đối
                         string relativePath = fileSavePath.Replace(_webHostEnvironment.WebRootPath, "");
 
                         //su dung fileStream de luu file
@@ -284,6 +288,11 @@ namespace doan1_v1.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+        private string randomNameFile()
+        {
+
+            return Guid.NewGuid().ToString(); //tạo ra một chuỗi ngẫu nhiên không trùng lặp.
         }
     }
 }

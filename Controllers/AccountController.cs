@@ -66,16 +66,20 @@ namespace doan1_v1.Controllers
             if (result.Succeeded)
             {
                 var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
+                if (roleResult.Succeeded) {
+                    ////khi tạo tài khoản thành công thì tạo một cart luôn
+                    Cart cart = new Cart
+                    {
+                        UserId = customer.Id
+                    };
+                    _context.Carts.Add(cart);
+                    await _context.SaveChangesAsync();
 
+                }
                 // Đăng nhập ngay sau khi tạo tài khoản
                 await _signInManager.SignInAsync(customer, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
-
-
-
-                ////khi tạo tài khoản thành công thì tạo một cart luôn
-                ///
                 return RedirectToAction("Index");
         }
 

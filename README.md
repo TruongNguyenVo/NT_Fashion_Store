@@ -63,6 +63,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
 });
 //các cấu hình builder trên để trên var app = builder.Build();
+```
+```bash
 
 // Thêm xác thực và ủy quyền
 app.UseAuthentication();
@@ -96,9 +98,14 @@ app.UseAuthorization();
 9. Kiểm tra người dùng đã đăng nhập hay chưa
    ```bash
    @if (User.Identity.IsAuthenticated)
+
 	{
+   @using Microsoft.AspNetCore.Identity;
+    @using Microsoft.AspNetCore.Mvc;
+    @inject UserManager<User> UserManager
 	    var user = await UserManager.GetUserAsync(User);
 	    <p>@user?.Id</p>// ID người dùng
 	    <p>@user?.UserName</p>
+   }
    ```
    

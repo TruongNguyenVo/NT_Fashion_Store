@@ -1,0 +1,126 @@
+﻿@model doan1_v1.Models.Customer
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin khách hàng";
+}
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">NTMFashion</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Customers">Quản lý khách hàng</a>
+            </li>
+        </ul>
+    </div>
+    <form action="">
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Tên khách hàng</label>
+            <input type="text" class="form-control" id="name" asp-for="FullName">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Gender" class="form-label">Giới tính</label>
+            <select class="form-select" asp-for="Gender" id="">
+                <option value="">Nữ</option>
+                <option value="">Nam</option>
+                <option value="">Không xác định</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" asp-for="PhoneNumber">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input type="text" class="form-control" asp-for="Email">
+        </div>
+        <div class="mb-3">
+            <label asp-for="DateOfBrith" class="form-label">Ngày tháng năm sinh</label>
+            <input type="date" class="form-control" asp-for="DateOfBrith">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">Địa chỉ</label>
+            <textarea type="text" class="form-control" asp-for="Address"></textarea>
+        </div>
+
+        <div class="modal-footer">
+            <a class="btn btn-secondary" asp-action="Index">Đóng</a>
+            <button type="submit" value="Save" class="btn btn-primary">Thêm</button>
+        </div>
+    </form>
+@* <h1>Edit</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBrith" class="control-label"></label>
+                <input asp-for="DateOfBrith" class="form-control" />
+                <span asp-validation-for="DateOfBrith" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDel" /> @Html.DisplayNameFor(model => model.IsDel)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

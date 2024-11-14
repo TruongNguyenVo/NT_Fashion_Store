@@ -1,5 +1,6 @@
 ﻿using doan1_v1.Helpers;
 using doan1_v1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -133,12 +134,9 @@ namespace doan1_v1.Controllers
             }
 			
 		}
-        [Route("Profile")]
-        public IActionResult Profile()
-		{
-			return View();
-		}
-        [Route("Order")]
+
+		[Authorize(Policy = "ManagerOrCustomer")]
+		[Route("Order")]
         public async Task<IActionResult> Order()
         {
 			var orders = await _context.Orders
@@ -148,6 +146,7 @@ namespace doan1_v1.Controllers
 			ViewBag.Orders = orders;
 			return View();
         }
+		[Authorize(Policy = "ManagerOrCustomer")]
 		[Route("Invoice")]
 		public async Task<IActionResult> Invoice(int orderId, string title)
 		{
@@ -199,7 +198,8 @@ namespace doan1_v1.Controllers
 		{
 			return View();
 		}
-        [Route("Checkout")]
+		[Authorize(Policy = "ManagerOrCustomer")]
+		[Route("Checkout")]
         public async Task<IActionResult> Checkout()
 		{
             var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
@@ -229,8 +229,9 @@ namespace doan1_v1.Controllers
 
 			return View();
 		}
-        //hàm dùng xác nhận đơn hàng
-        public async Task<IActionResult> confirmCheckout(double deliveryCost)
+		[Authorize(Policy = "ManagerOrCustomer")]
+		//hàm dùng xác nhận đơn hàng
+		public async Task<IActionResult> confirmCheckout(double deliveryCost)
         {
 			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
@@ -280,7 +281,8 @@ namespace doan1_v1.Controllers
 			// chuyển đến trang order
 			return RedirectToAction("Order", "Home");
 		}
-			[Route("Cart")]
+		[Authorize(Policy = "ManagerOrCustomer")]
+		[Route("Cart")]
         public async Task<IActionResult> Cart()
         {
             var cart = await _context.Carts
@@ -322,7 +324,8 @@ namespace doan1_v1.Controllers
 
 		}
 
-        // hàm thêm vào giỏ hàng cần số lượng sản phẩm, id sản phẩm, id của user đã đăng nhập
+		// hàm thêm vào giỏ hàng cần số lượng sản phẩm, id sản phẩm, id của user đã đăng nhập
+		[Authorize(Policy = "ManagerOrCustomer")]
 		public async Task<IActionResult> addToCart(int quantity, int productId)
 		{
 			//tạo chi tiết giỏ hàng
@@ -354,6 +357,7 @@ namespace doan1_v1.Controllers
 		}
 
 		//hàm xóa chi tiết trong giỏ hàng, nhận vào carid, id cua chi tiet
+		[Authorize(Policy = "ManagerOrCustomer")]
 		public async Task<IActionResult> delInCart(int detailId, int cartId)
         {
 
@@ -375,8 +379,9 @@ namespace doan1_v1.Controllers
 			return Redirect(Request.Headers["Referer"].ToString());
 		}
 
-        //hàm chỉnh sửa số lượng sản phẩm trong giỏ hàng, nhận vào cartId, id của chi tiết và quantity
-        public async Task<IActionResult> changeQuantity(int detailId, int quantity)
+		//hàm chỉnh sửa số lượng sản phẩm trong giỏ hàng, nhận vào cartId, id của chi tiết và quantity
+		[Authorize(Policy = "ManagerOrCustomer")]
+		public async Task<IActionResult> changeQuantity(int detailId, int quantity)
         {
 			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 

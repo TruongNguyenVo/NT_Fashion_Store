@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace doan1_v1.Controllers
 {
-    public class ProductsController : Controller
+	[Authorize(Policy = "ManagerOnly")]
+	public class ProductsController : Controller
     {
         private readonly NTFashionDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;

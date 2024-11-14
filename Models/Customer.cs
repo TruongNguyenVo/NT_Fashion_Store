@@ -5,9 +5,9 @@ namespace doan1_v1.Models
 {
     public class Customer : User
     {
-        [Required(ErrorMessage = "Số điện thoại không được để trống.")]
-        [Phone]
-        public required string Phone { get; set; }
+        //[Required(ErrorMessage = "Số điện thoại không được để trống.")]
+        //[Phone]
+        //public required string Phone { get; set; }
 
 
         [Required(ErrorMessage = "Ngày tháng năm sinh không được để trống.")]

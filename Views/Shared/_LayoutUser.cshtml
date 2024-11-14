@@ -28,8 +28,18 @@
 						@if (User.Identity.IsAuthenticated)
 						{
 
+								﻿@using Microsoft.AspNetCore.Identity;
+								@using Microsoft.AspNetCore.Mvc;
+								@inject UserManager<User> UserManager
+								var user = await UserManager.GetUserAsync(User);
+								var roles = await UserManager.GetRolesAsync(user);
+
+
 							<ul class="mb-0">
-								<li class="d-inline-block"><a class="text-light font_12" href="#">HỒ SƠ</a></li>
+								@if (roles.Contains("Manager")){
+									<li class="d-inline-block mx-3"><a class="text-light font_12" asp-action="SaleReport" asp-controller="Invoices">TRANG QUẢN TRỊ</a></li>
+								}
+								<li class="d-inline-block"><a class="text-light font_12" asp-action="Profile" asp-controller="Account">HỒ SƠ</a></li>
 								<li class="d-inline-block mx-3"><a class="text-light font_12" asp-action="Logout" asp-controller="Account">ĐĂNG XUẤT</a></li>
 							</ul>
 						}
@@ -101,7 +111,7 @@
 							<a class="nav-link nav_hide" data-bs-target="#exampleModal2" data-bs-toggle="modal" href="#"><i class="fa fa-search"></i></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link nav_hide" asp-action="Profile" asp-controller="Home"><i class="fa fa-user"></i></a>
+							<a class="nav-link nav_hide" asp-action="Profile" asp-controller="Account"><i class="fa fa-user"></i></a>
 						</li>
 
 						<li class="nav-item dropdown">
@@ -110,12 +120,6 @@
 							</a>
 							<ul class="dropdown-menu drop_cart" aria-labelledby="navbarDropdown" style="">
 								<li>
-@* 									@{
-										foreach (var cart in ViewBag.cart)
-										{
-											Console.WriteLine($"--------------{cart.Product.Name}---{cart.Quantity}");
-										}
-									} *@
 									<div class="drop_1i row">
 										<div class="col-md-6 col-6">
 											<div class="drop_1il"><h6>2 Sản phẩm</h6></div>
@@ -167,7 +171,12 @@
 								</li>
 							</ul>
 						</li>
-
+						@if (User.Identity.IsAuthenticated)
+						{
+						<li class="nav-item">
+							<a class="nav-link nav_hide" asp-action="Logout" asp-controller="Account"><i class="fa fa-sign-out"></i></a>
+						</li>
+						}
 					</ul>
 				</div>
 			</div>

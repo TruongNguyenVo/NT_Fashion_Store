@@ -1,4 +1,5 @@
 ﻿using doan1_v1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +21,15 @@ namespace doan1_v1.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-
         [HttpGet]
+        [Authorize(Policy = "ManagerOrCustomer")]
+        [Route("Profile")]
+		public IActionResult Profile()
+		{
+			return View();
+		}
+
+		[HttpGet]
 
         [Route("SignIn")]
         public IActionResult SignIn()
@@ -40,8 +48,12 @@ namespace doan1_v1.Controllers
                 {
                     return RedirectToAction("Index", "Home"); //thi chay den trang chu
                 }
+                else if (roles.Contains("Manager")) // neu la manager 
+                {
+                    return RedirectToAction("SaleReport", "Invoices"); // thi den trang thong ke doanh thu
+                }
             }
-            return View();
+            return View("SignIn");
         }
         [HttpGet]
         [Route("SignUp")]
@@ -61,7 +73,7 @@ namespace doan1_v1.Controllers
                 DateOfBrith = DateOfBrith,
                 Gender = Gender,
                 Email = Email,
-                Phone = Phone,
+                PhoneNumber = Phone,
                 UserName = UserName,
                 Address = Address
             };
@@ -76,7 +88,8 @@ namespace doan1_v1.Controllers
             if (result.Succeeded)
             {
                 var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
-                if (roleResult.Succeeded) {
+                if (roleResult.Succeeded)
+                {
                     ////khi tạo tài khoản thành công thì tạo một cart luôn
                     Cart cart = new Cart
                     {
@@ -85,12 +98,52 @@ namespace doan1_v1.Controllers
                     _context.Carts.Add(cart);
                     await _context.SaveChangesAsync();
 
+                    // Đăng nhập ngay sau khi tạo tài khoản
+                    await _signInManager.SignInAsync(customer, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+
                 }
-                // Đăng nhập ngay sau khi tạo tài khoản
-                await _signInManager.SignInAsync(customer, isPersistent: false);
-                return RedirectToAction("Index", "Home");
             }
-                return RedirectToAction("Index");
+
+
+
+
+				//var manager = new Manager()
+				//{
+				//	FullName = FullName,
+				//	Email = Email,
+				//	UserName = UserName,
+				//	Address = Address,
+
+				//};
+				////tạo manager
+				//var result = await _userManager.CreateAsync(manager, Password);
+				//         // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
+				//         if (!await _roleManager.RoleExistsAsync("Manager"))
+				//         {
+				//             // Nếu chưa tồn tại, tạo vai trò "Customer"
+				//             await _roleManager.CreateAsync(new IdentityRole("Manager"));
+				//         }
+				//         if (result.Succeeded)
+				//         {
+				//             var roleResult = await _userManager.AddToRoleAsync(manager, "Manager");
+				//             if (roleResult.Succeeded)
+				//             {
+				//                 ////khi tạo tài khoản thành công thì tạo một cart luôn
+				//                 Cart cart = new Cart
+				//                 {
+				//                     UserId = manager.Id
+				//                 };
+				//                 _context.Carts.Add(cart);
+				//                 await _context.SaveChangesAsync();
+
+				//    }
+				//    // Đăng nhập ngay sau khi tạo tài khoản
+				//    await _signInManager.SignInAsync(manager, isPersistent: false);
+				//    return RedirectToAction("Index", "Home");
+				//}
+
+				return RedirectToAction("Index");
         }
 
 
@@ -104,10 +157,26 @@ namespace doan1_v1.Controllers
         }
         // Đăng xuất
         [HttpGet]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();  // Xóa cookie đăng nhập
             return RedirectToAction("Index", "Home");  // Chuyển hướng về trang chủ
+        }
+
+        //Đổi thông tin cá nhân
+        [HttpPost]
+        public IActionResult ChangeInfor(string FullName, string Email, string Phone, string Address)
+        {
+            Console.WriteLine();
+            return View("Profile");
+        }
+        //Đổi mật khẩu
+        [HttpPost]
+        public IActionResult ChangePassword(string oldPassword, string newPassword, string confirmNewPassword)
+        {
+            Console.WriteLine();
+            return View("Profile");
         }
     }
 }

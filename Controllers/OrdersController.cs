@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace doan1_v1.Controllers
 {
-    public class OrdersController : Controller
+	[Authorize(Policy = "ManagerOnly")]
+	public class OrdersController : Controller
     {
         private readonly NTFashionDbContext _context;
 

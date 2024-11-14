@@ -127,6 +127,12 @@
           <p>Thống kê thu chi</p>            
         </a>                
     </ul>
+                        <ul class="nav-item submenu">
+                            <a asp-action="Index" asp-controller="Home" target="_blank">
+                                <i class="fas fa-table"></i>
+                                <p>Trang người dùng</p>
+                            </a>
+                        </ul>
 
             </ul>
           </div>
@@ -197,9 +203,6 @@
                       </div>
                     </form>
                   </ul>
-                </li>
-
-
                 <li class="nav-item topbar-user dropdown hidden-caret">
                   <a
                     class="dropdown-toggle profile-pic"
@@ -214,8 +217,18 @@
                       />
                     </div>
                     <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
+                      <span class="op-7">Chào,</span>
+                      <span class="fw-bold">
+                          @{
+
+                                            ﻿@using Microsoft.AspNetCore.Identity;
+                                                @using Microsoft.AspNetCore.Mvc;
+                                                @inject UserManager<User> UserManager
+                                                var user = await UserManager.GetUserAsync(User);
+
+                          }
+                          @user?.FullName
+                      </span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -229,17 +242,16 @@
                             />
                           </div>
                           <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
+                                                <h4>@user?.FullName</h4>
+                                                <p class="text-muted">@user?.Email</p>
                           </div>
                         </div>
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Quên mật khẩu</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Đăng xuất</a>
+                                        <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Đăng xuất</a>
                       </li>
                     </div>
                   </ul>

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace doan1_v1.Controllers
 {
+    [Authorize(Policy = "ManagerOnly")]
     public class CategoriesController : Controller
     {
         private readonly NTFashionDbContext _context;

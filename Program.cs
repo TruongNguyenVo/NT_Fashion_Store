@@ -26,18 +26,19 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CustomerOnly", policy =>
         policy.RequireRole("Customer"));
 
-    // Policy cho Admin
-    options.AddPolicy("AdminOnly", policy =>
-        policy.RequireRole("Admin"));
+    // Policy cho Manager
+    options.AddPolicy("ManagerOnly", policy =>
+        policy.RequireRole("Manager"));
 
     // Policy cho Admin và Customer (nếu cần)
-    options.AddPolicy("AdminOrCustomer", policy =>
-        policy.RequireRole("Admin", "Customer"));
+    options.AddPolicy("ManagerOrCustomer", policy =>
+        policy.RequireRole("Manager", "Customer"));
 });
 // Không có quyền thì bị đá vào Controller Account - Action:AccessDenied
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
+	options.LoginPath = "/SignIn"; // Đường dẫn khi người dùng chưa đăng nhập
+	options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
 });
 //////////////////////////
 var app = builder.Build();

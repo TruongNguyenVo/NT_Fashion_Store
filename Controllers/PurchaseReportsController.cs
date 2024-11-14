@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace doan1_v1.Controllers
 {
-    public class PurchaseReportsController : Controller
+	[Authorize(Policy = "ManagerOnly")]
+	public class PurchaseReportsController : Controller
     {
         private readonly NTFashionDbContext _context;
 

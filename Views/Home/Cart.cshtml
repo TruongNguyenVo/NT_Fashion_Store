@@ -50,7 +50,7 @@
 										<a asp-action="Detail" asp-controller="Home" asp-route-id="@detail.Product.Id">@detail.Product.Name</a>
 									</h6>
 									<h6 class="fw-normal font_12 mt-3">@detail.Product.Color</h6>
-									<h5 class="col_red mt-3">@detail.Product.Price VND</h5>
+										<h5 class="col_red mt-3">@detail.Product.Price.ToString("N0") VND</h5>
 									<h6 class="font_12 mt-3 mb-3">Quantity</h6>
 								</div>
 								<div class="cart_3l1i2">
@@ -80,7 +80,7 @@
 			<div class="col-md-4">
 				<div class="cart_3r">
 					<h6 class="head_1">TỔNG TIỀN</h6>
-					<h5 class="text-center col_red mt-3">@ViewBag.totalPrice VND</h5>
+					<h5 class="text-center col_red mt-3">@ViewBag.totalPrice.ToString("N0") VND</h5>
 					<hr>
 					 @* <h6 class="font_13">Thêm ghi chú</h6>
 					 <textarea class="form-control"></textarea> *@

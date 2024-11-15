@@ -56,7 +56,7 @@
 												totalPrice = totalPrice + (detailOr.Quantity * detailOr.PriceSale);
 											}
 										}
-										@totalPrice VND
+										@totalPrice.ToString("N0") VND
 									</td>
 									<td>@order.Status</td>
 									@{

@@ -24,8 +24,9 @@ namespace doan1_v1.Controllers
         [HttpGet]
         [Authorize(Policy = "ManagerOrCustomer")]
         [Route("Profile")]
-		public IActionResult Profile()
-		{
+        public IActionResult Profile()
+        {
+            ViewBag.Genders = new List<string> { "Nam", "Nữ", "Không xác định"};
 			return View();
 		}
 
@@ -157,7 +158,7 @@ namespace doan1_v1.Controllers
         }
         // Đăng xuất
         [HttpGet]
-
+        [Authorize(Policy = "ManagerOrCustomer")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();  // Xóa cookie đăng nhập
@@ -165,10 +166,40 @@ namespace doan1_v1.Controllers
         }
 
         //Đổi thông tin cá nhân
+        [Authorize(Policy = "ManagerOrCustomer")]
         [HttpPost]
-        public IActionResult ChangeInfor(string FullName, string Email, string Phone, string Address)
+        public async Task<IActionResult> ChangeInforAsync(string userId, string FullName, string Email, string PhoneNumber, string Address, string Gender, DateOnly DateOfBirth)
         {
             Console.WriteLine();
+            var existingUser = await _userManager.FindByIdAsync(userId);
+            if (existingUser == null) {
+                return NotFound();
+            }
+            else
+            {
+               existingUser.FullName = FullName;
+                existingUser.Email = Email;
+                existingUser.PhoneNumber = PhoneNumber;
+                existingUser.Address = Address;
+                existingUser.Gender = Gender;
+                existingUser.DateOfBrith = DateOfBirth;
+
+                //luu thay doi
+                var result = await _userManager.UpdateAsync(existingUser);
+                if (result.Succeeded) {
+                    Console.WriteLine("Luu thanh cong");
+                    return RedirectToAction("Profile");
+                }
+                else
+                {
+                    Console.WriteLine("Loi roi");
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+
+            }
             return View("Profile");
         }
         //Đổi mật khẩu

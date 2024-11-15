@@ -99,7 +99,11 @@
                         <tbody>
 
                          @foreach (var customer in users){
-                          <tr>
+                                        if (customer.IsDel == true)
+                                        {
+                                            continue;
+                                        }
+                                        <tr>
                             <td>@customer.FullName</td>
                             <td>@customer.PhoneNumber</td>
                             <td>@customer.Email</td>
@@ -109,8 +113,7 @@
                             <td>
                               <div class="form-button-action">
                                                 <!-- view  -->
-                                <a
-                                asp-action="Details"
+                                <a asp-action="Details" asp-route-id="@customer.Id"
                                 target="_blank"
                                 title="Xem thông tin chi tiết khách hàng"
                                 class="btn btn-link btn-primary btn-lg"
@@ -121,16 +124,15 @@
                             
                                 <!-- update -->
                                 <a
-                                  asp-action="Edit"                                 
+                                  asp-action="Edit" asp-route-id="@customer.Id"                        
                                   title="Chỉnh sửa thông tin khách hàng"
                                   class="btn btn-link btn-primary btn-lg"
                                 >
                                   <i class="fa fa-edit"></i>
                                 </a>
                                 <!-- delete -->
-                                <a
-                                  asp-action="Delete" 
-                                  title="Xóa khách hàng"
+                                <a asp-action="DeleteConfirmed" asp-route-id="@customer.Id"
+                                                       title="Xóa khách hàng"
                                                        class="btn btn-link btn-danger btn-lg">
                                   <i class="fa fa-times"></i>
                                 </a>

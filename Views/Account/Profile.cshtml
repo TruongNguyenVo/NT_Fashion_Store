@@ -25,7 +25,8 @@
           <h5>Thông tin của bạn</h5>
           <br>
          </div>
-				<form asp-action="ChangeInfor" method="post">
+		<form asp-action="ChangeInfor" method="post">
+			<input type="hidden" name="userId" value="@user?.Id"/>
          <div class="checkout_1l1 row">
            <div class="col-md-12 ps-0">
            <h6>Họ tên của bạn</h6>
@@ -39,7 +40,7 @@
           </div>
           <div class="col-md-6 ps-0">
            <h6>Số điện thoại <span></span></h6>
-							<input class="form-control" type="text" name="Phone" value="@user?.PhoneNumber">
+							<input class="form-control" type="text" name="PhoneNumber" value="@user?.PhoneNumber">
           </div>
          </div>
          <div class="checkout_1l1 row">
@@ -48,7 +49,32 @@
 							<input class="form-control" type="text" name="Address" value="@user?.Address">
           </div>
          </div>
-   
+       <!-- Thêm trường Giới tính -->
+		<div class="checkout_1l1 row">
+			<div class="col-md-12 ps-0">
+				<h6>Giới tính</h6>
+				<select class="form-control" name="Gender">
+								@foreach (var gender in ViewBag.Genders)
+								{
+									if(user?.Gender == gender){
+										<option selected value="@gender">@gender</option>
+									}
+									else
+									{
+										<option value="@gender">@gender</option>
+									}
+								}
+							</select>
+			</div>
+		</div>
+
+		<!-- Thêm trường Ngày sinh -->
+		<div class="checkout_1l1 row">
+			<div class="col-md-12 ps-0">
+				<h6>Ngày sinh</h6>
+							<input class="form-control" type="date" name="DateOfBirth" value="@user?.DateOfBrith.ToString("yyyy-MM-dd")">
+			</div>
+		</div>
          <!-- đổi thông tin -->
 		 <h6 class="mt-3">
             <button type="submit" class="button">Cập nhật thông tin</button>

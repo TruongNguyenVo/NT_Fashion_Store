@@ -71,12 +71,12 @@
                                 <td>@detail.Product.Material</td>
                                 <td>@detail.Product.Productor</td>
                                 <td>@detail.Quantity</td>
-                                <td>@detail.PriceSale</td>
+                                <td>@detail.PriceSale.ToString("N0")</td>
                                 <td>
                                     @{
                                        totalPriceofProduct += detail.Quantity * detail.PriceSale;
                                     }
-                                    @totalPriceofProduct
+                                    @totalPriceofProduct.ToString("N0")
                                 </td>
                             </tr>
                         }

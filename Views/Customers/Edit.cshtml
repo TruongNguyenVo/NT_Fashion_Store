@@ -1,7 +1,8 @@
-﻿@model doan1_v1.Models.Customer
+﻿ @* @model doan1_v1.Models.Customer *@
 
 @{
     ViewData["Title"] = "Chỉnh sửa thông tin khách hàng";
+    var user = ViewBag.user;
 }
 <div class="page-inner">
     <div class="page-header">
@@ -26,34 +27,43 @@
             </li>
         </ul>
     </div>
-    <form action="">
+    <form asp-action="Edit">
+        <input type="hidden" name="Id" value="@user?.Id" />
         <div class="mb-3">
-            <label asp-for="FullName" class="form-label">Tên khách hàng</label>
-            <input type="text" class="form-control" id="name" asp-for="FullName">
+            <label for="FullName" class="form-label">Tên khách hàng</label>
+            <input type="text" class="form-control" id="name" name="FullName" value="@user?.FullName">
         </div>
         <div class="mb-3">
-            <label asp-for="Gender" class="form-label">Giới tính</label>
-            <select class="form-select" asp-for="Gender" id="">
-                <option value="">Nữ</option>
-                <option value="">Nam</option>
-                <option value="">Không xác định</option>
+            <label for="Gender" class="form-label">Giới tính</label>
+            <select class="form-select" name="Gender" id="">
+                @foreach(var gender in ViewBag.Gender)
+                {
+                    if(gender == user?.Gender)
+                    {
+                        <option selected value="@gender">@gender</option>
+                    }
+                    else
+                    {
+                        <option value="@gender">@gender</option>
+                    }
+                }
             </select>
         </div>
         <div class="mb-3">
-            <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" asp-for="PhoneNumber">
+            <label name="PhoneNumber" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" name="PhoneNumber" value="@user?.PhoneNumber">
         </div>
         <div class="mb-3">
-            <label asp-for="Email" class="form-label">Email</label>
-            <input type="text" class="form-control" asp-for="Email">
+            <label name="Email" class="form-label">Email</label>
+            <input type="text" class="form-control" name="Email" value="@user?.Email">
         </div>
         <div class="mb-3">
-            <label asp-for="DateOfBrith" class="form-label">Ngày tháng năm sinh</label>
-            <input type="date" class="form-control" asp-for="DateOfBrith">
+            <label name="DateOfBrith" class="form-label">Ngày tháng năm sinh</label>
+            <input type="date" class="form-control" name="DateOfBrith" value="@user?.DateOfBrith.ToString("yyyy-MM-dd")">
         </div>
         <div class="mb-3">
-            <label asp-for="Address" class="form-label">Địa chỉ</label>
-            <textarea type="text" class="form-control" asp-for="Address"></textarea>
+            <label name="Address" class="form-label">Địa chỉ</label>
+            <textarea type="text" class="form-control" name="Address">@user?.Address</textarea>
         </div>
 
         <div class="modal-footer">

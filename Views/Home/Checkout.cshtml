@@ -64,7 +64,7 @@
 	     <hr class="line">
 					<h6>Tổng đơn hàng 
 						<span class="pull-right">
-							@ViewBag.totalPrice VND.
+								@ViewBag.totalPrice.ToString("N0") VND.
 						</span>
 						</h6>
 		<h6>
@@ -124,12 +124,12 @@
 													<td>Cotton</td>
 													
 														<td>@detail.Quantity</td>
-														<td>@detail.Product.Price</td>
+															<td>@detail.Product.Price.ToString("N0") VND</td>
 													<td>
 															@{
 																double totalPriceProduct = detail.Quantity * detail.Product.Price;
 															}
-																@totalPriceProduct
+																@totalPriceProduct.ToString("N0")
 													</td>
 
 													</tr>

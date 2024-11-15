@@ -1,10 +1,56 @@
 ﻿@model doan1_v1.Models.Customer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết thông tin của khách hàng";
+    var user = ViewBag.user;
 }
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">NTMFashion</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Quản lý khách hàng</a>
+                </li>
+              </ul>
+            </div>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Tên khách hàng: @user?.FullName</label>
+                </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Giới tính: @user?.Gender</label>
+                </div>
+                <div class="mb-3">
+                  <label for="position" class="form-label">Số điện thoại: @user?.PhoneNumber</label>
+                </div>
+                <div class="mb-3">
+                  <label for="office" class="form-label">Email: @user?.Email</label>
+                </div>
+                <div class="mb-3">
+                  <label for="office" class="form-label">Ngày tháng năm sinh: @user?.DateOfBrith</label>
+                </div>
+                <div class="mb-3">
+                  <label for="address" class="form-label">Địa chỉ</label>
+                  <textarea type="text" disabled class="form-control" name="address">@user?.Address</textarea>
+                </div>
+                <div class="mb-3-md">
 
-<h1>Details</h1>
+
+
+@* <h1>Details</h1>
 
 <div>
     <h4>Customer</h4>
@@ -64,3 +110,4 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+ *@

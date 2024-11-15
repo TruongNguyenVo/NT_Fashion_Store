@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 
 namespace doan1_v1.Controllers
 {
@@ -55,21 +57,20 @@ namespace doan1_v1.Controllers
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _context.Users.Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
             if (customer == null)
             {
                 return NotFound();
             }
-
-            return View(customer);
+            ViewBag.user = customer;
+            return View();
         }
 
         // GET: Customers/Create
@@ -106,19 +107,21 @@ namespace doan1_v1.Controllers
         }
 
         // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Users.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
-            return View(customer);
+            ViewBag.user = customer; //thong tin cua khahc hang
+            ViewBag.gender = new List<string> { "Nam", "Nữ", "Không xác định" };
+            return View();
         }
 
         // POST: Customers/Edit/5
@@ -126,7 +129,7 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Phone,DateOfBrith,Gender,FullName,Address,Email,Password,IsDel")] Customer customer)
+        public async Task<IActionResult> Edit(string Id, string FullName, string Gender, string PhoneNumber, string Email, DateOnly DateOfBrith, string Address)
         {
             //if (id != customer.Id)
             //{
@@ -135,54 +138,83 @@ namespace doan1_v1.Controllers
 
             if (ModelState.IsValid)
             {
+                var existingUser = await _userManager.FindByIdAsync(Id);
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+
+                    if (existingUser != null) {
+                        existingUser.FullName = FullName;
+                        existingUser.Gender = Gender;
+                        existingUser.PhoneNumber = PhoneNumber;
+                        existingUser.Email = Email;
+                        existingUser.DateOfBrith = DateOfBrith;
+                        existingUser.Address = Address;
+                        _context.Update(existingUser);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    //if (!CustomerExists(customer.Id))
-                    //{
-                    //    return NotFound();
-                    //}
-                    //else
-                    //{
-                    //    throw;
-                    //}
+                    if (!CustomerExists(existingUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            return View();
         }
 
-        // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        //// GET: Customers/Delete/5
+        //public async Task<IActionResult> Delete(string? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var customer = await _context.Customers
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(customer);
+        //}
+
+        //// POST: Customers/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var customer = await _context.Customers.FindAsync(id);
+        //    if (customer != null)
+        //    {
+        //        _context.Customers.Remove(customer);
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+        //// POST: Customers/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _userManager.FindByIdAsync(id);
             if (customer != null)
             {
-                _context.Customers.Remove(customer);
+                customer.IsDel = true;
+                //_context.Customers.Remove(customer);
             }
 
             await _context.SaveChangesAsync();

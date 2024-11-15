@@ -122,7 +122,7 @@
                                                         totalPrice = totalPrice + (detailOrder.Quantity * detailOrder.PriceSale);
                                                     }
                                                 }
-                                                @totalPrice
+                                                @totalPrice.ToString("N0")
                             </td>
                             <td>@invoice.Customer.Phone</td>
                             <td>

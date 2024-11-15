@@ -44,7 +44,7 @@
 									</div>
 									<div class="list_2i_last mt-3 text-center clearfix">
 										<h6 class="fw-bold"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id">@ViewBag.products[i].Name</a></h6>
-										<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id">@ViewBag.products[i].Price VND</a></h6>
+											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i].Id">@ViewBag.products[i].Price.ToString("N0") VND</a></h6>
 									</div>
 								</div>
 								<br><br>
@@ -72,7 +72,7 @@
 										</div>
 										<div class="list_2i_last mt-3 text-center clearfix">
 											<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+1].Id" asp-controller="Home">@ViewBag.products[i + 1].Name</a></h6>
-											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i+1].Id">@ViewBag.products[i+1].Price VND</a></h6>
+											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-controller="Home" asp-route-id="@ViewBag.products[i+1].Id">@ViewBag.products[i + 1].Price.ToString("N0") VND</a></h6>
 										</div>
 									</div>
 									<br>
@@ -102,7 +102,7 @@
 										</div>
 										<div class="list_2i_last mt-3 text-center clearfix">
 											<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 2].Name</a></h6>
-											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 3].Price VND</a></h6>
+											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 3].Price.ToString("N0") VND</a></h6>
 										</div>
 									</div>
 								}

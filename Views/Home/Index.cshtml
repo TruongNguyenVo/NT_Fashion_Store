@@ -107,7 +107,7 @@
 				</div>
 				<div class="list_2i_last mt-3 text-center clearfix">
 					<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="10" asp-controller="Home">@product.Name</a></h6>
-						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price VND</a></h6>
+						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price.ToString("N0") VND</a></h6>
 				</div>
 			</div>
 			}
@@ -142,7 +142,7 @@
 					</div>
 					<div class="list_2i_last mt-3 text-center clearfix">
 						<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="10" asp-controller="Home">@product.Name</a></h6>
-						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price VND</a></h6>
+						<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price.ToString("N0") VND</a></h6>
 					</div>
 				</div>
 			}
@@ -201,7 +201,7 @@
 				</div>
 				<div class="list_2i_last mt-3 text-center clearfix">
 						<h6 class="fw-bold"><a a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Name</a></h6>
-						<h6 class="font_14 mb-0"><a a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price</a></h6>
+						<h6 class="font_14 mb-0"><a a asp-action="Detail" asp-route-id="@product.Id" asp-controller="Home">@product.Price.ToString("N0") VND</a></h6>
 				</div>
 			</div>
 			}

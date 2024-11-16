@@ -2,54 +2,65 @@
 using doan1_v1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using SQLitePCL;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace doan1_v1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly NTFashionDbContext _context;
-        private string userId = "1237";
+		//private string userId = "1fa6cac2-4e92-4206-8e54-fcf50fbbefa1"; //id test
 
-        public HomeController(ILogger<HomeController> logger, NTFashionDbContext context)
-        {
-			
-			_logger = logger;
-            _context = context;
-			
-
-
+		private readonly UserManager<User> _userManager;
+		private readonly SignInManager<User> _signInManager;
+		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly NTFashionDbContext _context;
+		public HomeController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, NTFashionDbContext context)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_roleManager = roleManager;
+			_context = context;
 		}
-        //lay cart cua user
-        private async Task<List<CartDetail>> cartOfUser()
+		//lay cart cua user
+        private async Task<List<CartDetail>> cartOfUser(string userId)
         {
-
 			List<CartDetail> detailCarts = null;
 			if (userId != null)
 			{
                 // tim kiem cart theo ten nguoi dung
                 var cart = await _context.Carts
                                            .Where(c => c.UserId == userId).FirstAsync();
-                if(cart == null)
-                {
-                    Console.WriteLine("loi roi");
-                }
+				//tìm chi tiết sản phẩm
 				detailCarts = await _context.CartDetails
-						.Where(d => d.CartId == cart.Id)
-						.Include(d => d.Product)
-						.ToListAsync();
-                foreach(var detail in detailCarts)
-                {
-                    Console.WriteLine(detail.Product.Name);
-					Console.WriteLine(detail.Quantity);
+											.Where(d => d.CartId == cart.Id)
+											.Include(d => d.Product)
+											.ThenInclude(p => p.ProductImages)
+											.ToListAsync();
+				if (detailCarts.Any())
+				{
 
+					//tính tổng tiền của giỏ hàng
+					double totalPrice = 0;
+					foreach (var detail in detailCarts)
+					{
+						int quantity = detail.Quantity;
+						double price = (double)detail.Product.Price;
+						totalPrice += quantity * price;
+					}
 				}
+				//            foreach(var detail in detailCarts)
+				//            {
+				//                Console.WriteLine(detail.Product.Name);
+				//	Console.WriteLine(detail.Quantity);
+
+				//}
 			}
 
             return detailCarts;
@@ -57,6 +68,8 @@ namespace doan1_v1.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
+
+
             //viet de lay 8 san pham (4 quan, 4 ao)
 
             //ao
@@ -74,8 +87,12 @@ namespace doan1_v1.Controllers
             ViewBag.ProductAos = productAos;
             ViewBag.ProductQuans = productQuans;
 
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+            if(userId != null) {
+                var detailCart = await cartOfUser(userId);
 
-			//ViewBag.cart = cartOfUser(); // lay danh sach cac mon hang cua nguoi dung - undone
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
 			return View();
         }
         //hàm dùng để tìm kiếm sản phẩm
@@ -95,16 +112,30 @@ namespace doan1_v1.Controllers
 	            .Where(p => p.IsDel == false && p.Name.Contains(query))
 				.Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
 			ViewBag.products = products;
-            //foreach(var product in products)
-            //{
-            //    Console.WriteLine(product.Name);
-            //}
+			//foreach(var product in products)
+			//{
+			//    Console.WriteLine(product.Name);
+			//}
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
 
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
 			return View("Search", products);
         }
         [Route("Shop/{id?}")]
         public async Task<IActionResult> Shop(int? id, int pageNumber=1)
 		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
 			//danh muc san pham
 			var categories = await _context.Categories
 								.Where(c => c.ParentId != null)
@@ -118,7 +149,7 @@ namespace doan1_v1.Controllers
                 //                .Include(p=> p.ProductImages)
                 //	.ToListAsync();
                 var products = await PaginatedList<Product>.CreateAsync(_context.Products
-                    .Where(p => p.IsDel == false)
+                    .Where(p => p.IsDel == false && p.Quantity > 0)
                                 .Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
                 ViewBag.products = products;
 				return View(products);
@@ -139,6 +170,17 @@ namespace doan1_v1.Controllers
 		[Route("Order")]
         public async Task<IActionResult> Order()
         {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
+			var user = await _userManager.FindByIdAsync(userId);
+            //Console.WriteLine($"--------------------{user?.FullName} | {user?.UserName}------------");
+
 			var orders = await _context.Orders
                          .Where(o=> o.CustomerId == userId)
 						.Include(o => o.OrderProductDetails)
@@ -150,8 +192,16 @@ namespace doan1_v1.Controllers
 		[Route("Invoice")]
 		public async Task<IActionResult> Invoice(int orderId, string title)
 		{
-            //Console.WriteLine($"-------------------{orderId}---------------------");
-            var order = await _context.Orders
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
+			//Console.WriteLine($"-------------------{orderId}---------------------");
+			var order = await _context.Orders
                     .Where(o => o.Id == orderId)
                     .Include(o => o.Customer)
                     .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
@@ -161,7 +211,7 @@ namespace doan1_v1.Controllers
             if (order != null)
             {
                 ViewBag.Invoice = order;
-                ViewData["title"] = title;
+                //ViewData["title"] = title;
             }
             
 			return View();
@@ -169,8 +219,16 @@ namespace doan1_v1.Controllers
 		[Route("product/detail/{id:int}")]
         public async Task<IActionResult> Detail(int id)
 		{
-            // san pham chinh
-            var product = await _context.Products.
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
+			// san pham chinh
+			var product = await _context.Products.
                            Where(p => p.Id == id)
                            .Include (p => p.ProductImages)
                            .Include(p=> p.Category)
@@ -202,7 +260,16 @@ namespace doan1_v1.Controllers
 		[Route("Checkout")]
         public async Task<IActionResult> Checkout()
 		{
-            var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
+
+			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
 			//tìm chi tiết sản phẩm
 			var details = await _context.CartDetails
@@ -233,6 +300,14 @@ namespace doan1_v1.Controllers
 		//hàm dùng xác nhận đơn hàng
 		public async Task<IActionResult> confirmCheckout(double deliveryCost)
         {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
 			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
 			//khi đặt hàng thì chuyển chi tiết giỏ hàng vào chi tiết order và xóa hết chi tiết giỏ hàng của cart đó
@@ -268,6 +343,16 @@ namespace doan1_v1.Controllers
                     detailOder.PriceSale = (double)detailCart.Product.Price;
                     detailOder.ProductId = detailCart.ProductId;
                     detailOder.OrderId = orderId;
+
+					//tru quantity cua product
+					var product = _context.Products
+										.Where(d => d.Id == detailCart.ProductId).FirstOrDefault();
+					product.Quantity = product.Quantity - detailCart.Quantity;
+					_context.Products.Update(product);
+					await _context.SaveChangesAsync();
+
+
+
                     _context.Add(detailOder);
                     await _context.SaveChangesAsync();
                 }
@@ -285,7 +370,16 @@ namespace doan1_v1.Controllers
 		[Route("Cart")]
         public async Task<IActionResult> Cart()
         {
-            var cart = await _context.Carts
+
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			if (userId != null)
+			{
+				var detailCart = await cartOfUser(userId);
+
+				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
+			}
+
+			var cart = await _context.Carts
                                     .Where(c => c.UserId == userId)
                                     .FirstOrDefaultAsync();
             if (cart != null)
@@ -328,7 +422,9 @@ namespace doan1_v1.Controllers
 		[Authorize(Policy = "ManagerOrCustomer")]
 		public async Task<IActionResult> addToCart(int quantity, int productId)
 		{
-			//tạo chi tiết giỏ hàng
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+
+																		 //tạo chi tiết giỏ hàng
 
 			//đã có chi tiết giỏ hàng
 
@@ -383,6 +479,9 @@ namespace doan1_v1.Controllers
 		[Authorize(Policy = "ManagerOrCustomer")]
 		public async Task<IActionResult> changeQuantity(int detailId, int quantity)
         {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+
+
 			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
 

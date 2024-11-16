@@ -28,15 +28,16 @@
 						@if (User.Identity.IsAuthenticated)
 						{
 
-								﻿@using Microsoft.AspNetCore.Identity;
-								@using Microsoft.AspNetCore.Mvc;
-								@inject UserManager<User> UserManager
-								var user = await UserManager.GetUserAsync(User);
-								var roles = await UserManager.GetRolesAsync(user);
+						﻿@using Microsoft.AspNetCore.Identity;
+						@using Microsoft.AspNetCore.Mvc;
+						@inject UserManager<User> UserManager
+							var user = await UserManager.GetUserAsync(User);
+							var roles = await UserManager.GetRolesAsync(user);
 
 
 							<ul class="mb-0">
-								@if (roles.Contains("Manager")){
+								@if (roles.Contains("Manager"))
+								{
 									<li class="d-inline-block mx-3"><a class="text-light font_12" asp-action="SaleReport" asp-controller="Invoices">TRANG QUẢN TRỊ</a></li>
 								}
 								<li class="d-inline-block"><a class="text-light font_12" asp-action="Profile" asp-controller="Account">HỒ SƠ</a></li>
@@ -128,36 +129,53 @@
 											<div class="drop_1il text-end"><h6><a asp-action="Cart" asp-controller="Home">Xem giỏ hàng</a></h6></div>
 										</div>
 									</div>
-									<div class="drop_1i1 row">
-										<div class="col-md-6 col-6">
-											<div class="drop_1i1l"><h6><a href="#">Nulla Quis</a> <br> <span class="fw-normal d-inline-block mt-1">1x - 89  VND</span></h6></div>
-										</div>
-										<div class="col-md-4 col-4">
-											<div class="drop_1i1r"><a href="#"><img src="/user/img/1.jpg" class="w-100" alt="abc"></a></div>
-										</div>
-										<div class="col-md-2 col-2">
-											<div class="drop_1i1l text-end"><h6> <span><i class="fa fa-trash"></i></span></h6></div>
-										</div>
-									</div>
-									<div class="drop_1i1 row">
-										<div class="col-md-6 col-6">
-											<div class="drop_1i1l"><h6><a href="#">Eget Nulla</a> <br> <span class="fw-normal d-inline-block mt-1">1x - 49  VND</span></h6></div>
-										</div>
-										<div class="col-md-4 col-4">
-											<div class="drop_1i1r"><a href="#"><img src="/user/img/2.jpg" class="w-100" alt="abc"></a></div>
-										</div>
-										<div class="col-md-2 col-2">
-											<div class="drop_1i1l text-end"><h6> <span><i class="fa fa-trash"></i></span></h6></div>
-										</div>
-									</div>
+									@if (ViewBag.cartOfUser != null)
+									{
+											//tính tổng tiền của giỏ hàng
+											double totalPrice = 0;
+											foreach (var detail in ViewBag.cartOfUser)
+											{
+												int quantity = detail.Quantity;
+												double price = (double)detail.Product.Price;
+												totalPrice += quantity * price;
+											}
+										foreach (var detail in ViewBag.cartOfUser)
+										{
+											<div class="drop_1i1 row">
+												<div class="col-md-6 col-6">
+													<div class="drop_1i1l"><h6>
+														<a asp-action="Detail" asp-controller="Home" asp-route-id="@detail.ProductId">@detail.Product.Name - @detail.Product.Dimension</a><br><span class="fw-normal d-inline-block mt-1">@detail.Quantity x - @{
+																	var total = detail.Product.Price * detail.Quantity;
+																} @total.ToString("N0")  VND</span></h6></div>
+												</div>
+												<div class="col-md-4 col-4">
+													<div class="drop_1i1r"><a href="#"><img img src="@detail.Product.ProductImages[0].ImgURL" class="w-100" alt="abc"></a></div>
+												</div>
+												<div class="col-md-2 col-2">
+													<div class="drop_1i1l text-end"><h6> <span>
+																<a asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id" asp-route-cartId="@detail.CartId">
+														<i class="fa fa-trash"></i>
+																</a>
+													</span></h6></div>
+												</div>
+											</div>
+										}
+
+
+									@* tong *@
 									<div class="drop_1i2 row">
 										<div class="col-md-6 col-6">
 											<div class="drop_1il"><h5>Tổng</h5></div>
 										</div>
 										<div class="col-md-6 col-6">
-											<div class="drop_1il text-end"><h5>120  VND0 vnđ</h5></div>
+											<div class="drop_1il text-end">
+												<h5>
+													@totalPrice.ToString("N0") VND
+												</h5>
+											</div>
 										</div>
 									</div>
+
 									<div class="drop_1i3 text-center row">
 										<div class="col-md-12 col-12">
 											<h6><a class="button_1 d-block" asp-action="Cart" asp-controller="Home">Chi tiết giỏ hàng</a></h6>
@@ -168,14 +186,15 @@
 											<h6><a class="button d-block" asp-action="Checkout" asp-controller="Home">Thanh toán</a></h6>
 										</div>
 									</div>
+									}
 								</li>
 							</ul>
 						</li>
 						@if (User.Identity.IsAuthenticated)
 						{
-						<li class="nav-item">
-							<a class="nav-link nav_hide" asp-action="Logout" asp-controller="Account"><i class="fa fa-sign-out"></i></a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link nav_hide" asp-action="Logout" asp-controller="Account"><i class="fa fa-sign-out"></i></a>
+							</li>
 						}
 					</ul>
 				</div>
@@ -259,7 +278,7 @@
 					<p class="text-muted mb-0 font_14">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_red" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
 				</div>
 			</div>
-			</div>
+		</div>
 	</section>
 
 	<script>

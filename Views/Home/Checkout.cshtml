@@ -16,7 +16,8 @@
 
 <section id="checkout" class="p_3">
  <div class="container-xl">
-		<form asp-action="confirmCheckout"  asp-controller="Home">
+	 @if(cart != null){
+<form asp-action="confirmCheckout"  asp-controller="Home">
 			<input type="hidden" name="cartId" value="@cart.Id"/>
 			<input type="hidden" name="customerId" value="@cart.UserId" />
   <div class="checkout_1 row">
@@ -39,7 +40,7 @@
 	   </div>
 	   <div class="col-md-6 ps-0">
 	    <h6>Số điện thoại <span></span></h6>
-							<input disabled class="form-control" type="text" value="@cart.User.Phone">
+							<input disabled class="form-control" type="text" value="@cart.User.PhoneNumber">
 	   </div>
 	  </div>
 	  <div class="checkout_1l1 row">
@@ -150,7 +151,8 @@
 	  </div>
    </div>
 	</form>
- </div>
+		}
+</div>
 </section>
 <style>
 	.custom-modal-body {

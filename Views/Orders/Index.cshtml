@@ -135,7 +135,7 @@
                                                 }
                                                 @totalPrice.ToString("N0")
                             </td>
-                            <td>@order.Customer.Phone</td>
+                            <td>@order.Customer.PhoneNumber</td>
                             <td>
                               <div class="form-button-action">
                                 <!-- view -->
@@ -150,8 +150,7 @@
 
                                @if (order.Status != "Đã thanh toán"){
                                 <!-- update -->
-                                <a
-                                href="update_order.html"
+                                <a asp-action="Edit" asp-route-id="@order.Id"
                                   title="Chỉnh sửa đơn hàng"
                                   class="btn btn-link btn-warning btn-lg">
                                   <i class="fa fa-edit"></i>

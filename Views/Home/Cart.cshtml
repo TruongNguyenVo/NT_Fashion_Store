@@ -73,14 +73,20 @@
 						</div>
 						</form>
 					}
+				
+
 				}
-
-
 			</div>
+
+			@if (ViewBag.totalPrice != null){
 			<div class="col-md-4">
 				<div class="cart_3r">
 					<h6 class="head_1">TỔNG TIỀN</h6>
-					<h5 class="text-center col_red mt-3">@ViewBag.totalPrice.ToString("N0") VND</h5>
+					<h5 class="text-center col_red mt-3">
+
+								@ViewBag.totalPrice.ToString("N0")
+						 VND
+						</h5>
 					<hr>
 					 @* <h6 class="font_13">Thêm ghi chú</h6>
 					 <textarea class="form-control"></textarea> *@
@@ -88,10 +94,13 @@
 					<h5></h5>
 					<hr>
 				</div>
-
+				
 			</div>
+			}
 		</div>
+
 	</div>
+
 </section>
 <script>
 	function updateQuantity() {

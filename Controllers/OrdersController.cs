@@ -93,6 +93,18 @@ namespace doan1_v1.Controllers
             {
                 return NotFound();
             }
+            else
+            {
+                ViewBag.detailOrder = await _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
+                        .ThenInclude(op => op.Product) // lay thong tin cua product trong danh sach chi tiet
+                            .ThenInclude(opc => opc.Category) // lay ten category trong product
+                    .FirstOrDefaultAsync();
+                // Lấy danh sách Category
+                var categories = await _context.Categories.ToListAsync();
+                ViewBag.Categories = categories;
+            }
             return View(order);
         }
 
@@ -195,6 +207,37 @@ namespace doan1_v1.Controllers
             // về trang hiện tại (không di chuyển qua trang khác)
             return Redirect(Request.Headers["Referer"].ToString());
         }
+
+        //get detail product
+        //[HttpGet("{name}")]
+        [Authorize(Policy = "ManagerOnly")]
+        public async Task<IActionResult> GetProduct(string name)
+        {
+            var product = await _context.Products
+                .Where(p => p.Name.Contains(name))
+                .Select(p => new
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Color = p.Color,
+                    Dimension = p.Dimension,
+                    Material = p.Material,
+                    Productor = p.Productor
+
+                })
+                .FirstOrDefaultAsync();
+            //Console.WriteLine($"----------------{product.CategoryName}");
+            //Console.WriteLine($"--------------{product?.Category.Name}-------");
+
+            if (product == null)
+            {
+                return NotFound(new { message = "Product not found." });
+            }
+
+            return Ok(product); // Return product as JSON
+        }
+       
 
     }
 }

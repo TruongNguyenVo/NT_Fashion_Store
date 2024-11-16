@@ -27,7 +27,7 @@ namespace doan1_v1.Models
 
         [Required(ErrorMessage = "Trạng thái không được để trống.")]
         [DefaultValue("Đã đặt hàng")]
-        [RegularExpression(@"^(Đã đặt hàng|Đang xử lý|Đang vận chuyển|Đã thanh toán|Đã hủy)$", ErrorMessage = "Chỉ nhận các giá trị Đã đặt hàng, Đang xử lý, Đang vận chuyển, Đã thanh toán, Đã hủy.")]
+        [RegularExpression(@"^(Đã đặt hàng|Đã thanh toán|Đã hủy)$", ErrorMessage = "Chỉ nhận các giá trị Đã đặt hàng, Đang xử lý, Đang vận chuyển, Đã thanh toán, Đã hủy.")]
         public required string Status { get; set; }
 
         public string? Note { get; set; }

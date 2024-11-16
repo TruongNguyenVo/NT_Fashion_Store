@@ -170,7 +170,7 @@ namespace doan1_v1.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeInforAsync(string userId, string FullName, string Email, string PhoneNumber, string Address, string Gender, DateOnly DateOfBirth)
         {
-            Console.WriteLine();
+            //Console.WriteLine();
             var existingUser = await _userManager.FindByIdAsync(userId);
             if (existingUser == null) {
                 return NotFound();
@@ -202,12 +202,30 @@ namespace doan1_v1.Controllers
             }
             return View("Profile");
         }
-        //Đổi mật khẩu
-        [HttpPost]
-        public IActionResult ChangePassword(string oldPassword, string newPassword, string confirmNewPassword)
+		[Authorize(Policy = "ManagerOrCustomer")]
+		//Đổi mật khẩu
+		[HttpPost]
+        public async Task<IActionResult> ChangePassword(string userId, string oldPassword, string newPassword, string confirmNewPassword)
         {
-            Console.WriteLine();
-            return View("Profile");
-        }
+			//Console.WriteLine();
+			var existingUser = await _userManager.FindByIdAsync(userId);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Console.WriteLine();
+                var result = await _userManager.ChangePasswordAsync(existingUser, oldPassword, newPassword);
+                if (result.Succeeded)
+                {
+                    //change password thanh cong
+                    await _signInManager.SignOutAsync();
+                    return RedirectToAction("Index", "Home"); // chuyen den trang chu
+                }
+                
+            }
+			return View("Profile");
+		}
     }
 }

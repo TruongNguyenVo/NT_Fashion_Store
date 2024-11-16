@@ -3,7 +3,6 @@
 	ViewData["Title"] = "Chi tiết sản phẩm";
 	var product = ViewBag.product as doan1_v1.Models.Product;
 	Layout = "~/Views/Shared/_LayoutUser.cshtml";
-	var userId = 5;
 }
 <section id="center" class="p_3 bg_light">
 	<div class="container-xl">
@@ -69,12 +68,36 @@
 										@product.Price VND
 										</h4>
 								<h5 class="mt-4 mb-4">@product.Name</h5>
-								<input type="number" name="quantity" min="1" value="1" class="form-control bg_light float-start me-3 rounded-0" placeholder="Qty" style="width:80px; height:50px;">
+								<input type="number" name="quantity" min="1" value="1" max="@product.Quantity" class="form-control bg_light float-start me-3 rounded-0" placeholder="Qty" style="width:80px; height:50px;">
 									<input type="hidden" name="productId" value="@product.Id" />
-									<input type="hidden" name="userId" value="@userId" />
 								<select class="form-select bg_light float-start me-3 rounded-0" style="width:80px; height:50px;">
-									<option value="" selected>Size</option>
-									<option>@product.Dimension</option>
+										@{
+											List<string> dimensionTemps;
+											//ep kieu - neu la chu thi la ao, so thi la quan
+											if(Int32.TryParse(product.Dimension, out int number)){
+											//neu ep thanh cong - la so
+												dimensionTemps = new List<string> {"26", "27", "28", "29", "30", "31", "32"};
+											}
+											//ep sai thi ao 
+											else
+											{
+												dimensionTemps = new List<string> { "S", "M", "L", "XL", "XXL" };
+											}
+											@foreach (var dimension in dimensionTemps)
+											{
+												if(product.Dimension.ToString() == dimension)
+												{
+													<option selected>@product.Dimension</option>
+												}
+												else
+												{
+													<option disabled value="@dimension">@dimension</option>
+												}
+
+											}
+
+										}
+
 								</select>
 								<h6 class="text-uppercase fw-bold d-inline-block">
 									<button class="button"

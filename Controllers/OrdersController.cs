@@ -128,7 +128,21 @@ namespace doan1_v1.Controllers
                 var oldDetailOrders = await _context.OrderProductDetails.
                     Where(old => old.OrderId == id).
                     ToListAsync();
-                _context.OrderProductDetails.RemoveRange(oldDetailOrders);
+
+                //restore lai quantity
+                foreach(var oldDetailOrder in oldDetailOrders)
+                {
+                    var restoreProduct = await _context.Products.FindAsync(oldDetailOrder.ProductId);
+                    if (restoreProduct != null) {
+                        restoreProduct.Quantity = restoreProduct.Quantity + oldDetailOrder.Quantity;
+                        _context.Products.Update(restoreProduct);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                _context.OrderProductDetails.RemoveRange(oldDetailOrders); //xoa
+                await _context.SaveChangesAsync();
+
 
                 order.DateReceive = DateReceive; //cap nhat ngay giao hang
                 //cap nhat lai chi tiet san pham
@@ -177,8 +191,8 @@ namespace doan1_v1.Controllers
         }
 
         // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Orders.FindAsync(id);

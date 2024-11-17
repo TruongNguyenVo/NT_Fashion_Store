@@ -128,7 +128,7 @@ namespace doan1_v1.Controllers
                     new_product.Name = name_products[i];
                     new_product.CategoryId = categoryIds[i];
                     new_product.Color = colors[i];
-                    //new_product.Dimension = dimensions[i];
+                    new_product.Dimension = dimensions[i];
                     new_product.Material = materials[i];
                     new_product.Productor = productors[i];
 

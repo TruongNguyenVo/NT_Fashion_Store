@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using SQLitePCL;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
 
 namespace doan1_v1.Controllers
@@ -71,16 +72,17 @@ namespace doan1_v1.Controllers
 
 
             //viet de lay 8 san pham (4 quan, 4 ao)
+			
 
             //ao
             var productAos = await _context.Products
-                                            .Where(p => p.CategoryId == 4)
+                                            .Where(p => p.Category.Name == "Áo")
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
             //quan
             var productQuans = await _context.Products
-                                            .Where(p=> p.CategoryId ==5)
+                                            .Where(p=> p.Category.Name == "Quần")
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
@@ -99,10 +101,31 @@ namespace doan1_v1.Controllers
         [Route("Seach/{query?}")]
         public async Task<IActionResult> Search(string? query, int pageNumber = 1)
         {
+			//lay 3 productId trong bang orderdetail co xuat hien nhieu nhat
+			var topProductIds = _context.OrderProductDetails
+			.GroupBy(od => od.ProductId)
+			.Select(g => new
+			{
+				ProductId = g.Key,
+				Count = g.Count()
+			})
+			.OrderByDescending(g => g.Count)
+			.Take(3)
+			.Select(x => x.ProductId)
+			.ToList();
+			if (topProductIds != null) {
+				var topProducts = await _context.Products.
+										Where(p => topProductIds.Contains(p.Id))
+											.ToListAsync();
+				ViewBag.Top3Seller = topProducts;
+			}
+
+
+
 			//tim tat ca san pham theo query
 			//Console.WriteLine($"--------------{query}----------------");
-			
-            //danh muc san pham
+
+			//danh muc san pham
 			var categories = await _context.Categories
 								.Where(c => c.ParentId != null)
 								.ToListAsync();
@@ -128,6 +151,29 @@ namespace doan1_v1.Controllers
         [Route("Shop/{id?}")]
         public async Task<IActionResult> Shop(int? id, int pageNumber=1)
 		{
+			//lay 3 productId trong bang orderdetail co xuat hien nhieu nhat
+			var topProductIds = _context.OrderProductDetails
+			.GroupBy(od => od.ProductId)
+			.Select(g => new
+			{
+				ProductId = g.Key,
+				Count = g.Count()
+			})
+			.OrderByDescending(g => g.Count)
+			.Take(3)
+			.Select(x => x.ProductId)
+			.ToList();
+			if (topProductIds != null)
+			{
+				var topProducts = await _context.Products.
+										Where(p => topProductIds.Contains(p.Id))
+										.Include(p => p.ProductImages)
+											.ToListAsync();
+				ViewBag.Top3Seller = topProducts;
+			}
+
+
+
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
 			if (userId != null)
 			{
@@ -149,10 +195,14 @@ namespace doan1_v1.Controllers
                 //                .Include(p=> p.ProductImages)
                 //	.ToListAsync();
                 var products = await PaginatedList<Product>.CreateAsync(_context.Products
-                    .Where(p => p.IsDel == false && p.Quantity > 0)
-                                .Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
+                    .Where(p => p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0 )
+                                .Include(p => p.ProductImages), pageNumber, 9); // phan trang moi 8 san pham 
                 ViewBag.products = products;
-				return View(products);
+				foreach(var product in products)
+				{
+                    Console.WriteLine($"-------------{product.Name}");
+				}
+				return View();
             }
             //lay san pham theo category
             else
@@ -219,6 +269,26 @@ namespace doan1_v1.Controllers
 		[Route("product/detail/{id:int}")]
         public async Task<IActionResult> Detail(int id)
 		{
+			//lay 3 productId trong bang orderdetail co xuat hien nhieu nhat
+			var topProductIds = _context.OrderProductDetails
+			.GroupBy(od => od.ProductId)
+			.Select(g => new
+			{
+				ProductId = g.Key,
+				Count = g.Count()
+			})
+			.OrderByDescending(g => g.Count)
+			.Take(3)
+			.Select(x => x.ProductId)
+			.ToList();
+			if (topProductIds != null)
+			{
+				var topProducts = await _context.Products.
+										Where(p => topProductIds.Contains(p.Id))
+											.ToListAsync();
+				ViewBag.Top3Seller = topProducts;
+			}
+
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
 			if (userId != null)
 			{

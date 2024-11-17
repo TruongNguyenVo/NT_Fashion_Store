@@ -40,8 +40,11 @@ namespace doan1_v1.Controllers
         [HttpPost]
         public async Task<IActionResult> LogIn(string username, string password)
         {
+
+
             //xem thong tin cua tai khoan
-            var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
+            var result = await _signInManager.             
+                PasswordSignInAsync(username, password, false, false);
             if (result.Succeeded) { 
                 var user = await _userManager.FindByNameAsync(username);
                 var roles = await _userManager.GetRolesAsync(user);

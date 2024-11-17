@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
 using Microsoft.AspNetCore.Authorization;
+using doan1_v1.ViewModels;
 
 namespace doan1_v1.Controllers
 {
@@ -38,7 +39,97 @@ namespace doan1_v1.Controllers
         [Route("SaleReport")]
         public async Task<IActionResult> SaleReport()
         {
-            return View();
+            //lay tat ca cac phieu nhap kho va chi tiet phieu nhap kho, groupby theo thang
+                //            select DatePurchase, sum(PurchaseReportProductDetails.Quantity * PurchaseReportProductDetails.PricePurchase)
+                //from purchasereports, PurchaseReportProductDetails
+                //where PurchaseReports.Id = PurchaseReportProductDetails.PurchaseReportId
+                //group by DatePurchase
+
+            var groupedPurchases = await _context.PurchaseReports
+                                                .Where(pr => pr.IsDel == false)
+                                                .Include(pr => pr.PurchaseReportProductDetails)
+                                                .GroupBy(pr => new { pr.DatePurchase.Year, pr.DatePurchase.Month })
+                                                .Select(
+                                                    g => new
+                                                    {
+                                                        Month = g.Key.Month, //thang
+                                                        Year = g.Key.Year,
+														TotalPurchase = g.SelectMany(pr => pr.PurchaseReportProductDetails) // Flatten details
+						  .Sum(d => d.Quantity * d.PricePurchase) // Calculate total purchase for the group
+													}
+            
+                
+                )
+                                                .ToListAsync();
+
+
+            //foreach (var group in groupedReceipts)
+            //{
+            //             Console.WriteLine();
+            //             Console.WriteLine($"Month: {group.Month}");
+            //             Console.WriteLine($"Total Receipts: {group.TotalPurchase}");
+            //             //Console.WriteLine($"Total Quantity: {group.TotalQuantity}");
+            //             //Console.WriteLine($"Total Value: {group.TotalValue}");
+            //         }
+
+
+            //lay tat ca cac hoa don va chi tiet hoa don, groupby theo thang
+            var groupedOrders = await _context.Orders
+                                    .Where(pr => pr.IsDel == false)
+                                    .Include(pr => pr.OrderProductDetails)
+                                    .GroupBy(pr => new { pr.DateOrder.Year, pr.DateOrder.Month })
+                                    .Select(
+                                        g => new
+                                        {
+                                            Month = g.Key.Month, //thang
+                                            Year = g.Key.Year,
+                                            TotalSale = g.SelectMany(pr => pr.OrderProductDetails) // Flatten details
+              .Sum(d => d.Quantity * d.PriceSale) + +g.Sum(o => o.DeliveryCost)// Calculate total purchase for the group
+                                        }
+
+
+    )
+                                    .ToListAsync();
+            //foreach (var group in groupedOrders)
+            //{
+            //    Console.WriteLine();
+            //    Console.WriteLine($"Month: {group.Month}");
+            //    Console.WriteLine($"Month: {group.Year}");
+            //    Console.WriteLine($"Total Receipts: {group.TotalSale}");
+            //    //Console.WriteLine($"Total Quantity: {group.TotalQuantity}");
+            //    //Console.WriteLine($"Total Value: {group.TotalValue}");
+            //}
+
+            var combinedData = groupedOrders
+           .Select(o => new MonthlyReportViewModel
+           {
+               Month = o.Month,
+               Year = o.Year,
+               TotalSale = o.TotalSale,
+               TotalPurchase = 0 // Default value
+           })
+           .Concat(groupedPurchases.Select(p => new MonthlyReportViewModel
+           {
+               Month = p.Month,
+               Year = p.Year,
+               TotalSale = 0, // Default value
+               TotalPurchase = p.TotalPurchase
+           }))
+            .GroupBy(r => new { r.Month, r.Year })
+            .Select(g => new MonthlyReportViewModel
+            {
+                Month = g.Key.Month,
+                Year = g.Key.Year,
+                TotalSale = g.Sum(x => x.TotalSale),
+                TotalPurchase = g.Sum(x => x.TotalPurchase)
+            })
+            .OrderBy(r => r.Year)
+            .ThenBy(r => r.Month)
+            .ToList();
+
+            //ViewBag.groupedPurchases = groupedPurchases;
+            //ViewBag.groupedOrders = groupedOrders;
+            return View(combinedData);
         }
 
         // GET: Invoices/Details/5

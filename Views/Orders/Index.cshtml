@@ -112,7 +112,11 @@
                         </tfoot>
                         <tbody>                         
                         @foreach(var order in orders){
-                          <tr>
+                                        if (order.IsDel == true)
+                                        {
+                                            continue;
+                                        }
+                                        <tr>
                             <td>@order.Customer.FullName</td>
                                             <td>@order.DateOrder</td>
                                             <td>@order.Status</td>
@@ -165,14 +169,11 @@
                                 <i class="fa fa-check"></i>
                               </a>
                                 <!-- delete order -->
-                                <button
-                                    asp-action ="Delete" asp-route-id="@order.Id"
-                                  type="button"
-                                  title="Hủy đơn hàng"
-                                  class="btn btn-link btn-danger"
-                                >
+                                                        <a asp-action="DeleteConfirmed" asp-route-id="@order.Id"
+                                  title="Xóa đơn hàng"
+                                  class="btn btn-link btn-danger btn-lg">
                                   <i class="fa fa-times"></i>
-                                </button>
+                                </a>
                                 }
                               </div>
                             </td>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using doan1_v1.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.VisualBasic;
 
 namespace doan1_v1.Controllers
 {
@@ -44,6 +45,7 @@ namespace doan1_v1.Controllers
             }
 
             var order = await _context.Orders
+                    .Where(o => o.Id == id)
                     .Include(o => o.Customer)
                     .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
                         .ThenInclude(op => op.Product) // lay thong tin cua product trong danh sach chi tiet
@@ -83,6 +85,7 @@ namespace doan1_v1.Controllers
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //Console.WriteLine($"---------------{id}--------------------");
             if (id == null)
             {
                 return NotFound();
@@ -96,6 +99,7 @@ namespace doan1_v1.Controllers
             else
             {
                 ViewBag.detailOrder = await _context.Orders
+                    .Where(o => o.Id == id)
                     .Include(o => o.Customer)
                     .Include(o => o.OrderProductDetails) // lay danh sach chi tiet order trong order
                         .ThenInclude(op => op.Product) // lay thong tin cua product trong danh sach chi tiet
@@ -114,34 +118,44 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateOrder,DateReceive,DeliveryCost,OtherCost,Status,Note,IsDel,AdminId,CustomerId")] Order order)
+        public async Task<IActionResult> Edit(int id, DateOnly DateReceive, List<int> productIds, List<int> quantitys)
         {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
+            //Console.WriteLine($"---------------id: {id}-------datereceive: {DateReceive}");
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null) {
+                //xoa chi tiet san pham cu trong bang chi tiet order
+                var oldDetailOrders = await _context.OrderProductDetails.
+                    Where(old => old.OrderId == id).
+                    ToListAsync();
+                _context.OrderProductDetails.RemoveRange(oldDetailOrders);
+
+                order.DateReceive = DateReceive; //cap nhat ngay giao hang
+                //cap nhat lai chi tiet san pham
+                for (int i = 0; i < productIds.Count; i++) {
+                    if (quantitys[i] == 0) //neu quantity la 0 thi bo qua
+                    {
+                        continue;
+                    }
+                    //cap nhat lai bang chi tiet order
+                    OrderProductDetail orderDetail = new OrderProductDetail();
+                    orderDetail.ProductId = productIds[i];
+                    orderDetail.Quantity = quantitys[i];
+                    //tim san pham
+                    var product = await _context.Products.FindAsync(productIds[i]);
+                    orderDetail.PriceSale = (double)product.Price;
+                    orderDetail.OrderId = id;
+                    product.Quantity = product.Quantity - quantitys[i]; //cap nhat lai quantity cua product
+
+                    _context.Products.Update(product); //cap nhat lai so luong cua product
+                    _context.Add(orderDetail); //them chi tiet order moi
                     await _context.SaveChangesAsync();
+
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+
             }
-            return View(order);
+            return RedirectToAction("Index");
         }
 
         // GET: Orders/Delete/5

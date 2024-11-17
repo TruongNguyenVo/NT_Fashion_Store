@@ -23,8 +23,8 @@ namespace doan1_v1.Helpers
 
             if (value != null && otherPropertyValue != null)
             {
-                var thisValue = (DateTime)value;
-                var otherValue = (DateTime)otherPropertyValue;
+                var thisValue = (DateOnly)value;
+                var otherValue = (DateOnly)otherPropertyValue;
 
                 if (thisValue <= otherValue)
                 {

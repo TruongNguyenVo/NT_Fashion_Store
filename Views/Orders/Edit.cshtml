@@ -1,18 +1,10 @@
-﻿@model doan1_v1.Models.Order
+﻿ @* ﻿@model doan1_v1.Models.Order *@
 
 @{
     ViewData["Title"] = "Sửa đơn hàng";
     var order = ViewBag.detailOrder;
     // var totalPriceofProduct = 0.0;
 }
-
-
-
-
-
-
-
-
 
 
 <div class="page-inner">
@@ -39,33 +31,41 @@
         </ul>
     </div>
 
-        <form class="row" action="">
-
+    <form class="row" asp-action="Edit" method="post">
+        <input type="hidden" name="id" value="@order.Id" />
             <div class="mb-3">
                 <label for="name" class="form-label">Tên khách hàng</label>
-                <input type="text" class="form-control" id="name" name="" name="FullName" value="@order.Customer.FullName">
+                <input type="text" disabled class="form-control" id="name" value="@order.Customer.FullName">
             </div>
 
             <div class="mb-3">
                 <label for="name" class="form-label">Địa chỉ</label>
-            <input type="text" class="form-control" id="name" name="Address" value="@order.Customer.Address">
+            <input type="text" disabled class="form-control" id="name" value="@order.Customer.Address">
             </div>
 
             <div class="mb-3">
                 <label for="name" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" id="name" name="PhoneNumber" value="@order.Customer.PhoneNumber">
+                <input type="text" disabled class="form-control" id="name" value="@order.Customer.PhoneNumber">
             </div>
 
             <div class="mb-3">
                 <label for="datepurchase" class="form-label">Ngày đặt</label>
-            <input type="date" class="form-control" id="datepurchase" name="DateOrder" value="@order.DateOrder.ToString("yyyy-MM-dd")">
+            <input type="date" disabled class="form-control" id="datepurchase" name="DateOrder" value="@order.DateOrder.ToString("yyyy-MM-dd")">
             <br>
             </div>
+            @if(order.DateReceive != null){
+                <div class="mb-3">
+                    <label for="datepurchase" class="form-label">Ngày giao hàng:</label>
+                    <input type="date" class="form-control" id="datepurchase" name="DateReceive" value="@order.DateReceive.ToString("yyyy-MM-dd")">
+            </div>
+        }
+        else
+        {
             <div class="mb-3">
                 <label for="datepurchase" class="form-label">Ngày dự kiến giao hàng:</label>
-            <input type="date" class="form-control" id="datepurchase" name="DateReceive" value="@order.DateReceive.ToString("yyyy-MM-dd")">
-            </div
-
+                <input type="date" class="form-control" id="datepurchase" name="DateReceive" value="">
+            </div>
+        }
             
             <!-- bảng hàng hóa -->
             <div class="mb-3">
@@ -104,7 +104,7 @@
                     }
                     </tbody>
                 </table>
-            </div>
+
             <div class="mb-3">
                 <label for="tongTien">Phí vận chuyển:</label>
                 <input type="number" class="form-control" id="tongTien" name="">
@@ -124,12 +124,12 @@
                 <textarea class="form-control" rows="5" name="note" id=""></textarea>
             </div>
             <div class="mb-3-md">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Tạo</button>
+                <button type="button" class="btn btn-danger" asp-action="Index">Đóng</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
             </div>
-
+            </div>
         </form>
-    </div>
+</div>
     @* <h1>Edit</h1>
 
     <h4>Order</h4>
@@ -266,48 +266,5 @@
                 alert("Unable to fetch product details.");
             });
     });
-    </script>
-@*      add row *@
-    <script>
-
-        function addRow() {
-            var table = document.getElementById("tableProduct");
-            var tbody = table.getElementsByTagName("tbody")[0];
-
-            // Tạo một hàng mới
-            var newRow = tbody.insertRow();
-
-            // Tạo các ô dữ liệu cho hàng mới
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-            var cell5 = newRow.insertCell(4);
-            var cell6 = newRow.insertCell(5);
-            var cell7 = newRow.insertCell(6);
-            var cell8 = newRow.insertCell(7);
-
-            // Thêm nội dung vào các ô (bạn có thể thay đổi nội dung này)
-            cell1.innerHTML = "<input name='name_products' type='text' class='form-control'>";
-
-            // Tạo thẻ select mới
-            var select = document.createElement("select");
-            select.name = "categoryIds";
-            select.classList.add("form-control");
-            // Lấy HTML của các option từ select mẫu
-            select.innerHTML = document.getElementById("categoryOptionsTemplate").innerHTML;
-            // Thêm thẻ select vào ô mới
-            cell2.appendChild(select);
-
-            cell3.innerHTML = "<input name='colors' type='text' class='form-control'>";
-            cell4.innerHTML = "<input name='dimensions' type='text' class='form-control'>";
-            cell5.innerHTML = "<input name='materials' type='text' class='form-control'>";
-            cell6.innerHTML = "<input name='productors' type='text' class='form-control'>";
-            cell7.innerHTML = "<input name='quantitys' type='number' class='form-control' value = 0>";
-            cell8.innerHTML = "<input name='prices' type='number' class='form-control' value =0>";
-
-
-
-        }
     </script>
     }

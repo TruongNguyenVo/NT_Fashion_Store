@@ -76,7 +76,7 @@ namespace doan1_v1.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(SignUpViewModel signUpViewModel)
         {
-            Console.WriteLine("Vao day roi");
+            //Console.WriteLine("Vao day roi");
             //tạo customer
             if (ModelState.IsValid)
             {
@@ -131,9 +131,26 @@ namespace doan1_v1.Controllers
                     // Nếu chưa tồn tại, tạo vai trò "Customer"
                     await _roleManager.CreateAsync(new IdentityRole("Customer"));
                 }
+                // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
+                if (!await _roleManager.RoleExistsAsync("Manager"))
+                {
+                    // Nếu chưa tồn tại, tạo vai trò "Customer"
+                    await _roleManager.CreateAsync(new IdentityRole("Manager"));
+                }
+                //nếu trong bảng users không có record nào thì mặc định người tạo đầu tiên là admin
+                int userCount = await _context.Users.CountAsync();
+                string role = "Customer";
+                if (userCount == 0)
+                {
+                    role = "Manager"; // neu khong co record nao thi nguoi dau tien la admin
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
                 if (result.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
+                    var roleResult = await _userManager.AddToRoleAsync(customer, role);
                     if (roleResult.Succeeded)
                     {
                         ////khi tạo tài khoản thành công thì tạo một cart luôn
@@ -164,12 +181,6 @@ namespace doan1_v1.Controllers
                 //};
                 ////tạo manager
                 //var result = await _userManager.CreateAsync(manager, Password);
-                //         // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
-                //         if (!await _roleManager.RoleExistsAsync("Manager"))
-                //         {
-                //             // Nếu chưa tồn tại, tạo vai trò "Customer"
-                //             await _roleManager.CreateAsync(new IdentityRole("Manager"));
-                //         }
                 //         if (result.Succeeded)
                 //         {
                 //             var roleResult = await _userManager.AddToRoleAsync(manager, "Manager");

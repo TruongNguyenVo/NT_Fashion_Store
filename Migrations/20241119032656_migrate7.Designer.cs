@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using doan1_v1.Models;
 
@@ -11,9 +12,11 @@ using doan1_v1.Models;
 namespace doan1_v1.Migrations
 {
     [DbContext(typeof(NTFashionDbContext))]
-    partial class NTFashionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119032656_migrate7")]
+    partial class migrate7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +266,9 @@ namespace doan1_v1.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("OtherCost")
+                        .HasColumnType("float");
 
                     b.Property<string>("Status")
                         .IsRequired()

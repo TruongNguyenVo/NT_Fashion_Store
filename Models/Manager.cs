@@ -2,6 +2,6 @@
 {
     public class Manager : User
     {
-        public string CCCD { get; set; }
+        //public string CCCD { get; set; }
     }
 }

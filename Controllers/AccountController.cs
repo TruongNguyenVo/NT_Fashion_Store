@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace doan1_v1.Controllers
 {
@@ -73,88 +74,122 @@ namespace doan1_v1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Register(string FullName, DateOnly DateOfBrith, string Gender, string Email, string Phone, string UserName, string Password, string ConfirmPassword, string Address)
+        public async Task<IActionResult> Register(SignUpViewModel signUpViewModel)
         {
-            //Console.WriteLine("Vao day roi");
+            Console.WriteLine("Vao day roi");
             //tạo customer
-
-            var customer = new Customer()
+            if (ModelState.IsValid)
             {
-                FullName = FullName,
-                DateOfBrith = DateOfBrith,
-                Gender = Gender,
-                Email = Email,
-                PhoneNumber = Phone,
-                UserName = UserName,
-                Address = Address
-            };
-            //tạo người dùng
-            var result = await _userManager.CreateAsync(customer, Password);
-            // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
-            if (!await _roleManager.RoleExistsAsync("Customer"))
-            {
-                // Nếu chưa tồn tại, tạo vai trò "Customer"
-                await _roleManager.CreateAsync(new IdentityRole("Customer"));
-            }
-            if (result.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
-                if (roleResult.Succeeded)
+                // Kiểm tra xem số điện thoại đã tồn tại trong hệ thống chưa
+                if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == signUpViewModel.PhoneNumber))
                 {
-                    ////khi tạo tài khoản thành công thì tạo một cart luôn
-                    Cart cart = new Cart
-                    {
-                        UserId = customer.Id
-                    };
-                    _context.Carts.Add(cart);
-                    await _context.SaveChangesAsync();
-
-                    // Đăng nhập ngay sau khi tạo tài khoản
-                    await _signInManager.SignInAsync(customer, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-
+                    ModelState.AddModelError("", "Số điện thoại đã được sử dụng.");
+                    return View(signUpViewModel);
                 }
+                // Kiểm tra xem email đã tồn tại trong hệ thống chưa
+                if (await _userManager.Users.AnyAsync(u => u.Email == signUpViewModel.Email))
+                {
+                    ModelState.AddModelError("", "Email đã được sử dụng.");
+                    return View("SignUp", signUpViewModel);
+                }
+                //kiểm tra username có tồn tại
+                if (await _userManager.Users.AnyAsync(u => u.UserName == signUpViewModel.UserName))
+                {
+                    ModelState.AddModelError("", "Tài khoản đã tồn tại.");
+                    return View("SignUp", signUpViewModel);
+                }
+                //kiểm tra password có đúng chuẩn không
+                if (!IsPasswordValid(signUpViewModel.Password))
+                {
+                    // Return an error message if the password is invalid
+                    ModelState.AddModelError("Mật khẩu", "Mật khẩu của bạn phải theo chuẩn sau: " +
+                        "ít nhất 10 ký tự, " +
+                        "một chữ in hoa, " +
+                        "một chữ thường, " +
+                        "một con số, và " +
+                        "một ký tự đặc biệt (ví dụ !@#$%^&*.)");
+                    return View("SignUp", signUpViewModel);
+                }
+
+
+                var customer = new Customer()
+                {
+
+                    FullName = signUpViewModel.FullName,
+                    DateOfBrith = signUpViewModel.DateOfBrith,
+                    Gender = signUpViewModel.Gender,
+                    Email = signUpViewModel.Email,
+                    PhoneNumber = signUpViewModel.PhoneNumber,
+                    UserName = signUpViewModel.UserName,
+                    Address = signUpViewModel.Address
+                };
+                //tạo người dùng
+                var result = await _userManager.CreateAsync(customer, signUpViewModel.Password);
+                // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
+                if (!await _roleManager.RoleExistsAsync("Customer"))
+                {
+                    // Nếu chưa tồn tại, tạo vai trò "Customer"
+                    await _roleManager.CreateAsync(new IdentityRole("Customer"));
+                }
+                if (result.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(customer, "Customer");
+                    if (roleResult.Succeeded)
+                    {
+                        ////khi tạo tài khoản thành công thì tạo một cart luôn
+                        Cart cart = new Cart
+                        {
+                            UserId = customer.Id
+                        };
+                        _context.Carts.Add(cart);
+                        await _context.SaveChangesAsync();
+
+                        // Đăng nhập ngay sau khi tạo tài khoản
+                        await _signInManager.SignInAsync(customer, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                }
+
+
+
+
+                //var manager = new Manager()
+                //{
+                //	FullName = FullName,
+                //	Email = Email,
+                //	UserName = UserName,
+                //	Address = Address,
+
+                //};
+                ////tạo manager
+                //var result = await _userManager.CreateAsync(manager, Password);
+                //         // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
+                //         if (!await _roleManager.RoleExistsAsync("Manager"))
+                //         {
+                //             // Nếu chưa tồn tại, tạo vai trò "Customer"
+                //             await _roleManager.CreateAsync(new IdentityRole("Manager"));
+                //         }
+                //         if (result.Succeeded)
+                //         {
+                //             var roleResult = await _userManager.AddToRoleAsync(manager, "Manager");
+                //             if (roleResult.Succeeded)
+                //             {
+                //                 ////khi tạo tài khoản thành công thì tạo một cart luôn
+                //                 Cart cart = new Cart
+                //                 {
+                //                     UserId = manager.Id
+                //                 };
+                //                 _context.Carts.Add(cart);
+                //                 await _context.SaveChangesAsync();
+
+                //    }
+                //    // Đăng nhập ngay sau khi tạo tài khoản
+                //    await _signInManager.SignInAsync(manager, isPersistent: false);
+                //    return RedirectToAction("Index", "Home");
+                //}
             }
-
-
-
-
-				//var manager = new Manager()
-				//{
-				//	FullName = FullName,
-				//	Email = Email,
-				//	UserName = UserName,
-				//	Address = Address,
-
-				//};
-				////tạo manager
-				//var result = await _userManager.CreateAsync(manager, Password);
-				//         // Kiểm tra xem vai trò "Customer" đã tồn tại hay chưa
-				//         if (!await _roleManager.RoleExistsAsync("Manager"))
-				//         {
-				//             // Nếu chưa tồn tại, tạo vai trò "Customer"
-				//             await _roleManager.CreateAsync(new IdentityRole("Manager"));
-				//         }
-				//         if (result.Succeeded)
-				//         {
-				//             var roleResult = await _userManager.AddToRoleAsync(manager, "Manager");
-				//             if (roleResult.Succeeded)
-				//             {
-				//                 ////khi tạo tài khoản thành công thì tạo một cart luôn
-				//                 Cart cart = new Cart
-				//                 {
-				//                     UserId = manager.Id
-				//                 };
-				//                 _context.Carts.Add(cart);
-				//                 await _context.SaveChangesAsync();
-
-				//    }
-				//    // Đăng nhập ngay sau khi tạo tài khoản
-				//    await _signInManager.SignInAsync(manager, isPersistent: false);
-				//    return RedirectToAction("Index", "Home");
-				//}
-
-				return RedirectToAction("Index");
+				return View("SignUp");
         }
 
 
@@ -237,5 +272,37 @@ namespace doan1_v1.Controllers
             }
 			return View("Profile");
 		}
+        //[HttpGet]
+        //public bool IsEmailExists(string email)
+        //{
+        //    //// Check if the email exists in the database
+        //    //var emailExists = _context.Users.Any(u => u.Email == email);
+        //    Console.WriteLine();
+        //    //// Return true if the email is already taken (invalid), otherwise false (valid)
+        //    //if (emailExists)
+        //    //{
+        //    //    return Json($"The email {email} is already in use.");
+        //    //}
+        //    //return Json(true); // True indicates that the email is valid
+        //    return false;
+        //}
+        private bool IsPasswordValid(string password)
+        {
+            // Minimum length of 10 characters
+            if (password.Length < 10)
+                return false;
+
+            // Regular expressions for the required password components
+            var hasUpperCase = new Regex(@"[A-Z]"); // At least one uppercase letter
+            var hasLowerCase = new Regex(@"[a-z]"); // At least one lowercase letter
+            var hasNumber = new Regex(@"[0-9]"); // At least one number
+            var hasSpecialChar = new Regex(@"[!@#$%^&*]"); // At least one special character
+
+            // Check all conditions
+            return hasUpperCase.IsMatch(password) &&
+                   hasLowerCase.IsMatch(password) &&
+                   hasNumber.IsMatch(password) &&
+                   hasSpecialChar.IsMatch(password);
+        }
     }
 }

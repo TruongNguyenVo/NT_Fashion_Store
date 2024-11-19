@@ -22,12 +22,12 @@ namespace doan1_v1.Models
         [Range(0, double.MaxValue, ErrorMessage = "Chi phí vận chuyển không được nhỏ hơn 0.")]
         public double DeliveryCost { get; set; }
 
-        [Range(0, double.MaxValue, ErrorMessage = "Các chi phí khác không được nhỏ hơn 0.")]
-        public double? OtherCost { get; set; } = 0;
+        //[Range(0, double.MaxValue, ErrorMessage = "Các chi phí khác không được nhỏ hơn 0.")]
+        //public double? OtherCost { get; set; } = 0;
 
         [Required(ErrorMessage = "Trạng thái không được để trống.")]
         [DefaultValue("Đã đặt hàng")]
-        [RegularExpression(@"^(Đã đặt hàng|Đã thanh toán|Đã hủy)$", ErrorMessage = "Chỉ nhận các giá trị Đã đặt hàng, Đang xử lý, Đang vận chuyển, Đã thanh toán, Đã hủy.")]
+        [RegularExpression(@"^(Đã đặt hàng|Đã thanh toán|Đã hủy)$", ErrorMessage = "Chỉ nhận các giá trị Đã đặt hàng, Đã thanh toán, Đã hủy.")]
         public required string Status { get; set; }
 
         public string? Note { get; set; }

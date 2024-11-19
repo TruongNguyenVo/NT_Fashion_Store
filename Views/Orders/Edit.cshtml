@@ -107,17 +107,22 @@
 
             <div class="mb-3">
                 <label for="tongTien">Phí vận chuyển:</label>
-                <input type="number" class="form-control" id="tongTien" name="">
+                <input type="number" disabled class="form-control" id="tongTien" name="" value="@order.DeliveryCost">
             </div>
-            <div class="mb-3">
+@*             <div class="mb-3">
                 <label for="tongTien">Phí khác:</label>
-                <input type="number" class="form-control" id="tongTien" name="">
-            </div>
+                <input type="number" class="form-control" id="tongTien" name="" value="@order.OtherCost">
+            </div> *@
 
-            <div class="mb-3">
+@*             <div class="mb-3">
                 <label for="tongTien">Tổng tiền:</label>
-                <input type="number" class="form-control" id="tongTien" name="" disabled>
-            </div>
+                <input type="number" class="form-control" id="tongTien" name="" disabled
+                @{
+                    var totalPrice = 0.0;
+
+                }
+                >
+            </div> *@
 
             <div class="mb-3">
                 <label for="office" class="form-label">Ghi chú (nếu có)</label>

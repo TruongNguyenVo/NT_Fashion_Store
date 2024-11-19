@@ -1,4 +1,5 @@
 ﻿using doan1_v1.Models;
+using doan1_v1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,23 +39,29 @@ namespace doan1_v1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> LogIn(string username, string password)
+        public async Task<IActionResult> LogIn(SignInViewModel signInViewModel)
         {
-
-
-            //xem thong tin cua tai khoan
-            var result = await _signInManager.             
-                PasswordSignInAsync(username, password, false, false);
-            if (result.Succeeded) { 
-                var user = await _userManager.FindByNameAsync(username);
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Contains("Customer")) //neu la customer
+            if (ModelState.IsValid)
+            {
+                //xem thong tin cua tai khoan
+                var result = await _signInManager.
+                PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, false, false);
+                if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home"); //thi chay den trang chu
+                    var user = await _userManager.FindByNameAsync(signInViewModel.Username);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains("Customer")) //neu la customer
+                    {
+                        return RedirectToAction("Index", "Home"); //thi chay den trang chu
+                    }
+                    else if (roles.Contains("Manager")) // neu la manager 
+                    {
+                        return RedirectToAction("SaleReport", "Invoices"); // thi den trang thong ke doanh thu
+                    }
                 }
-                else if (roles.Contains("Manager")) // neu la manager 
+                else
                 {
-                    return RedirectToAction("SaleReport", "Invoices"); // thi den trang thong ke doanh thu
+
                 }
             }
             return View("SignIn");

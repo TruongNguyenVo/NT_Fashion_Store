@@ -110,7 +110,7 @@ namespace doan1_v1.Controllers
                     && pr.Color == colors[i]
                     && pr.Dimension == dimensions[i]
                     && pr.Material == materials[i]
-                    && pr.Productor == productors[i]
+                    && pr.Productor == productors[i]);
                     //&& pr.Quantity == quantitys[i]
                    // && pr.Price == prices[i]);
                 int productId = 0; // bien luu id cua product
@@ -298,7 +298,8 @@ namespace doan1_v1.Controllers
                     && pr.Dimension == dimensions[i]
                     && pr.Material == materials[i]
                     && pr.Productor == productors[i]
-                    && pr.Price == prices[i]);
+                   // && pr.Price == prices[i]
+                    );
 
                 int productId = 0; // bien luu id cua product
                 // done - có id của product
@@ -413,8 +414,11 @@ namespace doan1_v1.Controllers
                     // co product, co product
                     //cap nhat so luong trong bang chi tiet vao bang product
                     product.Quantity = product.Quantity + productInDetail.Quantity;
-                    //cap nhat gia trong bang chi tiet vao bang product
-                    product.Price = productInDetail.PricePurchase;
+                    //cap nhat gia trong bang chi tiet vao bang product neu k co gia
+                    if (product.Price == null)
+                    {
+                        product.Price = productInDetail.PricePurchase;
+                    }
                     _context.Products.Update(product);
                     await _context.SaveChangesAsync();
                 }

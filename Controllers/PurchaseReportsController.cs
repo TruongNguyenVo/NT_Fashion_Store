@@ -112,7 +112,7 @@ namespace doan1_v1.Controllers
                     && pr.Material == materials[i]
                     && pr.Productor == productors[i]
                     //&& pr.Quantity == quantitys[i]
-                    && pr.Price == prices[i]);
+                   // && pr.Price == prices[i]);
                 int productId = 0; // bien luu id cua product
                 // done - có id của product
                 if (product != null)

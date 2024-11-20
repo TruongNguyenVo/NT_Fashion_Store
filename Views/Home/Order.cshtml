@@ -42,14 +42,14 @@
 									<td>@order.DateReceive</td>
 									<td>
 										@{
-											var otherCost = order.OtherCost;
-											if (otherCost == null)
-											{
-												otherCost = 0;
-											}
+										// var otherCost = order.OtherCost;
+											// if (otherCost == null)
+											// {
+											// 	otherCost = 0;
+											// }
 											var totalPrice = 0.0;
 											// tong phi van chuyen va phi khac
-											totalPrice = order.DeliveryCost + otherCost;
+											totalPrice = order.DeliveryCost; 
 											//tong tat ca cac gia cua cac product
 											foreach (var detailOr in order.OrderProductDetails)
 											{

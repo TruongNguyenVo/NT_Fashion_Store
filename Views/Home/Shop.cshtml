@@ -19,7 +19,7 @@
 					</div>
 					<div class="list_1l2 mt-3">
 						@for (int i = 0; i < products.Count; i += 3)
-@* 						@for (int i = 0; i < products.Count; i += 3) *@
+						@* 						@for (int i = 0; i < products.Count; i += 3) *@
 						{
 							<div class="row list_2">
 								@if (i < ViewBag.products.Count) //kiem tra co vuot qua so luong k :/ bug gi ma bug lam
@@ -81,7 +81,7 @@
 									<br>
 								}
 								@if (i + 2 < ViewBag.products.Count)
-@* 								@if (i + 2 < ViewBag.products.Count) *@
+								@* 								@if (i + 2 < ViewBag.products.Count) *@
 								{
 									<div class="col-md-4 col-sm-6">
 										<div class="list_2i clearfix position-relative">
@@ -103,7 +103,7 @@
 										</div>
 										<div class="list_2i_last mt-3 text-center clearfix">
 											<h6 class="fw-bold"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 2].Name</a></h6>
-@* 											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 3].Price.ToString("N0") VND</a></h6> *@
+											@* 											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 3].Price.ToString("N0") VND</a></h6> *@
 											<h6 class="font_14 mb-0"><a asp-action="Detail" asp-route-id="@ViewBag.products[i+2].Id" asp-controller="Home">@ViewBag.products[i + 2].Price.ToString("N0") VND</a></h6>
 										</div>
 									</div>

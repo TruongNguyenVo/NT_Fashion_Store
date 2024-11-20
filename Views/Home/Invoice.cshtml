@@ -87,23 +87,23 @@
                 <label for="tongTien">Phí vận chuyển:</label>
                 <input type="number" disabled class="form-control" id="tongTien" name="" value="@order.DeliveryCost">
             </div>
-            <div class="mb-3">
+@*             <div class="mb-3">
                 @{
                     //kiem tra otherCost no co null hay k
-                    var otherCost = order.OtherCost;
-                    if (otherCost == null)
-                    {
-                        otherCost = 0;
-                    }
+                    // var otherCost = order.OtherCost;
+                    // if (otherCost == null)
+                    // {
+                    //     otherCost = 0;
+                    // }
 
                 }
                 <label for="tongTien">Phí khác:</label>
                 <input type="number" disabled class="form-control" id="tongTien" name="" value="@otherCost">
-            </div>
+            </div> *@
 
             <div class="mb-3">
                 @{
-                    var totalPrice = totalPriceofProduct + order.DeliveryCost + otherCost;
+                    var totalPrice = totalPriceofProduct + order.DeliveryCost;
                 }
                 <label for="tongTien">Tổng tiền:</label>
                 <input type="number" class="form-control" id="tongTien" name="" disabled value="@totalPrice">

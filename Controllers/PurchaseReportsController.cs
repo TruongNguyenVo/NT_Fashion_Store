@@ -67,7 +67,7 @@ namespace doan1_v1.Controllers
             //lay danh sach danh muc san pham
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
 
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers.Where(s => s.IsDel == false), "Id", "Name");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name");
             return View();
         }
@@ -316,7 +316,7 @@ namespace doan1_v1.Controllers
                     new_product.Name = name_products[i];
                     new_product.CategoryId = categoryIds[i];
                     new_product.Color = colors[i];
-                    //new_product.Dimension = dimensions[i];
+                    new_product.Dimension = dimensions[i];
                     new_product.Material = materials[i];
                     new_product.Productor = productors[i];
 

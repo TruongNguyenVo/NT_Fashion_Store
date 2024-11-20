@@ -92,7 +92,9 @@ namespace doan1_v1.Controllers
                 return NotFound();
             }
             var category = await _context.Categories.FindAsync(id);
-            ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.Categories = await _context.Categories.
+                Where(c => c.ParentId != null && c.IsDel == false).                        
+                ToListAsync();
             if (category == null)
             {
                 return NotFound();

@@ -108,14 +108,14 @@
                                             <td>@invoice.Status</td>
                             <td>
                                                 @{
-                                                    var otherCost = invoice.OtherCost;
-                                                    if (otherCost == null)
-                                                    {
-                                                        otherCost = 0;
-                                                    }
+                                                    // var otherCost = invoice.OtherCost;
+                                                    // if (otherCost == null)
+                                                    // {
+                                                    //     otherCost = 0;
+                                                    // }
                                                     var totalPrice = 0.0;
                                                     // tong phi van chuyen va phi khac
-                                                    totalPrice = invoice.DeliveryCost + otherCost;
+                                                    totalPrice = invoice.DeliveryCost;
                                                     //tong tat ca cac gia cua cac product
                                                     foreach (var detailOrder in invoice.OrderProductDetails)
                                                     {

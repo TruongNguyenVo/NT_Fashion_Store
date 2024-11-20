@@ -101,6 +101,7 @@ namespace doan1_v1.Controllers
         [Route("Seach/{query?}")]
         public async Task<IActionResult> Search(string? query, int pageNumber = 1)
         {
+
 			//lay 3 productId trong bang orderdetail co xuat hien nhieu nhat
 			var topProductIds = _context.OrderProductDetails
 			.GroupBy(od => od.ProductId)
@@ -113,12 +114,16 @@ namespace doan1_v1.Controllers
 			.Take(3)
 			.Select(x => x.ProductId)
 			.ToList();
-			if (topProductIds != null) {
+			if (topProductIds != null)
+			{
 				var topProducts = await _context.Products.
 										Where(p => topProductIds.Contains(p.Id))
+										.Include(p => p.ProductImages)
 											.ToListAsync();
 				ViewBag.Top3Seller = topProducts;
 			}
+
+
 
 
 

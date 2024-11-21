@@ -214,7 +214,7 @@ namespace doan1_v1.Controllers
             {
 				var products = await PaginatedList<Product>.CreateAsync(_context.Products
 	                                                        .Where(p => p.CategoryId == id && p.IsDel == false)
-				                                            .Include(p => p.ProductImages), pageNumber, 8); // phan trang moi 8 san pham 
+				                                            .Include(p => p.ProductImages), pageNumber, 9); // phan trang moi 8 san pham 
 				ViewBag.products = products;
                 return View();
             }

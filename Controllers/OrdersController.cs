@@ -118,10 +118,10 @@ namespace doan1_v1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DateOnly DateReceive, List<int> productIds, List<int> quantitys)
+        public async Task<IActionResult> Edit(int id, DateOnly? DateReceive, List<int> productIds, List<int> quantitys)
         {
             //Console.WriteLine($"---------------id: {id}-------datereceive: {DateReceive}");
-
+            //Console.WriteLine();
             var order = await _context.Orders.FindAsync(id);
             if (order != null) {
                 //xoa chi tiet san pham cu trong bang chi tiet order
@@ -143,8 +143,11 @@ namespace doan1_v1.Controllers
                 _context.OrderProductDetails.RemoveRange(oldDetailOrders); //xoa
                 await _context.SaveChangesAsync();
 
+                if(DateReceive != null)
+                {
+                    order.DateReceive = DateReceive; //cap nhat ngay giao hang
+                }
 
-                order.DateReceive = DateReceive; //cap nhat ngay giao hang
                 //cap nhat lai chi tiet san pham
                 for (int i = 0; i < productIds.Count; i++) {
                     if (quantitys[i] == 0) //neu quantity la 0 thi bo qua

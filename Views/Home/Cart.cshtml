@@ -1,6 +1,6 @@
 ﻿@{
 	ViewData["Title"] = "Giỏ hàng";
-	var cartId = 1; //id cua cart - test
+	// var cartId = 1; id cua cart - test
 	Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <section id="center" class="p_3 bg_light">
@@ -54,17 +54,17 @@
 									<h6 class="font_12 mt-3 mb-3">Quantity</h6>
 								</div>
 								<div class="cart_3l1i2">
-										<input type="number" id="quantity" name="quantity" min="1" value="@detail.Quantity" class="form-control" placeholder="Qty" onchange="updateQuantity()">
+										<input type="number" id="quantity" name="quantity" min="1" max="@detail.Product.Quantity" value="@detail.Quantity" class="form-control" placeholder="Qty" onchange="updateQuantity()">
 									
 									<h6>
-										<a class="button_1" asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id" asp-route-cartId="@cartId">Xóa</a>
+										<a class="button_1" asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id">Xóa</a>
 									</h6>
 
 									<h6>
 
 											
 											<input type="hidden" name="detailId" value="@detail.Id" />
-											<input type="hidden" name="cartId" value="@cartId" />
+											<input type="hidden" name="cartId" />
 											<button id="updateButton" class="button" type="submit">Cập Nhật</button>
 										
 									</h6>

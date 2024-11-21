@@ -23,7 +23,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Quản lý sản phẩm</a>
+                  <a asp-action="Index">Quản lý kho</a>
                 </li>
               </ul>
             </div>
@@ -48,11 +48,25 @@
                     {
                         continue;
                     }
+                    @*                         tinh tong phieu nhap kho *@
+
                     <tr>
                         <td>@purchaseReport.CodePurchaseReport</td>
                         <td>@purchaseReport.DatePurchase</td>
                         <td>@purchaseReport.Supplier.Name</td>
-                        <td>Chua tinh duoc</td>
+                        <td>
+                            @{
+                                var totalPrice = 0.0;
+                                if (purchaseReport.PurchaseReportProductDetails.Count > 0){
+                                    foreach (var detail in purchaseReport.PurchaseReportProductDetails)
+                                    {
+                                        totalPrice = totalPrice + (detail.Quantity * detail.PricePurchase);
+                                    }
+                                }
+                            }
+                            @totalPrice.ToString("N0")
+
+                        </td>
                         @if (purchaseReport.IsUpdate)
                         {
                             <td>Đã cập nhật vào kho</td>

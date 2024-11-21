@@ -262,6 +262,12 @@ namespace doan1_v1.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            //tim hinh anh theo id
+            var pathProductImages = await _context.ProductImages.Where(
+                prId => prId.ProductId == id).
+                Select(prId => new { Id = prId.Id, Name = prId.ImgURL }).ToListAsync();
+
+            ViewBag.ProductImage = pathProductImages;
             if (product == null)
             {
                 return NotFound();

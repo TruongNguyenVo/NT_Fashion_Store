@@ -507,13 +507,68 @@ namespace doan1_v1.Controllers
 			var cart = await _context.Carts
                             .Where(p => p.UserId == userId)
                             .FirstOrDefaultAsync();
-            //tạo một chi tiết giỏ hàng
-            CartDetail detail = new CartDetail();
-            detail.ProductId = productId;
-            detail.Quantity = quantity;
-            detail.CartId = cart.Id;
-            _context.Add(detail);
-            int rowsEffect = await _context.SaveChangesAsync();
+
+			//tim kiem neu co trong detail thi cong them quantity, khong co thi tao moi
+			var detailsCart = await _context.CartDetails
+											.Where(p => p.CartId == cart.Id)
+											.ToListAsync();
+
+			if(detailsCart == null)
+			{
+                //Console.WriteLine();
+                //tạo một chi tiết giỏ hàng
+                CartDetail detail = new CartDetail();
+                detail.ProductId = productId;
+                detail.Quantity = quantity;
+                detail.CartId = cart.Id;
+                _context.Add(detail);
+                int rowsEffect = await _context.SaveChangesAsync();
+
+                // về trang hiện tại (không di chuyển qua trang khác)
+                return Redirect(Request.Headers["Referer"].ToString());
+
+            }
+			else
+			{
+                Console.WriteLine();
+				if(detailsCart.Count > 0) { 
+					foreach (var detailCart in detailsCart)
+					{
+						//neu product co trong detail
+						if (detailCart.ProductId == productId)
+						{
+							detailCart.Quantity = detailCart.Quantity + quantity;
+							await _context.SaveChangesAsync();
+							// về trang hiện tại (không di chuyển qua trang khác)
+							return Redirect(Request.Headers["Referer"].ToString()); // neu trung productId thi cộng quantity
+						}
+
+					}
+					//nếu không trùng thì tạo cái mới
+					//tạo một chi tiết giỏ hàng
+					CartDetail detail = new CartDetail();
+					detail.ProductId = productId;
+					detail.Quantity = quantity;
+					detail.CartId = cart.Id;
+					_context.Add(detail);
+					int rowsEffect = await _context.SaveChangesAsync();
+					// về trang hiện tại (không di chuyển qua trang khác)
+					return Redirect(Request.Headers["Referer"].ToString());
+				}
+				else { 
+                //tạo một chi tiết giỏ hàng
+                CartDetail detail = new CartDetail();
+                    detail.ProductId = productId;
+                    detail.Quantity = quantity;
+                    detail.CartId = cart.Id;
+                    _context.Add(detail);
+                    int rowsEffect = await _context.SaveChangesAsync();
+                }
+                // về trang hiện tại (không di chuyển qua trang khác)
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+
+
             //if(rowsEffect > 0)
             //{
             //    Console.WriteLine("Da tao cartdetail");
@@ -523,20 +578,29 @@ namespace doan1_v1.Controllers
             //    Console.WriteLine("loi roi");
             //}
 
-            // về trang hiện tại (không di chuyển qua trang khác)
-			return Redirect(Request.Headers["Referer"].ToString());
+
 		}
 
 		//hàm xóa chi tiết trong giỏ hàng, nhận vào carid, id cua chi tiet
 		[Authorize(Policy = "ManagerOrCustomer")]
-		public async Task<IActionResult> delInCart(int detailId, int cartId)
+		public async Task<IActionResult> delInCart(int detailId)
         {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
 
-            //Console.WriteLine($"------------------{detailId} {cartId}--------------------");
-            
-            //tìm cartdetail dựa vào cartId và detailId
-            var detailCart = await _context.CartDetails
-                                            .Where(d=> d.CartId == cartId && d.Id == detailId)
+			//tạo chi tiết giỏ hàng
+
+			//đã có chi tiết giỏ hàng
+
+			//tìm kiếm cart của một khách hàng dựa vào userId
+			var cart = await _context.Carts
+							.Where(p => p.UserId == userId)
+							.FirstOrDefaultAsync();
+
+			//Console.WriteLine($"------------------{detailId} {cartId}--------------------");
+
+			//tìm cartdetail dựa vào cartId và detailId
+			var detailCart = await _context.CartDetails
+                                            .Where(d=> d.CartId == cart.Id && d.Id == detailId)
                                             .FirstOrDefaultAsync();
 
             if(detailCart != null)

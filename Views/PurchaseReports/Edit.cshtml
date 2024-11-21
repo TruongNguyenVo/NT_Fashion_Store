@@ -34,7 +34,7 @@
         <input type="hidden" asp-for="Id" />
         <!-- mã hóa đơn -->
         <div class="mb-3">
-            <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn</label>
+            <label asp-for="CodePurchaseReport" class="form-label">Mã hóa đơn nhập</label>
             <input type="text" class="form-control" id="name" asp-for="CodePurchaseReport">
             <span asp-validation-for="CodePurchaseReport" class="text-danger"></span>
 
@@ -129,7 +129,7 @@
         </div>
         <div class="mb-3-md">
             <a asp-action="Index" class="btn btn-danger">Hủy</a>
-            <button type="submit" value="Save" class="btn btn-primary">Tạo</button>
+            <button type="submit" value="Save" class="btn btn-primary">Cập nhật</button>
         </div>
     </form>
 </div>

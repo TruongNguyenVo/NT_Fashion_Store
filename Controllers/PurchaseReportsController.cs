@@ -359,9 +359,15 @@ namespace doan1_v1.Controllers
             }
 
             var purchaseReport = await _context.PurchaseReports
-                .Include(p => p.Supplier)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                .Include(pchase => pchase.PurchaseReportProductDetails) // them chi tiet phieu nhap
+                                .ThenInclude(prchDetail => prchDetail.Product) // them product
+                                .ThenInclude(cate => cate.Category)
+                                 .FirstOrDefaultAsync(pchase => pchase.Id == id);
+            // Lấy danh sách Category
+            var categories = await _context.Categories.ToListAsync();
+            ViewBag.Categories = categories;
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Address", purchaseReport.SupplierId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Address", purchaseReport.UserId);
             if (purchaseReport == null)
             {
                 return NotFound();

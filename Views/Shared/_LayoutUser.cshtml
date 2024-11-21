@@ -122,7 +122,15 @@
 								<li>
 									<div class="drop_1i row">
 										<div class="col-md-6 col-6">
-											<div class="drop_1il"><h6>2 Sản phẩm</h6></div>
+
+									@if (ViewBag.cartOfUser != null)
+									{
+											<div class="drop_1il"><h6>
+														@ViewBag.cartOfUser.Count Sản phẩm
+												</h6>
+											</div>
+										
+									}
 										</div>
 										<div class="col-md-6 col-6">
 											<div class="drop_1il text-end"><h6><a asp-action="Cart" asp-controller="Home">Xem giỏ hàng</a></h6></div>
@@ -152,7 +160,7 @@
 												</div>
 												<div class="col-md-2 col-2">
 													<div class="drop_1i1l text-end"><h6> <span>
-																<a asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id" asp-route-cartId="@detail.CartId">
+																<a asp-action="delInCart" asp-controller="Home" asp-route-detailId="@detail.Id">
 														<i class="fa fa-trash"></i>
 																</a>
 													</span></h6></div>

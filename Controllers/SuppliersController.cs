@@ -97,7 +97,7 @@ namespace doan1_v1.Controllers
         //ham de xem lich su giao dich
         public async Task<IActionResult> Transaction(int? id)
         {
-            var purchaseReports = await _context.PurchaseReports.Include(p => p.Supplier).Include(p => p.User).ToListAsync();
+            var purchaseReports = await _context.PurchaseReports.Where(p=>p.SupplierId==id).Include(p=> p.PurchaseReportProductDetails).Include(p => p.Supplier).Include(p => p.User).ToListAsync();
             ViewBag.PurchaseReports = purchaseReports;
             return View(purchaseReports);
         }

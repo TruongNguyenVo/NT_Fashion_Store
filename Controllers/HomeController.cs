@@ -76,13 +76,14 @@ namespace doan1_v1.Controllers
 
             //ao
             var productAos = await _context.Products
-                                            .Where(p => p.Category.Name == "Áo")
+                                            .Where(p => p.Category.ParentCategory.Name == "Áo")
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
-            //quan
+            
+			//quan
             var productQuans = await _context.Products
-                                            .Where(p=> p.Category.Name == "Quần")
+                                            .Where(p => p.Category.ParentCategory.Name == "Quần")
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();

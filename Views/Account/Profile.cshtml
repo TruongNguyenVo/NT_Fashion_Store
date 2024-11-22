@@ -84,7 +84,15 @@
 			data-bs-target="#updatePasswordRowModal"
 			 class="button" href="#"
 			  style="background-color: skyblue;">
-			  Đổi mật khẩu</button>
+			  Đổi mật khẩu
+		  </button>
+						<button type="button"
+								data-bs-toggle="modal"
+								data-bs-target="#deleteRowModal"
+								class="button"
+								style="background-color: red;">
+							Xóa tài khoản
+						</button>
         </h6>
 	</form>
             <!-- form sửa thông tin
@@ -117,7 +125,6 @@
 		  </div> -->
 
           <!-- đổi mật khẩu -->
-		 <!-- form sửa thông tin -->
 		 <div class="modal fade" id="updatePasswordRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 			  <div class="modal-content">
@@ -154,6 +161,34 @@
 			</div>
 		  </div>
        </div>
+	   @* xóa tài khoản *@
+				<div class="modal fade" id="deleteRowModal" tabindex="-1" aria-labelledby="newRowModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="newRowModalLabel">Xác nhận xóa tài khoản</h5>
+								<button type="button"
+										class="btn-close"
+										data-bs-dismiss="modal"
+										aria-label="Close">
+								</button>
+							</div>
+							<div class="modal-body">
+								<form asp-action="deleteAccount" method="post">
+									<input type="hidden" name="userId" value="@user?.Id" />
+									<div class="mb-3">
+										<label for="name" class="form-label text-danger">Chú ý</label>
+										<p>Bạn có chắc muốn xóa tài khoản?. Việc bạn xóa tài khoản đồng nghĩa các thông tin của bạn sẽ bị xóa vĩnh viễn. Bạn đồng ý với điều đó chứ?</p>
+									</div>
+
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary">Đồng ý</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
       </div>
     </div>
 </section>

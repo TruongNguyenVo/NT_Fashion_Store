@@ -53,6 +53,12 @@
                                 <div class="row">
                                 <a asp-action="SignUp" asp-controller="Account">Chưa có tài khoản? Đăng ký tại đây.</a>
                                </div>
+                                @if (!ViewData.ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger text-danger font-weight-bold">
+                                        @Html.ValidationSummary(false)
+                                    </div>
+                                }
                                 <div class="row">
                                     <button data-mdb-ripple-init class="btn btn-primary btn-lg" type="submit">Đăng nhập</button>
 

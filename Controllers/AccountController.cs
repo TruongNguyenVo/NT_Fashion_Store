@@ -44,8 +44,16 @@ namespace doan1_v1.Controllers
         {
             if (ModelState.IsValid)
             {
-                //xem thong tin cua tai khoan
-                var result = await _signInManager.
+                //nếu tài khoản đã bị xóa thì thông báo
+
+                if (await _userManager.Users.AnyAsync(u => u.IsDel && u.UserName == signInViewModel.Username))
+                {
+					ModelState.AddModelError("","Tài khoản người dùng đã bị vô hiệu hóa .");
+					return View("SignIn",signInViewModel);
+				}
+
+				//xem thong tin cua tai khoan
+				var result = await _signInManager.
                 PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, false, false);
                 if (result.Succeeded)
                 {
@@ -314,6 +322,22 @@ namespace doan1_v1.Controllers
                    hasLowerCase.IsMatch(password) &&
                    hasNumber.IsMatch(password) &&
                    hasSpecialChar.IsMatch(password);
+        }
+        [HttpPost]
+		[Authorize(Policy = "ManagerOrCustomer")]
+		public async Task<IActionResult> deleteAccount(string userId)
+        {
+            //Console.WriteLine();
+			//tim den user
+			var existingUser = await _userManager.FindByIdAsync(userId);
+            if(existingUser != null)
+            {
+                existingUser.IsDel = true;
+                await _userManager.UpdateAsync(existingUser);
+				await _signInManager.SignOutAsync();  // Xóa cookie đăng nhập
+			}
+			//Console.WriteLine();
+			return RedirectToAction("Index", "Home");
         }
     }
 }

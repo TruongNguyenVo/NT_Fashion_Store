@@ -1,4 +1,32 @@
-﻿<!DOCTYPE html>
+﻿@{
+	string isShopActive = "";
+	string isHomeActive = "";
+	string isOrderActive = "";
+	string isContactActive = "";
+	string isProfileActive = "";
+
+	if (ViewData["Title"] == "Cửa hàng" || ViewData["Title"] == "Tìm kiếm" || ViewData["Title"] == "Chi tiết sản phẩm")
+	{
+		isShopActive = "active";
+	}
+	if (ViewData["Title"] == "Trang chủ")
+	{
+		isHomeActive = "active";
+	}
+	if (ViewData["Title"] == "Đơn hàng" || ViewData["Title"] == "Hóa đơn")
+	{
+		isOrderActive = "active";
+	}
+	if (ViewData["Title"] == "Liên hệ")
+	{
+		isContactActive = "active";
+	}
+	if (ViewData["Title"] == "Thông tin cá nhân")
+	{
+		isProfileActive = "active";
+	}
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -20,7 +48,7 @@
 			<div class="row top_1">
 				<div class="col-md-6">
 					<div class="top_1l">
-						<p class="font_14 text-light mb-0">Miễn phí vận chuyển các đơn hàng có giá trị từ 500 vnđ trở lên</p>
+						<p class="font_14 text-light mb-0">"Sự tự tin bắt đầu từ trang phục hoàn hảo."</p>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -91,17 +119,17 @@
 					<ul class="navbar-nav mb-0">
 
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" asp-action="Index" asp-controller="Home">Trang chủ</a>
+							<a class="nav-link @isHomeActive" aria-current="page" asp-action="Index" asp-controller="Home">Trang chủ</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link" asp-action="Shop" asp-controller="Home">Cửa hàng </a>
+							<a class="nav-link @isShopActive" asp-action="Shop" asp-controller="Home">Cửa hàng </a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" asp-action="Order" asp-controller="Home">Đơn hàng</a>
+							<a class="nav-link @isOrderActive" asp-action="Order" asp-controller="Home">Đơn hàng</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" asp-action="Contact" asp-controller="Home">Liên hệ hỗ trợ </a>
+							<a class="nav-link @isContactActive" asp-action="Contact" asp-controller="Home">Liên hệ hỗ trợ </a>
 						</li>
 
 					</ul>
@@ -111,11 +139,11 @@
 							<a class="nav-link nav_hide" data-bs-target="#exampleModal2" data-bs-toggle="modal" href="#"><i class="fa fa-search"></i></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link nav_hide" asp-action="Profile" asp-controller="Account"><i class="fa fa-user"></i></a>
+							<a class="nav-link nav_hide @isProfileActive" asp-action="Profile" asp-controller="Account"><i class="fa fa-user"></i></a>
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle nav_hide" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="nav-link dropdown-toggle nav_hide " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								<i class="fa fa-shopping-bag"></i>
 							</a>
 							<ul class="dropdown-menu drop_cart" aria-labelledby="navbarDropdown" style="">

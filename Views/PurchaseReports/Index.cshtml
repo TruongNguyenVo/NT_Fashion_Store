@@ -34,14 +34,14 @@
                     <div class="d-flex align-items-center">
                       <h4 class="card-title">Thông tin sản phẩm</h4>
                       
-                      <button 
+@*                       <button 
                       data-bs-toggle="modal"
                       data-bs-target="#addRowModal"
                       class="btn btn-primary btn-round ms-auto"
                     >
                       <i class="fa fa-search"></i>
                       Thống kê số lượng
-                    </button>
+                    </button> *@
                     <a asp-action="Create"
                            class="btn btn-primary btn-round ms-auto">
                             <i class="fa fa-plus"></i>
@@ -62,7 +62,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Danh mục</th>
-                                                <th>Số lượng tồn kho</th>
+                                                <th>Số lượng tồn kho 1</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,7 +105,7 @@
                             <th>Mã hóa đơn phiếu nhập</th>
                             <th>Ngày nhập</th>
                             <th>Nhà cung cấp</th>
-                            <th>Tổng tiền</th>
+@*                             <th>Tổng tiền</th> *@
                             <th>Trạng thái</th>
                             <th style="width: 10%">Thao tác</th>
                           </tr>
@@ -115,7 +115,7 @@
                             <th>Mã hóa đơn phiếu nhập</th>
                             <th>Ngày nhập</th>
                             <th>Nhà cung cấp</th>
-                            <th>Tổng tiền</th>
+@*                             <th>Tổng tiền</th> *@
                             <th>Trạng thái</th>
                             <th style="width: 10%">Thao tác</th> 
                           </tr>
@@ -132,7 +132,7 @@
                                             <td>@purchaseReport.CodePurchaseReport</td>
                                             <td>@purchaseReport.DatePurchase</td>
                                             <td>@purchaseReport.Supplier.Name</td>
-                            <td>Chua tinh duoc</td>
+@*                             <td>Chua tinh duoc</td> *@
                                             @if(purchaseReport.IsUpdate){
                                                 <td>Đã cập nhật vào kho</td>
                                             }

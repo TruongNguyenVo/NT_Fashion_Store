@@ -76,14 +76,14 @@ namespace doan1_v1.Controllers
 
             //ao
             var productAos = await _context.Products
-                                            .Where(p => p.Category.ParentCategory.Name == "Áo")
+                                            .Where(p => p.Category.ParentCategory.Name == "Áo" && p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0)
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
             
 			//quan
             var productQuans = await _context.Products
-                                            .Where(p => p.Category.ParentCategory.Name == "Quần")
+                                            .Where(p => p.Category.ParentCategory.Name == "Quần" && p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0)
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
@@ -118,7 +118,7 @@ namespace doan1_v1.Controllers
 			if (topProductIds != null)
 			{
 				var topProducts = await _context.Products.
-										Where(p => topProductIds.Contains(p.Id))
+										Where(p => topProductIds.Contains(p.Id) && p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0)
 										.Include(p => p.ProductImages)
 											.ToListAsync();
 				ViewBag.Top3Seller = topProducts;
@@ -214,15 +214,15 @@ namespace doan1_v1.Controllers
             else
             {
 				var products = await PaginatedList<Product>.CreateAsync(_context.Products
-	                                                        .Where(p => p.CategoryId == id && p.IsDel == false)
-				                                            .Include(p => p.ProductImages), pageNumber, 9); // phan trang moi 8 san pham 
+	                                                        .Where(p => p.CategoryId == id && p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0)
+															.Include(p => p.ProductImages), pageNumber, 9); // phan trang moi 8 san pham 
 				ViewBag.products = products;
                 return View();
             }
 			
 		}
 
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		[Route("Order")]
         public async Task<IActionResult> Order()
         {
@@ -244,7 +244,7 @@ namespace doan1_v1.Controllers
 			ViewBag.Orders = orders;
 			return View();
         }
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		[Route("Invoice")]
 		public async Task<IActionResult> Invoice(int orderId, string title)
 		{
@@ -332,7 +332,7 @@ namespace doan1_v1.Controllers
 		{
 			return View();
 		}
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		[Route("Checkout")]
         public async Task<IActionResult> Checkout()
 		{
@@ -372,7 +372,7 @@ namespace doan1_v1.Controllers
 
 			return View();
 		}
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		//hàm dùng xác nhận đơn hàng
 		public async Task<IActionResult> confirmCheckout(double deliveryCost)
         {
@@ -442,7 +442,7 @@ namespace doan1_v1.Controllers
 			// chuyển đến trang order
 			return RedirectToAction("Order", "Home");
 		}
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		[Route("Cart")]
         public async Task<IActionResult> Cart()
         {
@@ -495,7 +495,7 @@ namespace doan1_v1.Controllers
 		}
 
 		// hàm thêm vào giỏ hàng cần số lượng sản phẩm, id sản phẩm, id của user đã đăng nhập
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		public async Task<IActionResult> addToCart(int quantity, int productId)
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
@@ -583,7 +583,7 @@ namespace doan1_v1.Controllers
 		}
 
 		//hàm xóa chi tiết trong giỏ hàng, nhận vào carid, id cua chi tiet
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		public async Task<IActionResult> delInCart(int detailId)
         {
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
@@ -616,7 +616,7 @@ namespace doan1_v1.Controllers
 		}
 
 		//hàm chỉnh sửa số lượng sản phẩm trong giỏ hàng, nhận vào cartId, id của chi tiết và quantity
-		[Authorize(Policy = "ManagerOrCustomer")]
+		[Authorize(Policy = "CustomerOnly")]
 		public async Task<IActionResult> changeQuantity(int detailId, int quantity)
         {
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).

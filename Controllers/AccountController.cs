@@ -70,8 +70,9 @@ namespace doan1_v1.Controllers
                 }
                 else
                 {
-
-                }
+					ModelState.AddModelError("", "Tài khoản hoặc mật khẩu bị sai. Vui lòng kiểm tra lại");
+					return View("SignIn", signInViewModel);
+				}
             }
             return View("SignIn");
         }
@@ -118,9 +119,15 @@ namespace doan1_v1.Controllers
                         "một ký tự đặc biệt (ví dụ !@#$%^&*.)");
                     return View("SignUp", signUpViewModel);
                 }
+				//nếu trong bảng users không có record nào thì mặc định người tạo đầu tiên là admin
+				bool isHaveUser = _context.Users.Any();
+				string role = "Customer";
+				if (!isHaveUser)
+				{
+					role = "Manager"; // neu khong co record nao thi nguoi dau tien la admin
+				}
 
-
-                var customer = new Customer()
+				var customer = new Customer()
                 {
 
                     FullName = signUpViewModel.FullName,
@@ -145,19 +152,10 @@ namespace doan1_v1.Controllers
                     // Nếu chưa tồn tại, tạo vai trò "Customer"
                     await _roleManager.CreateAsync(new IdentityRole("Manager"));
                 }
-                //nếu trong bảng users không có record nào thì mặc định người tạo đầu tiên là admin
-                int userCount = await _context.Users.CountAsync();
-                string role = "Customer";
-                if (userCount == 0)
-                {
-                    role = "Manager"; // neu khong co record nao thi nguoi dau tien la admin
-                }
-                else
-                {
-                    Console.WriteLine();
-                }
+
                 if (result.Succeeded)
                 {
+                    //them role
                     var roleResult = await _userManager.AddToRoleAsync(customer, role);
                     if (roleResult.Succeeded)
                     {

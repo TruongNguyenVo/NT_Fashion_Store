@@ -39,6 +39,7 @@
 	<link href="/user/css/index.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
 	<script src="/user/js/bootstrap.bundle.min.js"></script>
+	<link rel="icon" href="~/NTFashion.png">
 
 </head>
 <body>
@@ -111,7 +112,11 @@
 		</div>
 		<nav class="navbar navbar-expand-md navbar-light bg-white shadow_box" id="navbar_sticky">
 			<div class="container-xl">
-				<a class="navbar-brand p-0 fw-bold me-5" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i> NTMFashion</a>
+@* 				<a class="navbar-brand p-0 fw-bold me-5" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i> NTFashion</a> *@
+
+				<a class="navbar-brand p-0 fw-bold me-5" asp-action="Index" asp-controller="Home">
+					<img src="~/NTFashion-main.svg" height="100" alt="Alternate Text" />
+				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -244,7 +249,7 @@
 			<div class="footer_1 row">
 				<div class="col-md-2 px-2">
 					<div class="footer_1i">
-						<h3><a class="fw-bold text-white" asp-action="Index" asp-controller="Home"><i class="fa fa-male lh-1 align-middle me-1 col_red"></i>NTMFashion</a></h3>
+						<h3><a class="fw-bold text-white" asp-action="Index" asp-controller="Home"><img src="~/NTFashion-main.svg" height="100" alt="Alternate Text" /></a></h3>
 						<p class="text-muted font_14 mt-3">Kết hợp hoàn hảo giữa sự đơn giản và tinh tế, tạo nên phong cách thời trang hiện đại và đẳng cấp.</p>
 					</div>
 				</div>

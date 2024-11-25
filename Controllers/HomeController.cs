@@ -172,7 +172,7 @@ namespace doan1_v1.Controllers
 			if (topProductIds != null)
 			{
 				var topProducts = await _context.Products.
-										Where(p => topProductIds.Contains(p.Id))
+										Where(p => topProductIds.Contains(p.Id) && p.IsDel == false)
 										.Include(p => p.ProductImages)
 											.ToListAsync();
 				ViewBag.Top3Seller = topProducts;
@@ -190,7 +190,7 @@ namespace doan1_v1.Controllers
 
 			//danh muc san pham
 			var categories = await _context.Categories
-								.Where(c => c.ParentId != null)
+								.Where(c => c.ParentId != null && c.IsDel == false)
 								.ToListAsync();
 			ViewBag.categories = categories;
 			// lay tat ca san pham

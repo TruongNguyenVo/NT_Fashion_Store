@@ -312,7 +312,7 @@ namespace doan1_v1.Controllers
             ViewBag.product = product;
             //san pham tuong tu
             var relativeProducts = await _context.Products
-                                    .Where(p=> p.CategoryId == product.CategoryId)
+                                    .Where(p=> p.CategoryId == product.CategoryId && p.IsDel == false)
                                     .Include(p=> p.ProductImages)
                                     .Include(p=>p.Category)
                                     .Take(3)

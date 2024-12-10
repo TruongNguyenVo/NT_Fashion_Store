@@ -87,7 +87,28 @@ namespace doan1_v1.Controllers
                                             .Include(p=> p.ProductImages)
                                             .Take(4)
                                             .ToListAsync();
-            ViewBag.ProductAos = productAos;
+
+			//lay 3 productId trong bang orderdetail co xuat hien nhieu nhat
+			var topProductIds = _context.OrderProductDetails
+			.GroupBy(od => od.ProductId)
+			.Select(g => new
+			{
+				ProductId = g.Key,
+				Count = g.Count()
+			})
+			.OrderByDescending(g => g.Count)
+			.Take(4)
+			.Select(x => x.ProductId)
+			.ToList();
+			if (topProductIds != null)
+			{
+				var topProducts = await _context.Products.
+										Where(p => topProductIds.Contains(p.Id) && p.IsDel == false && p.Quantity > 0 && p.ProductImages.Count > 0)
+										.Include(p => p.ProductImages)
+											.ToListAsync();
+				ViewBag.Top4Seller = topProducts;
+			}
+			ViewBag.ProductAos = productAos;
             ViewBag.ProductQuans = productQuans;
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).

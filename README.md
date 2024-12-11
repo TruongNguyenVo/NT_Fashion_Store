@@ -112,61 +112,67 @@ app.UseAuthorization();
 # `Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)`
 ## 1. Tạo project mới
 ### 1.1 Tạo project 
- 	```bash
+```bash
   	dotnet new webapi -o MyAspNetApp
 	cd MyAspNetApp
-  	```
+```
 ### 1.2 Kiểm tra ứng dụng hoạt động: Mở trình duyệt và truy cập http://localhost:5000 hoặc http://localhost:5001 (HTTPS) để kiểm tra.
-    	```bash
+```bash
      	dotnet run
-     	```
+```
 ## 2. Cấu hình cho Self-Contained Deployment
 #### 2.1 Chỉnh sửa file .csproj:
- 	Mở file ```bash MyAspNetApp.csproj``` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
-  	```bash
+Mở file `MyAspNetApp.csproj` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
+```bash
 		<PropertyGroup>
 		  <PublishSingleFile>true</PublishSingleFile>
 		  <SelfContained>true</SelfContained>
 		  <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
 		</PropertyGroup>
-   	```
+```
 #### 2.2. Cấu hình Kestrel để lắng nghe tất cả địa chỉ IP: Trong Program.cs, bạn có thể thêm cấu hình cho Kestrel:
-     	```bash
+```bash
       	var builder = WebApplication.CreateBuilder(args);	
 	builder.WebHost.UseKestrel()
 	       .UseUrls("http://0.0.0.0:5000"); // Lắng nghe trên tất cả các IP	
 	var app = builder.Build();
 	app.Run();
-      	```
+```
 #### 2.3. Build riêng cho từng Runtime:
-     	```bash
+```bash
       	dotnet publish -c Release -r win-x64
 	dotnet publish -c Release -r linux-x64
 	dotnet publish -c Release -r osx-x64
-      	```
+```
 #### 2.4 Thư mục xuất (ở trong chính project luôn): thư mục sẽ một file thực thi duy nhất (MyAspNetApp.exe trên Windows hoặc MyAspNetApp trên Linux/Mac).
-       ```bash
+```bash
        	/bin/Release/net7.0/win-x64/publish/
 	/bin/Release/net7.0/linux-x64/publish/
 	/bin/Release/net7.0/osx-x64/publish/
-       ```
+ ```
 ## 3. Triển khai và Chạy Ứng dụng
 ### 3.1 Copy File sang Máy Chủ:
 Copy toàn bộ nội dung thư mục publish/ sang máy chủ đích.
 Trên Linux, đảm bảo file thực thi có quyền chạy:
-		```bash
-  		chmod +x MyAspNetApp
-  		```
+```bash
+chmod +x MyAspNetApp
+```
 ### 3.2 Chạy ứng dụng
-Window: chạy file ```bash .exe ```
-Linux: chạy thực thi trong terminal: ```bash./MyAspNetApp```
+Window: chạy file 
+```bash
+ .exe 
+```
+Linux: chạy thực thi trong terminal: 
+```bash
+./MyAspNetApp
+```
 ## 4. Nếu muốn ứng dụng tự động chạy khi khởi động máy chủ (Linux):
-### 4.1 Tạo Service File (```bash /etc/systemd/system/myaspnetapp.service ```):
- 	```bash
+### 4.1 Tạo Service File (/etc/systemd/system/myaspnetapp.service):
+```bash
   	sudo nano /etc/systemd/system/myaspnetapp.service
-  	```
+```
 Nội dung file:
-    	```bash
+```bash
      	[Unit]
 	Description=My ASP.NET Core Application
 	After=network.target
@@ -178,14 +184,14 @@ Nội dung file:
 	Environment=ASPNETCORE_ENVIRONMENT=Production
 	[Install]
 	WantedBy=multi-user.target
-     	```
+```
 ### 4.2 Reload và Khởi động Service:
-       ```bash
+```bash
        sudo systemctl daemon-reload
 	sudo systemctl start myaspnetapp
 	sudo systemctl enable myaspnetapp
-       ```
+```
 ### 4.3 Kiểm tra trạng thái:
-       ```bash
+```bash
        sudo systemctl status myaspnetapp
-       ```
+```

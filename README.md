@@ -119,7 +119,7 @@ dotnet run
 ```
 ## 2. Cấu hình cho Self-Contained Deployment
 #### 2.1 Chỉnh sửa file .csproj:
-Mở file `MyAspNetApp.csproj` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
+Mở file `MyAspNetApp.csproj` và thêm thuộc tính sau nếu muốn tích hợp nhiều `RuntimeIdentifiers` (số nhiều):
 ```bash
 		<PropertyGroup>
 		  <PublishSingleFile>true</PublishSingleFile>

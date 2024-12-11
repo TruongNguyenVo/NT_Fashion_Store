@@ -149,13 +149,13 @@ dotnet publish -c Release -r osx-x64
  ```
 ## 3. Triển khai và Chạy Ứng dụng
 ### 3.1 Copy File sang Máy Chủ:
-Copy toàn bộ nội dung thư mục publish/ sang máy chủ đích.
+Copy toàn bộ nội dung thư mục publish/ sang máy chủ đích.  
 Trên Linux, đảm bảo file thực thi có quyền chạy:
 ```bash
 chmod +x MyAspNetApp
 ```
 ### 3.2 Chạy ứng dụng
-Window: chạy file ` .exe `
+Window: chạy file ` .exe `  
 Linux: chạy thực thi trong terminal: `./MyAspNetApp`
 ## 4. Nếu muốn ứng dụng tự động chạy khi khởi động máy chủ (Linux):
 ### 4.1 Tạo Service File ( `/etc/systemd/system/myaspnetapp.service` ):

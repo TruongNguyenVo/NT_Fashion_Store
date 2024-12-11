@@ -1,11 +1,11 @@
 #  [update: 11/12/2024]
-# Start project
-## `how to run project asp core in powershell`: open powershell
+# `Start project`
+## how to run project asp core in powershell: open `powershell`
 ```bash
 dotnet run --urls "http://0.0.0.0:5000"
 ```
 ## `Package`
-### `how to install package asp core in powershell`: open powershell
+### how to install package asp core in powershell: open `powershell`
 ```bash
 dotnet add package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
@@ -15,8 +15,8 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
-## `Migration to Database`
-### `Run PM: Tools -> Nuget Package Manager -> Package Manager Control`
+## Migration to Database
+### Run PM: `Tools` -> `Nuget Package Manager` -> `Package Manager Control`
 ```bash
     Add-Migration NameYourMigration
 ```
@@ -25,11 +25,11 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
 # `Registration, Login, Logout`
 ## 1. Sửa Model User  
-1.1 Kế thừa IdentityUser
+  1.1 Kế thừa IdentityUser
    ```bash
        public class User: IdentityUser 
    ```
-1.2 Xóa các trường password (vì trong IdentityUser đã có các trường đó rồi)
+  1.2 Xóa các trường password (vì trong IdentityUser đã có các trường đó rồi)
 ## 2. Sửa Model ApplicationDbContext 
 2.1 Kế thừa IdentityDbContext
 ```bash

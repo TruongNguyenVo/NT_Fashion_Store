@@ -80,7 +80,7 @@ app.UseAuthorization();
    [Authorize(Roles = "Customer")]
    public async Task<IActionResult> Index()
 ```
-	8.2 Chỉ có Admin
+### 8.2 Chỉ có Admin
 ```bash
            [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()

@@ -109,8 +109,8 @@ app.UseAuthorization();
 	    <p>@user?.UserName</p>
    }
    ```
-#Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)
-1.Tạo project mới
+# Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)
+1. Tạo project mới
 	1.1 Tạo project
  	```bash
   	dotnet new webapi -o MyAspNetApp
@@ -120,7 +120,7 @@ app.UseAuthorization();
     	```bash
      	dotnet run
      	```
-2.Cấu hình cho Self-Contained Deployment
+2. Cấu hình cho Self-Contained Deployment
 	2.1 Chỉnh sửa file .csproj:
  	Mở file ```bash MyAspNetApp.csproj``` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
   	```bash

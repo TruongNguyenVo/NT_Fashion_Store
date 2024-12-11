@@ -110,17 +110,17 @@ app.UseAuthorization();
    }
    ```
 # Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)
-1. Tạo project mới
-	1.1 Tạo project
+`1. Tạo project mới`
+	`1.1 Tạo project`
  	```bash
   	dotnet new webapi -o MyAspNetApp
 	cd MyAspNetApp
   	```
-   	1.2 Kiểm tra ứng dụng hoạt động: Mở trình duyệt và truy cập http://localhost:5000 hoặc http://localhost:5001 (HTTPS) để kiểm tra.
+   	`1.2 Kiểm tra ứng dụng hoạt động: Mở trình duyệt và truy cập http://localhost:5000 hoặc http://localhost:5001 (HTTPS) để kiểm tra.`
     	```bash
      	dotnet run
      	```
-2. Cấu hình cho Self-Contained Deployment
+`2. Cấu hình cho Self-Contained Deployment`
 	2.1 Chỉnh sửa file .csproj:
  	Mở file ```bash MyAspNetApp.csproj``` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
   	```bash

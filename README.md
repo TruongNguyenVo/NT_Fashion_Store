@@ -1,9 +1,20 @@
 #  [update: 11/12/2024]
 # `Start project`
-## how to run project asp core in powershell: open `powershell`
+### 1.1 Tạo project 
+```bash
+dotnet new webapi -o MyAspNetApp
+cd MyAspNetApp
+```
+### 1.2 Kiểm tra ứng dụng hoạt động:
+Với hướng localhost:
+```bash
+dotnet run
+```
+Với hướng tất cả các IP đều có thể truy cập được:
 ```bash
 dotnet run --urls "http://0.0.0.0:5000"
 ```
+Nếu muốn truy cập thì thay `0.0.0.0` thành IP của máy chủ
 ## `Package`
 ### how to install package asp core in powershell: open `powershell`
 ```bash

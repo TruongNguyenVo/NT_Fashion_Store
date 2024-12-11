@@ -109,18 +109,18 @@ app.UseAuthorization();
 	    <p>@user?.UserName</p>
    }
    ```
-# Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)
-`1. Tạo project mới`
-	`1.1 Tạo project`
+# `Chạy project ASP.NET CORE độc lập mà không cần cài môi trường .NET runtime (self-contained deployment)`
+## `1. Tạo project mới`
+	1.1 Tạo project 
  	```bash
   	dotnet new webapi -o MyAspNetApp
 	cd MyAspNetApp
   	```
-   	`1.2 Kiểm tra ứng dụng hoạt động: Mở trình duyệt và truy cập http://localhost:5000 hoặc http://localhost:5001 (HTTPS) để kiểm tra.`
+   	1.2 Kiểm tra ứng dụng hoạt động: Mở trình duyệt và truy cập http://localhost:5000 hoặc http://localhost:5001 (HTTPS) để kiểm tra.
     	```bash
      	dotnet run
      	```
-`2. Cấu hình cho Self-Contained Deployment`
+## 2. Cấu hình cho Self-Contained Deployment
 	2.1 Chỉnh sửa file .csproj:
  	Mở file ```bash MyAspNetApp.csproj``` và thêm thuộc tính sau nếu muốn tích hợp nhiều runtimeidentifier:
   	```bash
@@ -150,7 +150,7 @@ app.UseAuthorization();
 	/bin/Release/net7.0/linux-x64/publish/
 	/bin/Release/net7.0/osx-x64/publish/
        ```
-3. Triển khai và Chạy Ứng dụng
+## 3. Triển khai và Chạy Ứng dụng
 	3.1 Copy File sang Máy Chủ:
  		Copy toàn bộ nội dung thư mục publish/ sang máy chủ đích.
 		Trên Linux, đảm bảo file thực thi có quyền chạy:
@@ -160,7 +160,7 @@ app.UseAuthorization();
 	3.2 Chạy ứng dụng
  	Window: chạy file ```bash .exe ```
   	Linux: chạy thực thi trong terminal: ```bash./MyAspNetApp```
-4. Nếu muốn ứng dụng tự động chạy khi khởi động máy chủ (Linux):
+## 4. Nếu muốn ứng dụng tự động chạy khi khởi động máy chủ (Linux):
 	4.1 Tạo Service File (```bash /etc/systemd/system/myaspnetapp.service ```):
  	```bash
   	sudo nano /etc/systemd/system/myaspnetapp.service

@@ -1,11 +1,11 @@
 #  [update: 11/12/2024]
 # `Start project`
-### 1.1 Tạo project 
+## Tạo project 
 ```bash
 dotnet new webapi -o MyAspNetApp
 cd MyAspNetApp
 ```
-### 1.2 Kiểm tra ứng dụng hoạt động:
+### Kiểm tra ứng dụng hoạt động:
 Với hướng localhost:
 ```bash
 dotnet run
@@ -15,8 +15,8 @@ Với hướng tất cả các IP đều có thể truy cập được:
 dotnet run --urls "http://0.0.0.0:5000"
 ```
 Nếu muốn truy cập thì thay `0.0.0.0` thành IP của máy chủ
-## `Package`
-### how to install package asp core in powershell: open `powershell`
+## Cài đặt các package
+how to install package asp core in powershell: open `powershell`
 ```bash
 dotnet add package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
@@ -27,7 +27,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 ```
 ## Migration to Database
-### Run PM: `Tools` -> `Nuget Package Manager` -> `Package Manager Control`
+Run PM: `Tools` -> `Nuget Package Manager` -> `Package Manager Control`
 ```bash
     Add-Migration NameYourMigration
 ```

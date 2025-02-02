@@ -271,16 +271,12 @@ namespace doan1_v1.Controllers
             var removeProduct = await _context.Products
                                .Where(p => productIds.Contains(p.Id) && (p.Price == null))
                                .ToListAsync(); // tìm id để xóa mấy cái product bị thiếu cột
-
             // Xóa các sản phẩm không hợp lệ
             if (removeProduct.Any())
             {
                 _context.Products.RemoveRange(removeProduct);
                 await _context.SaveChangesAsync();
             }
-
-
-
             //return RedirectToAction(nameof(Index));
             //----------Xoa bang chi tiet san pham, xoa cac san pham ko dung yeu cau ----------------
             for (int i = 0; i < name_products.Count; i++)

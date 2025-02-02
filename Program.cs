@@ -1,4 +1,5 @@
-﻿using doan1_v1.Models;
+﻿using doan1_v1.Helpers;
+using doan1_v1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,4 +68,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+//using (var scope = app.Services.CreateScope())
+//{
+//	var services = scope.ServiceProvider;
+//	await SeederRoleUser.Initialize(services); //tao cac role ke thua user
+//}
 app.Run();

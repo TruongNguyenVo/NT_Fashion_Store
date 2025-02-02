@@ -43,6 +43,20 @@ namespace doan1_v1.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "585545b1-9ba6-49e6-9638-b7c0d11d04a0",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "f3b3b3b1-9ba6-49e6-9638-b7c0d11d04a0",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -138,6 +152,18 @@ namespace doan1_v1.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "feef8538-ecae-4502-8fb2-7b3d33068776",
+                            RoleId = "585545b1-9ba6-49e6-9638-b7c0d11d04a0"
+                        },
+                        new
+                        {
+                            UserId = "feef8538-ecae-4502-8fb2-7b3d33068777",
+                            RoleId = "585545b1-9ba6-49e6-9638-b7c0d11d04a0"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -592,6 +618,50 @@ namespace doan1_v1.Migrations
                     b.HasBaseType("doan1_v1.Models.User");
 
                     b.HasDiscriminator().HasValue("Manager");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "feef8538-ecae-4502-8fb2-7b3d33068776",
+                            AccessFailedCount = 0,
+                            Address = "Bình Tân, Vĩnh Long",
+                            ConcurrencyStamp = "84abdf71-98a9-4348-a4ac-7e8eab0010bf",
+                            DateOfBrith = new DateOnly(2024, 11, 23),
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = false,
+                            FullName = "Võ Trường Nguyên",
+                            Gender = "Nam",
+                            IsDel = false,
+                            LockoutEnabled = true,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFB0DdlDU44ROlCE7npIGPhkYAVGI9IPm/Ax2qmSixcye2i77DO9gpwhGjuH33ziWQ==",
+                            PhoneNumber = "0987654321",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "95c31b73-def2-4050-b5d5-72f3f7e2763b",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "feef8538-ecae-4502-8fb2-7b3d33068777",
+                            AccessFailedCount = 0,
+                            Address = "Bình Tân, Vĩnh Long",
+                            ConcurrencyStamp = "ccb6b0b0-f792-4b9a-a7b0-6597436cd0cb",
+                            DateOfBrith = new DateOnly(2002, 11, 23),
+                            Email = "admin@gmail1.com",
+                            EmailConfirmed = false,
+                            FullName = "Võ Trường Nguyên",
+                            Gender = "Nam",
+                            IsDel = false,
+                            LockoutEnabled = true,
+                            NormalizedUserName = "ADMIN1",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBnsbYM6mxgQustaVodGekYIVrCH9PGvlDfaqpXw0bFbif+jG17YO6xjsVmsgdbGMQ==",
+                            PhoneNumber = "0987654321",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5a6466cd-568e-4244-b0ae-6f61ca66af6b",
+                            TwoFactorEnabled = false,
+                            UserName = "admin1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

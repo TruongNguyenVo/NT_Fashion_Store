@@ -4,6 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    	
+      
+		  <PublishSingleFile>true</PublishSingleFile>
+		  <SelfContained>true</SelfContained>
+		  <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+		
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +36,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
 
 </Project>

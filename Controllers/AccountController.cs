@@ -53,9 +53,11 @@ namespace doan1_v1.Controllers
 				}
 
 				//xem thong tin cua tai khoan
+				//var result = await _signInManager.
+				//            PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, false, false);
 				var result = await _signInManager.
-                PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, false, false);
-                if (result.Succeeded)
+							PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, false, false);
+				if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(signInViewModel.Username);
                     var roles = await _userManager.GetRolesAsync(user);
@@ -70,6 +72,8 @@ namespace doan1_v1.Controllers
                 }
                 else
                 {
+                    //Console.WriteLine($"------------{signInViewModel.Username}------{signInViewModel.Password}");
+                    //Console.WriteLine("Sai tai khoan hoac mat khau");
 					ModelState.AddModelError("", "Tài khoản hoặc mật khẩu bị sai. Vui lòng kiểm tra lại");
 					return View("SignIn", signInViewModel);
 				}

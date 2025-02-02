@@ -1,4 +1,5 @@
-﻿using doan1_v1.Models;
+﻿using doan1_v1.Helpers;
+using doan1_v1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 /////////////////////////////
-var connectionString = builder.Configuration.GetConnectionString("Connectiong_1") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//var connectionString = builder.Configuration.GetConnectionString("Connectiong_1") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<NTFashionDbContext>(options =>
+// options.UseSqlServer(connectionString));
+
+// Thêm DbContext và cấu hình SQLite
 builder.Services.AddDbContext<NTFashionDbContext>(options =>
- options.UseSqlServer(connectionString));
+	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 /////////////////////////////
 ///////////////////////////
@@ -63,4 +68,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+//using (var scope = app.Services.CreateScope())
+//{
+//	var services = scope.ServiceProvider;
+//	await SeederRoleUser.Initialize(services); //tao cac role ke thua user
+//}
 app.Run();

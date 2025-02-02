@@ -7,9 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 /////////////////////////////
-var connectionString = builder.Configuration.GetConnectionString("Connectiong_1") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//var connectionString = builder.Configuration.GetConnectionString("Connectiong_1") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<NTFashionDbContext>(options =>
+// options.UseSqlServer(connectionString));
+
+// Thêm DbContext và cấu hình SQLite
 builder.Services.AddDbContext<NTFashionDbContext>(options =>
- options.UseSqlServer(connectionString));
+	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 /////////////////////////////
 ///////////////////////////

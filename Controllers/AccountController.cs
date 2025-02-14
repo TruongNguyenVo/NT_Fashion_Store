@@ -1,11 +1,13 @@
 ﻿using doan1_v1.Models;
 using doan1_v1.ViewModels;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Net;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace doan1_v1.Controllers
@@ -80,7 +82,80 @@ namespace doan1_v1.Controllers
             }
             return View("SignIn");
         }
-        [HttpGet]
+
+		[HttpGet("login-google")]
+		public IActionResult GoogleLogin()
+		{
+			var redirectUrl = Url.Action("GoogleResponse", "Account");
+			var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl);
+			return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+		}
+
+		[HttpGet("google-response")]
+		public async Task<IActionResult> GoogleResponse()
+		{
+			var info = await _signInManager.GetExternalLoginInfoAsync();
+			if (info == null)
+			{
+                Console.WriteLine("// Nếu không lấy được info thì quay về trang đăng nhập");
+				return RedirectToAction("SignIn", "Account"); 
+			}
+
+			var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+			var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+
+            if (email == null)
+            {
+                Console.WriteLine("=======================Không lấy được email từ Google.");
+                ModelState.AddModelError("", "Không lấy được email từ Google.");
+                return View("SignIn");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                var customer = new Customer()
+                {
+
+                    FullName = name,
+                    Email = email,
+                    EmailConfirmed = true,
+                    UserName = email,
+                    Address = ""
+                };
+                var result = await _userManager.CreateAsync(customer);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Không thể tạo tài khoản bằng Google.");
+                    return View("SignIn");
+                }
+                ////khi tạo tài khoản thành công thì tạo một cart luôn
+                Cart cart = new Cart
+                {
+                    UserId = customer.Id
+                };
+                _context.Carts.Add(cart);
+                await _context.SaveChangesAsync();
+                await _userManager.AddToRoleAsync(customer, "Customer");
+                // Đăng nhập ngay sau khi tạo tài khoản
+                
+            }
+            else
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+            }
+            if (email == null)
+			{
+				ModelState.AddModelError("", "Không lấy được email từ Google.");
+				return View("SignIn");
+			}
+
+           
+            Console.WriteLine("-----------------Toi cuoi roi----------------");
+			return RedirectToAction("Index", "Home"); // Mặc định là Customer thì về trang chủ
+		}
+
+		[HttpGet]
         [Route("SignUp")]
         public IActionResult SignUp()
         {

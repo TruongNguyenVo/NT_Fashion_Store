@@ -2366,7 +2366,7 @@ namespace doan1_v1.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("DateOfBrith")
+                    b.Property<DateOnly?>("DateOfBrith")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Discriminator")
@@ -2457,7 +2457,7 @@ namespace doan1_v1.Migrations
                             Id = "feef8538-ecae-4502-8fb2-7b3d33068777",
                             AccessFailedCount = 0,
                             Address = "Bình Tân, Vĩnh Long",
-                            ConcurrencyStamp = "d2455e07-f51f-46a4-8d0c-d2f80885c420",
+                            ConcurrencyStamp = "a1392cea-1248-4574-b463-90b9c165d75c",
                             DateOfBrith = new DateOnly(2000, 11, 23),
                             Email = "customer@gmail.com",
                             EmailConfirmed = false,
@@ -2466,10 +2466,10 @@ namespace doan1_v1.Migrations
                             IsDel = false,
                             LockoutEnabled = true,
                             NormalizedUserName = "CUSTOMER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFXlA6ylDRQXxpIfA4byAfwCsCLqlETOFNLdP4bORVZ6KgRaKnC3I2LmoFCPy9Vm5A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIfGzXn26OAAfVzczvrazLNa6vVRnB9mvu0ED/bVbUklkl5tIrQoLKo92DlHmLFCMQ==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e55e90ea-04ca-4180-8238-c60aa7e13fcb",
+                            SecurityStamp = "33cfcbca-3bc9-488d-917a-c85e74007e7d",
                             TwoFactorEnabled = false,
                             UserName = "customer"
                         });
@@ -2487,7 +2487,7 @@ namespace doan1_v1.Migrations
                             Id = "feef8538-ecae-4502-8fb2-7b3d33068776",
                             AccessFailedCount = 0,
                             Address = "Bình Tân, Vĩnh Long",
-                            ConcurrencyStamp = "35b7ba69-7b27-49b5-b1a9-e5d0848377bf",
+                            ConcurrencyStamp = "8007dbad-9d3f-40bb-ac3b-9fa6d7b4f69a",
                             DateOfBrith = new DateOnly(2024, 11, 23),
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
@@ -2496,10 +2496,10 @@ namespace doan1_v1.Migrations
                             IsDel = false,
                             LockoutEnabled = true,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBXzOPzZHjrZKRMU4bGKgpoK5j3+Mykq8oD9Tx56jcL3mRgp+lIP1/vriKsfmsKXjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMOfJMjlCTDmC61K0QvwitUmr9aQq8hlPLQVzJ3CapOCVsCKY4xIbbc4b/9FWjMavA==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4e934b47-6c92-43ed-8495-548e7423fb25",
+                            SecurityStamp = "3d792ec3-367a-4ed9-91ab-b6f47c77e558",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

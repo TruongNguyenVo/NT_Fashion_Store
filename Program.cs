@@ -1,5 +1,7 @@
 ﻿using doan1_v1.Helpers;
 using doan1_v1.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +19,12 @@ builder.Services.AddDbContext<NTFashionDbContext>(options =>
 	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 /////////////////////////////
-///////////////////////////
-///cau hinh identity
 // Cấu hình Identity
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<NTFashionDbContext>()
     .AddDefaultTokenProviders();
+
 //Cấu hình Authorize
 builder.Services.AddAuthorization(options =>
 {
@@ -45,6 +46,22 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.LoginPath = "/SignIn"; // Đường dẫn khi người dùng chưa đăng nhập
 	options.AccessDeniedPath = "/Account/AccessDenied";  // Trang xử lý khi bị từ chối quyền truy cập
 });
+
+// Thêm dịch vụ Authentication
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+	var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+	options.ClientId = googleAuth["ClientId"];
+	options.ClientSecret = googleAuth["ClientSecret"];
+	options.CallbackPath = new PathString(new Uri(googleAuth["RedirectUri"]).AbsolutePath);
+});
+
 //////////////////////////
 var app = builder.Build();
 

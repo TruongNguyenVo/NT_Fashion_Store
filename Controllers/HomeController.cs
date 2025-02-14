@@ -35,25 +35,28 @@ namespace doan1_v1.Controllers
 			List<CartDetail> detailCarts = null;
 			if (userId != null)
 			{
-                // tim kiem cart theo ten nguoi dung
-                var cart = await _context.Carts
-                                           .Where(c => c.UserId == userId).FirstAsync();
-				//tìm chi tiết sản phẩm
-				detailCarts = await _context.CartDetails
-											.Where(d => d.CartId == cart.Id)
-											.Include(d => d.Product)
-											.ThenInclude(p => p.ProductImages)
-											.ToListAsync();
-				if (detailCarts.Any())
+				// tim kiem cart theo ten nguoi dung
+				var cart = await _context.Carts
+										   .Where(c => c.UserId == userId).FirstAsync();
+				if (cart != null)
 				{
-
-					//tính tổng tiền của giỏ hàng
-					double totalPrice = 0;
-					foreach (var detail in detailCarts)
+					//tìm chi tiết sản phẩm
+					detailCarts = await _context.CartDetails
+												.Where(d => d.CartId == cart.Id)
+												.Include(d => d.Product)
+												.ThenInclude(p => p.ProductImages)
+												.ToListAsync();
+					if (detailCarts.Any())
 					{
-						int quantity = detail.Quantity;
-						double price = (double)detail.Product.Price;
-						totalPrice += quantity * price;
+
+						//tính tổng tiền của giỏ hàng
+						double totalPrice = 0;
+						foreach (var detail in detailCarts)
+						{
+							int quantity = detail.Quantity;
+							double price = (double)detail.Product.Price;
+							totalPrice += quantity * price;
+						}
 					}
 				}
 				//            foreach(var detail in detailCarts)
@@ -64,13 +67,13 @@ namespace doan1_v1.Controllers
 				//}
 			}
 
-            return detailCarts;
+			return detailCarts;
 		}
         [Route("")]
         public async Task<IActionResult> Index()
         {
 
-
+			Console.WriteLine("-----------------------------------------");
             //viet de lay 8 san pham (4 quan, 4 ao)
 			
 

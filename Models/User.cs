@@ -13,13 +13,12 @@ namespace doan1_v1.Models
         public required string FullName { get; set; }
 
         [Required(ErrorMessage = "Địa chỉ không được để trống.")]
-        public required string Address { get; set; }
+        public string? Address { get; set; }
 
 
-
-		[Required(ErrorMessage = "Ngày tháng năm sinh không được để trống.")]
+		//[Required(ErrorMessage = "Ngày tháng năm sinh không được để trống.")]
 		[DataType(DataType.Date)]
-		public DateOnly DateOfBrith { get; set; }
+		public DateOnly? DateOfBrith { get; set; }
 
 		[DefaultValue("Không xác định")]
 		[RegularExpression(@"^(Nam|Nữ|Không xác định)$", ErrorMessage = "Chỉ nhận các giá trị Nam, Nữ, Hoặc Không xác định.")]

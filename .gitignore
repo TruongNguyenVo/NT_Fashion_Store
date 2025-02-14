@@ -27,3 +27,5 @@ logs/*.log
 temp/
 
 Migrations/
+/appsettings.json
+/appsettings.Development.json

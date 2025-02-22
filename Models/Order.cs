@@ -32,6 +32,8 @@ namespace doan1_v1.Models
 
         public string? Note { get; set; }
 
+        public string PaymentMethod { get; set; } = "COD"; //mac dinh la COD
+
         public Boolean IsDel { get; set; } = false;
 
         [ForeignKey(nameof(User.Id))] // khoa ngoai lien ket voi bang User

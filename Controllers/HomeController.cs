@@ -1,5 +1,6 @@
 ﻿using doan1_v1.Helpers;
 using doan1_v1.Models;
+using doan1_v1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using SQLitePCL;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using VNPayPackage.Enums;
 
 namespace doan1_v1.Controllers
 {
@@ -398,15 +400,18 @@ namespace doan1_v1.Controllers
 		}
 		[Authorize(Policy = "CustomerOnly")]
 		//hàm dùng xác nhận đơn hàng
-		public async Task<IActionResult> confirmCheckout(double deliveryCost)
+		public async Task<IActionResult> confirmCheckout(double deliveryCost, string paymentMethod)
         {
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //Gets the user's unique identifier (usually the ID from your user table).
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
 			if (userId != null)
 			{
 				var detailCart = await cartOfUser(userId);
 
 				ViewBag.cartOfUser = detailCart; // lay danh sach cac mon hang cua nguoi dung - undone
 			}
+			Console.WriteLine($"payment method: {paymentMethod}");
+			Console.WriteLine();
+
 
 			var cartofUser = await _context.Carts.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
@@ -416,15 +421,17 @@ namespace doan1_v1.Controllers
 			//tao order
 			Order order = new Order
 			{
-				Status = "Đã đặt hàng" /* gán giá trị phù hợp cho Status */
+				Status = "Đã đặt hàng", /* gán giá trị phù hợp cho Status */
+				PaymentMethod = paymentMethod,
+
 			};
             order.DateOrder = DateOnly.FromDateTime(DateTime.Now);
             order.DeliveryCost = deliveryCost;
             order.CustomerId = userId;
 
             _context.Add(order);
-            int rowsEffect = await _context.SaveChangesAsync();
 
+            int rowsEffect = await _context.SaveChangesAsync();
             if(rowsEffect > 0) {
                 //tao chi tiet order
                 int orderId = order.Id;
@@ -463,6 +470,33 @@ namespace doan1_v1.Controllers
                     await _context.SaveChangesAsync();
                 }
 			}
+			
+			if (paymentMethod == "vn_pay")
+			{
+				double totalPrice = deliveryCost;
+				string description = "";
+
+				var listOrderDetail = _context.OrderProductDetails.Where(d => d.OrderId == order.Id).ToList();
+				foreach(var orderDetail in listOrderDetail)
+				{
+					totalPrice = totalPrice + orderDetail.PriceSale;
+					description = description + orderDetail.Product?.Name + "--" + orderDetail.Quantity + "--" + orderDetail.PriceSale + ".\n";
+				}
+
+				Console.WriteLine(totalPrice);
+				Console.WriteLine(description);
+				Console.WriteLine();
+
+				PaymentInformationModel model = new PaymentInformationModel();
+				model.OrderType = "Online";
+				model.Amount = totalPrice;
+				model.OrderId = order.Id.ToString();
+				model.OrderDescription = description;
+				model.Name = "Thanh toán online ở NTFashion";
+				return RedirectToAction("CreatePaymentUrl", "Payment", model);
+			}
+
+			Console.WriteLine();
 			// chuyển đến trang order
 			return RedirectToAction("Order", "Home");
 		}

@@ -365,6 +365,11 @@ namespace doan1_v1.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -385,6 +390,7 @@ namespace doan1_v1.Migrations
                             DateReceive = new DateOnly(2024, 11, 25),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã thanh toán"
                         },
                         new
@@ -394,6 +400,7 @@ namespace doan1_v1.Migrations
                             DateOrder = new DateOnly(2024, 11, 25),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã đặt hàng"
                         },
                         new
@@ -403,6 +410,7 @@ namespace doan1_v1.Migrations
                             DateOrder = new DateOnly(2024, 11, 30),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã đặt hàng"
                         },
                         new
@@ -413,6 +421,7 @@ namespace doan1_v1.Migrations
                             DateReceive = new DateOnly(2024, 12, 10),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã thanh toán"
                         },
                         new
@@ -423,6 +432,7 @@ namespace doan1_v1.Migrations
                             DateReceive = new DateOnly(2024, 12, 16),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã thanh toán"
                         },
                         new
@@ -433,6 +443,7 @@ namespace doan1_v1.Migrations
                             DateReceive = new DateOnly(2024, 12, 31),
                             DeliveryCost = 50000.0,
                             IsDel = false,
+                            PaymentMethod = "COD",
                             Status = "Đã thanh toán"
                         });
                 });
@@ -2457,7 +2468,7 @@ namespace doan1_v1.Migrations
                             Id = "feef8538-ecae-4502-8fb2-7b3d33068777",
                             AccessFailedCount = 0,
                             Address = "Bình Tân, Vĩnh Long",
-                            ConcurrencyStamp = "a1392cea-1248-4574-b463-90b9c165d75c",
+                            ConcurrencyStamp = "9812cfe4-b87a-4b93-a815-5076f0cbb9be",
                             DateOfBrith = new DateOnly(2000, 11, 23),
                             Email = "customer@gmail.com",
                             EmailConfirmed = false,
@@ -2466,10 +2477,10 @@ namespace doan1_v1.Migrations
                             IsDel = false,
                             LockoutEnabled = true,
                             NormalizedUserName = "CUSTOMER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIfGzXn26OAAfVzczvrazLNa6vVRnB9mvu0ED/bVbUklkl5tIrQoLKo92DlHmLFCMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENTKajVNcfXqDD1ZEPPiRVcdVu4psQBVVyNZCjp7jMLnnuLxCObO7ImuV0CxgLfHvA==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33cfcbca-3bc9-488d-917a-c85e74007e7d",
+                            SecurityStamp = "d2c40cbb-2d5f-41f3-ab7b-551031f60592",
                             TwoFactorEnabled = false,
                             UserName = "customer"
                         });
@@ -2487,7 +2498,7 @@ namespace doan1_v1.Migrations
                             Id = "feef8538-ecae-4502-8fb2-7b3d33068776",
                             AccessFailedCount = 0,
                             Address = "Bình Tân, Vĩnh Long",
-                            ConcurrencyStamp = "8007dbad-9d3f-40bb-ac3b-9fa6d7b4f69a",
+                            ConcurrencyStamp = "84b4b3d0-c7f9-40fd-a888-27a1b6094d63",
                             DateOfBrith = new DateOnly(2024, 11, 23),
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
@@ -2496,10 +2507,10 @@ namespace doan1_v1.Migrations
                             IsDel = false,
                             LockoutEnabled = true,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMOfJMjlCTDmC61K0QvwitUmr9aQq8hlPLQVzJ3CapOCVsCKY4xIbbc4b/9FWjMavA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPR9T0LLYA0acTPjUo2nkNoDhmRwLLT8Wb5TmE611a0+uZDk9UOZsTowXkkSklK23w==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3d792ec3-367a-4ed9-91ab-b6f47c77e558",
+                            SecurityStamp = "3d838bd0-f459-495c-b023-fa618bd20e7e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

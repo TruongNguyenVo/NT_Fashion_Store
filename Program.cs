@@ -1,5 +1,6 @@
 ﻿using doan1_v1.Helpers;
 using doan1_v1.Models;
+using doan1_v1.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +61,15 @@ builder.Services.AddAuthentication(options =>
 	options.ClientId = googleAuth["ClientId"];
 	options.ClientSecret = googleAuth["ClientSecret"];
 	options.CallbackPath = new PathString(new Uri(googleAuth["RedirectUri"]).AbsolutePath);
+});
+
+// Đăng ký service
+builder.Services.AddScoped<IVnPayService, VnPayService>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.Cookie.SameSite = SameSiteMode.None;
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 //////////////////////////

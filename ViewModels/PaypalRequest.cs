@@ -5,5 +5,7 @@
 		public string Cancel { get; set; } = null;
 		public string PayerID { get; set; } = "";
 		public string guid { get; set; } = "";
+		public int OrderId { get; set; }
+
 	}
 }

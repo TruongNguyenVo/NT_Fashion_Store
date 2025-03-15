@@ -1,5 +1,7 @@
 ﻿using Azure.Core;
+using doan1_v1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NT_Fashion_Store.Helpers;
 using NT_Fashion_Store.ViewModels;
 using PayPal.Api;
@@ -11,11 +13,12 @@ namespace NT_Fashion_Store.Controllers
 	{
 		private readonly ILogger<PaypalController> _logger;
 		private readonly IConfiguration _configuration;
-
-		public PaypalController(ILogger<PaypalController> logger, IConfiguration configuration)
+		private readonly NTFashionDbContext _context;
+		public PaypalController(ILogger<PaypalController> logger, IConfiguration configuration, NTFashionDbContext context)
 		{
 			_logger = logger;
 			_configuration = configuration;
+			_context = context;
 		}
 		public ActionResult PaymentWithPaypal(PaypalRequest paypalRequest)
 		{
@@ -31,9 +34,9 @@ namespace NT_Fashion_Store.Controllers
 			{
 				if (!string.IsNullOrEmpty(paypalRequest.PayerID))
 				{
-					string baseURI = $"{Request.Scheme}://{Request.Host}/Payment/PaymentWithPaypal?";
+					string baseURI = $"{Request.Scheme}://{Request.Host}/Order?";
 					paypalRequest.guid = Convert.ToString((new Random()).Next(100000));
-					var createdPayment = CreatePaymentWithPaypal(apiContext, $"{baseURI}guid={paypalRequest.guid}");
+					var createdPayment = CreatePaymentWithPaypal(apiContext, $"{baseURI}guid={paypalRequest.guid}", paypalRequest.OrderId);
 					var links = createdPayment.links.GetEnumerator();
 					string paypalRedirectUrl = null;
 
@@ -58,6 +61,10 @@ namespace NT_Fashion_Store.Controllers
 					{
 						return RedirectToAction("Checkout", "Home"); // thanh toan that bai
 					}
+					else
+					{
+						return RedirectToAction("Order", "Home"); // ✅ Thanh toán thành công
+					}
 				}
 			}
 			catch (Exception ex)
@@ -74,18 +81,41 @@ namespace NT_Fashion_Store.Controllers
 			var payment = new Payment() { id = paymentId };
 			return payment.Execute(apiContext, paymentExecution);
 		}
-		private Payment CreatePaymentWithPaypal(APIContext apiContext, string redirectUrl)
+		private Payment CreatePaymentWithPaypal(APIContext apiContext, string redirectUrl, int orderId)
 		{
-			var itemList = new ItemList() { items = new List<Item>() };
-
-			itemList.items.Add(new Item()
+			var order = _context.Orders.Find(orderId);
+			if (order == null)
 			{
-				name = "Product Name",
-				currency = "USD",
-				price = "10",
-				quantity = "1",
-				sku = "sku"
-			});
+				throw new Exception("Order not found");
+			}
+			double exchangeRate = 25000; // Giả sử 1 USD = 25,000 VND, bạn có thể cập nhật theo tỷ giá thực tế
+			double deliveryCost = order.DeliveryCost /exchangeRate;
+			string description = "";
+			double totalPrice = 0;
+			var listOrderDetail = _context.OrderProductDetails.Where(d => d.OrderId == order.Id)
+				.Include(d => d.Product) // Load thêm thông tin Product
+				.ToList();
+			
+			var itemList = new ItemList() { items = new List<Item>() };			
+			
+			foreach (var orderDetail in listOrderDetail)
+			{
+				
+				double priceUSD = orderDetail.PriceSale / exchangeRate; // Chuyển đổi sang USD
+				itemList.items.Add(new Item()
+				{
+					name = orderDetail.Product.Name,
+					currency = "USD",
+					price = priceUSD.ToString(),
+					quantity = orderDetail?.Quantity.ToString(),
+					sku = "sku"
+
+				});
+				totalPrice = totalPrice + priceUSD;
+				description = description + orderDetail.Product.Name + "--" + orderDetail.Quantity + "--" + priceUSD + ".\n";
+			}
+			Console.WriteLine("Total Price: " + totalPrice);
+			Console.WriteLine("Description: " + description);
 
 			var payer = new Payer() { payment_method = "paypal" };
 			var redirUrls = new RedirectUrls()
@@ -96,15 +126,21 @@ namespace NT_Fashion_Store.Controllers
 
 			var details = new Details()
 			{
-				tax = "1",
-				shipping = "1",
-				subtotal = "10"
+				tax = "0",
+				shipping = deliveryCost.ToString(),
+				subtotal = totalPrice.ToString(),
 			};
 
+			double total = totalPrice + deliveryCost;
+
+			Console.WriteLine("Total: " + total);
+			Console.WriteLine($"{details.tax} + {details.shipping} + {details.subtotal}");
+			Console.WriteLine();
 			var amount = new Amount()
 			{
 				currency = "USD",
-				total = "12",
+				total = total.ToString(),
+				//total = totalPriceUSD.ToString(),
 				details = details
 			};
 

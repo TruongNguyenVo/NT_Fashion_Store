@@ -471,22 +471,22 @@ namespace doan1_v1.Controllers
                     await _context.SaveChangesAsync();
                 }
 			}
-			
+			double totalPrice = deliveryCost;
+			string description = "";
+
+			var listOrderDetail = _context.OrderProductDetails.Where(d => d.OrderId == order.Id).ToList();
+			foreach (var orderDetail in listOrderDetail)
+			{
+				totalPrice = totalPrice + orderDetail.PriceSale;
+				description = description + orderDetail.Product?.Name + "--" + orderDetail.Quantity + "--" + orderDetail.PriceSale + ".\n";
+			}
+
+			Console.WriteLine(totalPrice);
+			Console.WriteLine(description);
+			Console.WriteLine();
 			if (paymentMethod == "vn_pay")
 			{
-				double totalPrice = deliveryCost;
-				string description = "";
-
-				var listOrderDetail = _context.OrderProductDetails.Where(d => d.OrderId == order.Id).ToList();
-				foreach(var orderDetail in listOrderDetail)
-				{
-					totalPrice = totalPrice + orderDetail.PriceSale;
-					description = description + orderDetail.Product?.Name + "--" + orderDetail.Quantity + "--" + orderDetail.PriceSale + ".\n";
-				}
-
-				Console.WriteLine(totalPrice);
-				Console.WriteLine(description);
-				Console.WriteLine();
+				
 
 				PaymentInformationModel model = new PaymentInformationModel();
 				model.OrderType = "Online";
@@ -498,10 +498,12 @@ namespace doan1_v1.Controllers
 			}
 			if (paymentMethod == "paypal")
 			{
+
 				PaypalRequest paypalRequest = new PaypalRequest();
-				paypalRequest.guid = "12345";         // Mã định danh giao dịch ngẫu nhiên
-				paypalRequest.PayerID = "ABCD12345";   // ID của người thanh toán do PayPal cung cấp
+				paypalRequest.guid = "123456";         // Mã định danh giao dịch ngẫu nhiên
+				paypalRequest.PayerID = "ABCD123456";   // ID của người thanh toán do PayPal cung cấp
 				paypalRequest.Cancel = null;         // Người dùng không hủy giao dịch
+				paypalRequest.OrderId = order.Id;
 
 
 				Console.WriteLine("Thannhhhhhhhhhh toannnnnnnnnnn banggggggg paypalllllllllll");

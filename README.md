@@ -1,4 +1,3 @@
-#  [update: 11/12/2024]
 # `Start project`
 ## Tạo project 
 ```bash

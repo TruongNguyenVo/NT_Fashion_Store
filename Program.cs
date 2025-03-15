@@ -72,6 +72,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+// paypal
+builder.Services.AddDistributedMemoryCache(); // Dùng bộ nhớ trong làm cache
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian session hết hạn
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
+});
+
 //////////////////////////
 var app = builder.Build();
 
@@ -101,4 +110,5 @@ app.MapControllerRoute(
 //	var services = scope.ServiceProvider;
 //	await SeederRoleUser.Initialize(services); //tao cac role ke thua user
 //}
+app.UseSession(); // Thêm middleware để kích hoạt session
 app.Run();

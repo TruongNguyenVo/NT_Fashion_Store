@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using NT_Fashion_Store.ViewModels;
 using SQLitePCL;
 using System.Diagnostics;
 using System.Linq;
@@ -495,7 +496,17 @@ namespace doan1_v1.Controllers
 				model.Name = "Thanh toán online ở NTFashion";
 				return RedirectToAction("CreatePaymentUrl", "Payment", model);
 			}
+			if (paymentMethod == "paypal")
+			{
+				PaypalRequest paypalRequest = new PaypalRequest();
+				paypalRequest.guid = "12345";         // Mã định danh giao dịch ngẫu nhiên
+				paypalRequest.PayerID = "ABCD12345";   // ID của người thanh toán do PayPal cung cấp
+				paypalRequest.Cancel = null;         // Người dùng không hủy giao dịch
 
+
+				Console.WriteLine("Thannhhhhhhhhhh toannnnnnnnnnn banggggggg paypalllllllllll");
+				return RedirectToAction("PaymentWithPaypal", "Paypal", paypalRequest);
+			}
 			Console.WriteLine();
 			// chuyển đến trang order
 			return RedirectToAction("Order", "Home");
